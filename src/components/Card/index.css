@@ -1,0 +1,3 @@
+p.card-price {
+  @apply select-none self-start font-bold text-primary md:text-lg lg:self-auto;
+}

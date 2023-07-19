@@ -8,15 +8,15 @@ export default function AccountSetting() {
   const settings = [
     {
       title: "Username",
-      path: "/profile/account-setting/username",
+      path: "/account-setting/username",
     },
     {
       title: "Email",
-      path: "/profile/account-setting/email",
+      path: "/account-setting/email",
     },
     {
       title: "Password",
-      path: "/profile/account-setting/password",
+      path: "/account-setting/password",
     },
   ];
   return (

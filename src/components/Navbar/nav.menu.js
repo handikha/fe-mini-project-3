@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Button from "../Button";
-import { HiMenu, HiOutlineChevronRight, HiX } from "react-icons/hi";
+import { HiMenu, HiX } from "react-icons/hi";
 
 import {
   HiOutlineArrowRightOnRectangle,
   HiOutlineCog6Tooth,
-  HiOutlineRectangleGroup,
   HiOutlineSquares2X2,
 } from "react-icons/hi2";
 import { AnimatePresence, motion } from "framer-motion";
@@ -128,7 +127,7 @@ export default function NavMenu({
           onClick={closeNavMenu}
         >
           <HiOutlineSquares2X2 className="text-xl md:hidden" />
-          Products
+          {user.role === 1 ? "Dashboard" : "Products"}
         </Button>
 
         {!isLogin && (
@@ -205,22 +204,12 @@ export default function NavMenu({
                 >
                   <div className="flex select-none flex-col gap-2">
                     <Button
-                      className="flex cursor-pointer items-center gap-4 border-b-2 border-light pb-4 duration-300 hover:pl-2 dark:border-gray"
-                      isLink
-                      path="/profile"
-                    >
-                      <HiOutlineRectangleGroup className="text-xl" />
-                      <span>Dashboard</span>
-                      <HiOutlineChevronRight className="ml-auto text-xl" />
-                    </Button>
-
-                    <Button
                       className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
                       onClick={() => {
                         setIsProfileActive(false);
                       }}
                       isLink
-                      path="/profile/account-setting/username"
+                      path="/account-setting/username"
                     >
                       <HiOutlineCog6Tooth className="text-xl" />
                       Account Setting

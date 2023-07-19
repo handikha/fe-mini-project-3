@@ -1,0 +1,67 @@
+{
+  "cart": [
+    {
+      "name": "Cappuccino",
+      "categoryId": 2,
+      "price": 22000,
+      "qty": 3,
+      "image": "https://source.unsplash.com/600x400?capuccino"
+    },
+    {
+      "name": "Latte",
+      "categoryId": 2,
+      "price": 23000,
+      "qty": 1,
+      "image": "https://source.unsplash.com/600x400?latte"
+    },
+    {
+      "name": "Iced Tea",
+      "categoryId": 2,
+      "price": 15000,
+      "qty": 2,
+      "image": "https://source.unsplash.com/600x400?iced+tea"
+    },
+    {
+      "name": "Blueberry Muffin",
+      "categoryId": 3,
+      "price": 15000,
+      "qty": 1,
+      "image": "https://source.unsplash.com/600x400?blueberry+muffin"
+    },
+    {
+      "name": "Croissant",
+      "categoryId": 3,
+      "price": 18000,
+      "qty": 3,
+      "image": "https://source.unsplash.com/600x400?croissant"
+    },
+    {
+      "name": "Cheesecake",
+      "categoryId": 3,
+      "price": 28000,
+      "qty": 1,
+      "image": "https://source.unsplash.com/600x400?cheesecake"
+    },
+    {
+      "name": "Caesar Salad",
+      "categoryId": 4,
+      "price": 32000,
+      "qty": 3,
+      "image": "https://source.unsplash.com/600x400?caesar+salad"
+    },
+    {
+      "name": "Greek Salad",
+      "categoryId": 4,
+      "price": 28000,
+      "qty": 3,
+      "image": "https://source.unsplash.com/600x400?greek+salad"
+    },
+    {
+      "name": "Fruit Salad",
+      "categoryId": 4,
+      "price": 25000,
+      "qty": 1,
+      "image": "https://source.unsplash.com/600x400?fruit+salad"
+    }
+  ]
+}

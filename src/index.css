@@ -18,11 +18,15 @@
   }
 
   h3.card-title {
-    @apply select-none text-sm font-bold text-title dark:text-title-dark dark:hover:text-primary md:text-xl;
+    @apply select-none text-sm font-bold text-title dark:text-title-dark md:text-base;
   }
 
   p {
-    @apply text-sm dark:text-light-gray md:text-lg;
+    @apply text-sm dark:text-light-gray;
+  }
+
+  p.cart-title {
+    @apply text-sm dark:text-light-gray;
   }
 
   .container {
@@ -30,7 +34,7 @@
   }
 
   ::-webkit-scrollbar {
-    @apply h-1 w-2;
+    @apply h-2 w-2;
   }
 
   ::-webkit-scrollbar-track {
@@ -52,6 +56,7 @@
 
 @layer components {
   @import url("./components/Navbar/index.css");
+  @import url("./components/Card/index.css");
 
   input {
     @apply rounded-md border border-primary/50 py-1 focus:outline-none focus:ring-2 focus:ring-primary/50;

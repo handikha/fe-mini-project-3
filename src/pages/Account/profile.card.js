@@ -2,7 +2,6 @@ import Button from "../../components/Button";
 
 export default function ProfileCard({
   profileImg,
-  bio,
   username,
   fullName,
   handleShowModal,
@@ -35,29 +34,28 @@ export default function ProfileCard({
               title="Verify Now"
               className="font-bold underline"
               onClick={() => handleShowModal("verify-account")}
-              path="/profile/verify-account"
+              path="/verify-account"
               isLink
             />
           </div>
         )}
-        <p className="mt-4 italic">"{bio}"</p>
         <div className="mt-4 flex gap-x-6 gap-y-2 md:flex-col">
           <Button
             isLink
-            title="My Articles"
-            path="/profile"
+            title="Products"
+            path="/"
             onClick={window.scrollTo({ top: 0, behavior: "smooth" })}
           />
           <Button
             isLink
-            title="Liked Articles"
-            path="/profile/liked-articles"
+            title="Users"
+            path="/users"
             onClick={window.scrollTo({ top: 0, behavior: "smooth" })}
           />
           <Button
             isLink
-            title="Saved Articles"
-            path="/profile/saved-articles"
+            title="Categories"
+            path="/categories"
             onClick={window.scrollTo({ top: 0, behavior: "smooth" })}
           />
         </div>

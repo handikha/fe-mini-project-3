@@ -2,24 +2,22 @@ import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home";
 import users from "./json/user.json";
-import Profile from "./pages/Profile";
-import ProfileSetting from "./pages/Profile/profile.setting";
-import AccountSetting from "./pages/Profile/account.setting";
+import Account from "./pages/Account";
+import AccountSetting from "./pages/Account/account.setting";
 
 function App() {
-  const user = users.find(user=>user.id===1)
+  const user = users.find((user) => user.id === 1);
   return (
     <>
       <Navbar user={user} />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route
-          path="/profile/account-setting/:setting"
-          element={<AccountSetting />}
-        />
-        <Route path="/profile/profile-setting" element={<ProfileSetting />} />
-        <Route path="/profile/:context" element={<Profile />} />
+        {user.role === 1 ? (
+          <Route path="/" element={<Account user={user} />} />
+        ) : (
+          <Route path="/" element={<HomePage />} />
+        )}
+        <Route path="/account-setting/:setting" element={<AccountSetting />} />
+        <Route path="/:context" element={<Account user={user} />} />
       </Routes>
     </>
   );
