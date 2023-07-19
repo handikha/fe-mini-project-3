@@ -134,22 +134,12 @@ export default function NavMenu({
           <>
             <Button
               title="Login"
-              path="/"
-              className="nav-menu-item"
-              isLink
-              onClick={() => {
-                closeNavMenu();
-                handleShowModal("login");
-              }}
-            />
-
-            <Button
-              title="Get Started"
+              isButton
               isPrimary
               className="mt-4 w-full md:col-span-2 md:mt-0 md:w-fit"
               onClick={() => {
                 closeNavMenu();
-                handleShowModal("register");
+                handleShowModal("login");
               }}
             />
           </>

@@ -24,7 +24,7 @@ export default function HomePage() {
   const handleCategories = (index) => setActiveIndex(index);
 
   return (
-    <div className="container py-20">
+    <div className="container pb-48 pt-20">
       <div className="grid grid-cols-2 gap-4 duration-300 md:grid-cols-2 lg:grid-cols-9">
         <div className="col-span-full flex gap-3 overflow-auto py-2">
           {categories.categories.map((category, index) => (
@@ -53,14 +53,14 @@ export default function HomePage() {
               {cart.cart.length} item{cart.cart.length > 1 && "s"}
             </p>
             <div
-              className={`flex  w-full flex-col overflow-auto pr-2 duration-300 lg:h-[70%] ${
+              className={`flex w-full flex-col overflow-auto pr-2 duration-300 lg:h-[70%] ${
                 isCartExpand ? "h-80" : "h-0"
               }`}
             >
               {cart.cart.map((item, index) => (
                 <div
                   key={index}
-                  className="flex w-full items-center gap-2 py-2"
+                  className={`flex w-full items-center gap-2 border-b-[1px] py-4`}
                 >
                   <div className="aspect-[5/3] h-6 overflow-hidden rounded">
                     <img
@@ -85,15 +85,17 @@ export default function HomePage() {
                       </p>
                     </div>
                   </div>
-                  <Button isDanger className="ml-2 rounded-md p-2">
+                  <Button isDanger className="mx-2 rounded-md p-2">
                     <FaRegTrashCan />
                   </Button>
                 </div>
               ))}
             </div>
             <div className="mt-4 flex justify-between">
-              <p className="text-xl font-bold dark:text-title-dark">Total</p>
-              <p className="font-bold text-primary dark:text-green-400">
+              <p className="text-base font-bold dark:text-title-dark lg:text-xl">
+                Total
+              </p>
+              <p className="text-base font-bold text-primary dark:text-green-400 lg:text-lg">
                 {formatNumber(getGrandTotal())}
               </p>
             </div>

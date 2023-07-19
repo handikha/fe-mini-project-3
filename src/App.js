@@ -6,7 +6,7 @@ import Account from "./pages/Account";
 import AccountSetting from "./pages/Account/account.setting";
 
 function App() {
-  const user = users.find((user) => user.id === 1);
+  const user = users.find((user) => user.id === 2);
   return (
     <>
       <Navbar user={user} />
