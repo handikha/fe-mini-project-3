@@ -1,0 +1,32 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Main"
+    },
+    {
+      "id": 2,
+      "name": "Appetizers"
+    },
+    {
+      "id": 3,
+      "name": "Sides"
+    },
+    {
+      "id": 4,
+      "name": "Desserts"
+    },
+    {
+      "id": 5,
+      "name": "Beverages"
+    },
+    {
+      "id": 6,
+      "name": "Kids Menu"
+    },
+    {
+      "id": 7,
+      "name": "Vegan"
+    }
+  ]
+}

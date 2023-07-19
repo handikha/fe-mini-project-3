@@ -1,0 +1,35 @@
+.nav {
+  @apply fixed z-10 w-full border-slate-300 bg-slate-50 duration-300 dark:border-slate-500 dark:bg-slate-900;
+}
+
+.navbar {
+  @apply flex items-center justify-between py-4 text-title dark:text-title-dark;
+}
+
+.nav-menu-wrapper {
+  @apply flex items-center gap-8 font-semibold;
+}
+
+.nav-menu {
+  @apply absolute top-0 flex h-screen w-3/4 flex-col items-start gap-2 bg-slate-100 px-8 py-4 font-semibold duration-300 dark:bg-slate-800 md:static md:flex md:h-fit md:w-fit md:translate-x-0 md:flex-row md:items-center md:gap-8 md:bg-transparent md:p-0 dark:md:bg-transparent;
+}
+
+.nav-menu-item {
+  @apply w-full py-2 duration-200 active:pl-2 dark:text-light md:w-fit md:active:px-0;
+}
+
+.sidebar-button {
+  @apply relative z-20 block cursor-pointer text-3xl md:hidden;
+}
+
+.sidebar-bg {
+  @apply absolute inset-0 h-screen bg-slate-700/60 backdrop-blur-sm dark:bg-slate-700/90;
+}
+
+.theme-button {
+  @apply cursor-pointer text-2xl text-yellow-500 duration-300 hover:rotate-45;
+}
+
+.profile-menu {
+  @apply absolute right-[50%] top-[110%] w-60 rounded-lg bg-slate-100 p-4 shadow-lg transition-colors duration-300 dark:bg-slate-800;
+}

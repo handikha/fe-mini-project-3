@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@100;200;300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 font-nunito text-gray duration-300 dark:bg-slate-900 dark:text-light;
+  }
+
+  h3 {
+    @apply text-2xl font-bold text-title dark:text-title-dark;
+  }
+
+  h3.title {
+    @apply text-lg font-bold text-title dark:text-title-dark  md:text-xl;
+  }
+
+  h3.card-title {
+    @apply select-none text-sm font-bold text-title dark:text-title-dark dark:hover:text-primary md:text-xl;
+  }
+
+  p {
+    @apply text-sm dark:text-light-gray md:text-lg;
+  }
+
+  .container {
+    @apply px-4;
+  }
+
+  ::-webkit-scrollbar {
+    @apply h-1 w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-300;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray;
+  }
+
+  .categories-container::-webkit-scrollbar-track {
+    @apply bg-light;
+  }
+}
+
+@layer components {
+  @import url("./components/Navbar/index.css");
+
+  input {
+    @apply rounded-md border border-primary/50 py-1 focus:outline-none focus:ring-2 focus:ring-primary/50;
+  }
+
+  .card-container {
+    margin-top: calc(100vw - 57%);
+  }
+
+  .icon-wrapper {
+    @apply cursor-pointer rounded-full bg-slate-200 p-2 duration-300 hover:scale-110 hover:bg-slate-100 hover:shadow-md dark:bg-slate-700 dark:hover:bg-dark-gray;
+  }
+}
+
+@layer utilities {
+}

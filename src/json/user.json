@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@mail.com",
+    "phone": "081234567890",
+    "status": 1,
+    "role": 1,
+    "fullName": "Admin",
+    "profileImg": "https://source.unsplash.com/400x400?cat"
+  },
+  {
+    "id": 2,
+    "username": "cashier",
+    "email": "cashier@mail.com",
+    "phone": "081234567890",
+    "status": 1,
+    "role": 2,
+    "fullName": "Cashier",
+    "profileImg": "https://source.unsplash.com/400x400?cat"
+  }
+]
