@@ -14,6 +14,9 @@ export default function Button(props) {
   props.isDanger &&
     className.push("bg-red-500 hover:bg-red-600 text-white duration-300");
 
+  props.isWarning &&
+    className.push("bg-yellow-500 hover:bg-yellow-600 text-white duration-300");
+
   props.isSecondary &&
     className.push("bg-light-gray hover:bg-gray text-white duration-300");
 
@@ -25,7 +28,14 @@ export default function Button(props) {
 
   if (props.isLink) {
     return (
-      <Link to={props.path} className={className.join(" ")} onClick={onClick}>
+      <Link
+        to={props.path}
+        className={className.join(" ")}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+      >
         {props.title ? props.title : props.children}
       </Link>
     );
@@ -34,8 +44,11 @@ export default function Button(props) {
   return (
     <button
       className={className.join(" ")}
-      type={props.type}
-      onClick={onClick}
+      type={props.type ? props.type : "button"}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
       disabled={props.isLoading}
     >
       {props.isLoading ? (
@@ -52,7 +65,7 @@ export default function Button(props) {
 }
 
 Button.propTypes = {
-  type: propTypes.oneOf(["button", "link", "submit"]),
+  type: propTypes.oneOf(["button", "submit"]),
   onClick: propTypes.func,
   path: propTypes.string,
   title: propTypes.string,
@@ -65,6 +78,7 @@ Button.propTypes = {
   isSmall: propTypes.bool,
   isPrimary: propTypes.bool,
   isDanger: propTypes.bool,
+  isWarning: propTypes.bool,
   isSecondary: propTypes.bool,
   isLink: propTypes.bool,
 };

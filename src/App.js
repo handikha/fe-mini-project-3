@@ -1,5 +1,5 @@
 import Navbar from "./components/Navbar";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Cashier from "./pages/Cashier";
 import users from "./json/user.json";
 import Admin from "./pages/Admin";
@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 
 function App() {
-  const user = users.find((user) => user.id === 2);
+  const user = users.find((user) => user.id === 1);
   const location = useLocation();
 
   const shouldRenderNavbar = () => {

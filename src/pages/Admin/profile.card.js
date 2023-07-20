@@ -6,6 +6,7 @@ export default function ProfileCard({
   fullName,
   handleShowModal,
   isVerified,
+  context,
 }) {
   return (
     <div className="relative col-span-full md:col-span-1">

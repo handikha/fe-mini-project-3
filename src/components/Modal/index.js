@@ -23,7 +23,7 @@ export default function Modal({ showModal, closeModal, children, title }) {
             transition={{ duration: 0.3 }}
             exit={{ opacity: 0 }}
             onClick={closeModal}
-            className="fixed inset-0 z-20 bg-black/70 backdrop-blur-sm dark:bg-slate-400/50"
+            className="fixed inset-0 z-20 bg-black/70 backdrop-blur-sm dark:bg-slate-600/60"
           />
           <motion.div
             initial={{ translateY: -20, opacity: 0 }}
@@ -38,7 +38,7 @@ export default function Modal({ showModal, closeModal, children, title }) {
                 <HiXMark className="text-3xl" />
               </span>
             </div>
-            {children}
+            <div className="py-4">{children}</div>
           </motion.div>
         </>
       )}

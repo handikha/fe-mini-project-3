@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 
@@ -45,7 +45,7 @@ export default function AdminAccountSetting({ user }) {
           {context === "username" && (
             <>
               <Input
-                label="Username"
+                placeholder="Username"
                 id="username"
                 name="username"
                 type="text"
@@ -61,7 +61,7 @@ export default function AdminAccountSetting({ user }) {
 
           {context === "email" && (
             <>
-              <Input label="Email" id="email" name="email" type="text" />
+              <Input placeholder="Email" id="email" name="email" type="text" />
               <Button
                 title="Change Email"
                 isButton
@@ -75,19 +75,19 @@ export default function AdminAccountSetting({ user }) {
         {context === "password" && (
           <>
             <Input
-              label="Current Password"
+              placeholder="Current Password"
               id="currentPassword"
               name="currentPassword"
               type="password"
             />
             <Input
-              label="New Password"
+              placeholder="New Password"
               id="newPassword"
               name="newPassword"
               type="password"
             />
             <Input
-              label="Confirm Password"
+              placeholder="Confirm Password"
               id="confirmPassword"
               name="confirmPassword"
               type="password"

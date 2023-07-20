@@ -9,7 +9,7 @@ import NavMenu from "./nav.menu";
 
 export default function Navbar({ user }) {
   // LOGIN HANDLER
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavActive, setIsNavActive] = useState(false);
 
@@ -67,7 +67,9 @@ export default function Navbar({ user }) {
         showModal={showModal.show}
         closeModal={handleCloseModal}
         title={showModal.context === "login" ? "Login" : "Register"}
-      ></Modal>
+      >
+        
+      </Modal>
     </>
   );
 }

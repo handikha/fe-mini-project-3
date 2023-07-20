@@ -3,8 +3,9 @@ import RenderCards from "../../components/Card";
 import cart from "../../json/cart.json";
 import categories from "../../json/categories.json";
 import Button from "../../components/Button";
-import { FaAngleDown, FaAngleUp, FaRegTrashCan } from "react-icons/fa6";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import formatNumber from "../../utils/formatNumber";
+import { HiOutlineTrash } from "react-icons/hi2";
 
 export default function Cashier() {
   const getTotalPrice = (qty, price) => qty * price;
@@ -85,8 +86,8 @@ export default function Cashier() {
                       </p>
                     </div>
                   </div>
-                  <Button isDanger className="mx-2 rounded-md p-2">
-                    <FaRegTrashCan />
+                  <Button isDanger isSmall className="mx-2 rounded-md">
+                    <HiOutlineTrash className="text-lg" />
                   </Button>
                 </div>
               ))}

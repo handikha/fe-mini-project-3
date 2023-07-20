@@ -11,9 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import NavBrand from "./nav.brand";
 
 export default function NavMenu({
-  isLogin,
   setIsLogin,
-  handleShowModal,
   setIsScrolled,
   setIsNavActive,
   isNavActive,
@@ -129,104 +127,87 @@ export default function NavMenu({
           <HiOutlineSquares2X2 className="text-xl md:hidden" />
           {user?.role === 1 ? "Dashboard" : "Products"}
         </Button>
-
-        {!isLogin && (
-          <>
-            <Button
-              title="Login"
-              isButton
-              isPrimary
-              className="mt-4 w-full md:col-span-2 md:mt-0 md:w-fit"
-              onClick={() => {
-                closeNavMenu();
-                handleShowModal("login");
-              }}
-            />
-          </>
-        )}
       </div>
 
-      <div className={`flex items-center gap-6 ${!isLogin && "md:hidden"}`}>
-        {isLogin && (
-          <div className="profile-img-wrapper relative row-start-2 flex w-full items-center gap-4">
-            <div
-              className={`nav-profile-img aspect-square w-8 cursor-pointer self-center overflow-hidden rounded-full bg-primary md:mb-0 md:block ${
-                isNavActive && "-z-10"
-              }`}
-              onClick={() => {
-                closeNavMenu();
-                if (isProfileActive) {
-                  return closeProfileMenu();
-                }
-                openProfileMenu();
-              }}
-            >
-              <img
-                src={user?.profileImg}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-            </div>
-
-            <AnimatePresence>
-              {isProfileActive && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    scale: 0,
-                    originY: 0,
-                    originX: 1,
-                  }}
-                  transition={{
-                    duration: 0.2,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0,
-                    originY: 0,
-                    originX: 1,
-                  }}
-                  className="profile-menu"
-                >
-                  <div className="flex select-none flex-col gap-2">
-                    <Button
-                      className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
-                      onClick={() => {
-                        setIsProfileActive(false);
-                      }}
-                      isLink
-                      path={
-                        user?.role === 1
-                          ? "/admin/account-setting/username"
-                          : "/cashier/account-setting/password"
-                      }
-                    >
-                      <HiOutlineCog6Tooth className="text-xl" />
-                      Account Setting
-                    </Button>
-
-                    <Button
-                      className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
-                      onClick={() => {
-                        setIsLogin(false);
-                        setIsProfileActive(false);
-                      }}
-                      isLink
-                      path=""
-                    >
-                      <HiOutlineArrowRightOnRectangle className="text-xl" />
-                      Logout
-                    </Button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+      <div className={`flex items-center gap-6`}>
+        <div className="profile-img-wrapper relative row-start-2 flex w-full items-center gap-4">
+          <div
+            className={`nav-profile-img aspect-square w-8 cursor-pointer self-center overflow-hidden rounded-full bg-primary md:mb-0 md:block ${
+              isNavActive && "-z-10"
+            }`}
+            onClick={() => {
+              closeNavMenu();
+              if (isProfileActive) {
+                return closeProfileMenu();
+              }
+              openProfileMenu();
+            }}
+          >
+            <img
+              src={user?.profileImg}
+              alt=""
+              className="h-full w-full object-cover"
+            />
           </div>
-        )}
+
+          <AnimatePresence>
+            {isProfileActive && (
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  scale: 0,
+                  originY: 0,
+                  originX: 1,
+                }}
+                transition={{
+                  duration: 0.2,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0,
+                  originY: 0,
+                  originX: 1,
+                }}
+                className="profile-menu"
+              >
+                <div className="flex select-none flex-col gap-2">
+                  <Button
+                    className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
+                    onClick={() => {
+                      setIsProfileActive(false);
+                    }}
+                    isLink
+                    path={
+                      user?.role === 1
+                        ? "/admin/account-setting/username"
+                        : "/cashier/account-setting/password"
+                    }
+                  >
+                    <HiOutlineCog6Tooth className="text-xl" />
+                    Account Setting
+                  </Button>
+
+                  <Button
+                    className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
+                    onClick={() => {
+                      setIsLogin(false);
+                      setIsProfileActive(false);
+                    }}
+                    isLink
+                    path=""
+                  >
+                    <HiOutlineArrowRightOnRectangle className="text-xl" />
+                    Logout
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         <div className="sidebar-button">
           {isNavActive ? (
