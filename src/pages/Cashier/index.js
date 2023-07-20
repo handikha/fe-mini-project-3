@@ -6,7 +6,7 @@ import Button from "../../components/Button";
 import { FaAngleDown, FaAngleUp, FaRegTrashCan } from "react-icons/fa6";
 import formatNumber from "../../utils/formatNumber";
 
-export default function HomePage() {
+export default function Cashier() {
   const getTotalPrice = (qty, price) => qty * price;
 
   const getGrandTotal = () => {
@@ -36,7 +36,7 @@ export default function HomePage() {
               className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
                 activeIndex === index
                   ? "bg-primary"
-                  : "bg-primary/60 hover:bg-primary/80"
+                  : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
               }`}
             />
           ))}

@@ -43,19 +43,19 @@ export default function ProfileCard({
           <Button
             isLink
             title="Products"
-            path="/"
+            path="/admin"
             onClick={window.scrollTo({ top: 0, behavior: "smooth" })}
           />
           <Button
             isLink
             title="Users"
-            path="/users"
+            path="/admin/users"
             onClick={window.scrollTo({ top: 0, behavior: "smooth" })}
           />
           <Button
             isLink
             title="Categories"
-            path="/categories"
+            path="/admin/categories"
             onClick={window.scrollTo({ top: 0, behavior: "smooth" })}
           />
         </div>

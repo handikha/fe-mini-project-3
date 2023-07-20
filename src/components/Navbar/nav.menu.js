@@ -121,13 +121,13 @@ export default function NavMenu({
         </AnimatePresence>
 
         <Button
-          path="/"
+          path={user?.role === 1 ? "/admin" : "/cashier"}
           className={`nav-menu-item flex items-center gap-3`}
           isLink
           onClick={closeNavMenu}
         >
           <HiOutlineSquares2X2 className="text-xl md:hidden" />
-          {user.role === 1 ? "Dashboard" : "Products"}
+          {user?.role === 1 ? "Dashboard" : "Products"}
         </Button>
 
         {!isLogin && (
@@ -162,7 +162,7 @@ export default function NavMenu({
               }}
             >
               <img
-                src={user.profileImg}
+                src={user?.profileImg}
                 alt=""
                 className="h-full w-full object-cover"
               />
@@ -199,7 +199,11 @@ export default function NavMenu({
                         setIsProfileActive(false);
                       }}
                       isLink
-                      path="/account-setting/username"
+                      path={
+                        user?.role === 1
+                          ? "/admin/account-setting/username"
+                          : "/cashier/account-setting/password"
+                      }
                     >
                       <HiOutlineCog6Tooth className="text-xl" />
                       Account Setting

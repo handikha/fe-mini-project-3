@@ -2,7 +2,7 @@ import Modal from "../../components/Modal";
 import products from "../../json/products.json";
 import users from "../../json/user.json";
 import categories from "../../json/categories.json";
-import { useNavigate, useParams } from "react-router-dom";
+import { useMatches, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
 import ProfileCard from "./profile.card";
@@ -10,7 +10,7 @@ import ProductsTable from "./products.table";
 import UsersTable from "./users.table";
 import CategoriesTable from "./categories.table";
 
-export default function Account({ user }) {
+export default function Admin({ user }) {
   const isVerified = false;
   const params = useParams();
   const navigate = useNavigate();
