@@ -15,7 +15,11 @@ export default function ProductsTable() {
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
 
-    if (action === "Details") setShowModal({ show: true, type: action });
+    if (action === "Details") {
+      const productData = products.products.find((item) => item.id === id);
+      setSelectedProduct(productData);
+      setShowModal({ show: true, type: action, id });
+    }
 
     if (action === "Edit") {
       const productData = products.products.find((item) => item.id === id);
@@ -23,7 +27,11 @@ export default function ProductsTable() {
       setShowModal({ show: true, type: action, id });
     }
 
-    if (action === "Delete") setShowModal({ show: true, type: action });
+    if (action === "Delete") {
+      const productData = products.products.find((item) => item.id === id);
+      setSelectedProduct(productData);
+      setShowModal({ show: true, type: action, id });
+    }
   };
   const handleCloseModal = () => setShowModal(false);
   return (
@@ -69,7 +77,7 @@ export default function ProductsTable() {
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => handleShowModal("Details")}
+                onClick={() => handleShowModal("Details", item.id)}
 
                 // onClick={() => window.alert(`DETAILS Product id: ${item.id}`)}
               >
@@ -102,7 +110,7 @@ export default function ProductsTable() {
                   <Button isSmall isDanger>
                     <HiOutlineTrash
                       className="text-lg"
-                      onClick={() => handleShowModal("Delete")}
+                      onClick={() => handleShowModal("Delete", item.id)}
                     />
                   </Button>
                 </td>
@@ -124,7 +132,7 @@ export default function ProductsTable() {
       {showModal.show && showModal.type === "Details" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Product`}
+          title={`${showModal.type} Product ${showModal.id}`}
           closeModal={() => handleCloseModal()}
         ></Modal>
       )}
@@ -142,7 +150,7 @@ export default function ProductsTable() {
       {showModal.show && showModal.type === "Delete" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Product`}
+          title={`${showModal.type} Product ${showModal.id}`}
           closeModal={() => handleCloseModal()}
         ></Modal>
       )}
