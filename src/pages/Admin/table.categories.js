@@ -1,11 +1,12 @@
 import { useState } from "react";
-import Button from "../../components/Button";
-import Modal from "../../components/Modal";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import categories from "../../json/categories.json";
+import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 import InputCategory from "./input.category";
 
-export default function CategoriesTable({ categories }) {
+export default function CategoriesTable() {
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -40,7 +41,7 @@ export default function CategoriesTable({ categories }) {
             </tr>
           </thead>
           <tbody>
-            {categories.map((item, index) => (
+            {categories.categories.map((item, index) => (
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"

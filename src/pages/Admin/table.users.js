@@ -1,11 +1,12 @@
 import { useState } from "react";
-import Button from "../../components/Button";
 import { FaPlus } from "react-icons/fa6";
-import Modal from "../../components/Modal";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import users from "../../json/user.json";
+import Modal from "../../components/Modal";
+import Button from "../../components/Button";
 import InputUser from "./input.user";
 
-export default function UsersTable({ users }) {
+export default function UsersTable() {
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);

@@ -1,15 +1,30 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
-
+import products from "../../json/products.json";
 import formatNumber from "../../utils/formatNumber";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import InputProduct from "./input.product";
 
-export default function ProductsTable({ products }) {
+export default function ProductsTable() {
   const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  console.log(selectedProduct);
+
+  const handleShowModal = (action, id) => {
+    if (action === "Add") setShowModal({ show: true, type: action });
+
+    if (action === "Details") setShowModal({ show: true, type: action });
+
+    if (action === "Edit") {
+      const productData = products.products.find((item) => item.id === id);
+      setSelectedProduct(productData);
+      setShowModal({ show: true, type: action, id });
+    }
+
+    if (action === "Delete") setShowModal({ show: true, type: action });
+  };
   const handleCloseModal = () => setShowModal(false);
   return (
     <>
@@ -19,7 +34,7 @@ export default function ProductsTable({ products }) {
           isButton
           isPrimary
           className=" flex items-center gap-2"
-          onClick={handleShowModal}
+          onClick={() => handleShowModal("Add")}
         >
           <FaPlus /> Add Product
         </Button>
@@ -54,7 +69,9 @@ export default function ProductsTable({ products }) {
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => window.alert(`DETAILS Product id: ${item.id}`)}
+                onClick={() => handleShowModal("Details")}
+
+                // onClick={() => window.alert(`DETAILS Product id: ${item.id}`)}
               >
                 <th
                   scope="row"
@@ -78,18 +95,14 @@ export default function ProductsTable({ products }) {
                   <Button
                     isSmall
                     isWarning
-                    onClick={() => {
-                      window.alert(`EDIT Product id : ${item.id}`);
-                    }}
+                    onClick={() => handleShowModal("Edit", item.id)}
                   >
                     <HiOutlinePencilSquare className="text-lg" />
                   </Button>
                   <Button isSmall isDanger>
                     <HiOutlineTrash
                       className="text-lg"
-                      onClick={() => {
-                        window.alert(`DELETE Product id : ${item.id}`);
-                      }}
+                      onClick={() => handleShowModal("Delete")}
                     />
                   </Button>
                 </td>
@@ -98,13 +111,41 @@ export default function ProductsTable({ products }) {
           </tbody>
         </table>
       </div>
-      <Modal
-        showModal={showModal}
-        title="Add Product"
-        closeModal={() => handleCloseModal()}
-      >
-        <InputProduct />
-      </Modal>
+      {showModal.show && showModal.type === "Add" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Product`}
+          closeModal={() => handleCloseModal()}
+        >
+          <InputProduct />
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Details" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Product`}
+          closeModal={() => handleCloseModal()}
+        ></Modal>
+      )}
+
+      {showModal.show && showModal.type === "Edit" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Product ${showModal.id}`}
+          closeModal={() => handleCloseModal()}
+        >
+          <InputProduct productData={selectedProduct} />
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Delete" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Product`}
+          closeModal={() => handleCloseModal()}
+        ></Modal>
+      )}
     </>
   );
 }

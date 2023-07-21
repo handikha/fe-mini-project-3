@@ -1,6 +1,3 @@
-import products from "../../json/products.json";
-import users from "../../json/user.json";
-import categories from "../../json/categories.json";
 import { useParams } from "react-router-dom";
 
 import ProfileCard from "./profile.card";
@@ -26,12 +23,10 @@ export default function Admin({ user }) {
           />
 
           <div className="col-span-full md:col-span-3">
-            {!context && <Dashboard products={products} />}
-            {context === "products" && <ProductsTable products={products} />}
-            {context === "users" && <UsersTable users={users} />}
-            {context === "categories" && (
-              <CategoriesTable categories={categories.categories} />
-            )}
+            {!context && <Dashboard />}
+            {context === "products" && <ProductsTable />}
+            {context === "users" && <UsersTable />}
+            {context === "categories" && <CategoriesTable />}
           </div>
         </div>
       </div>

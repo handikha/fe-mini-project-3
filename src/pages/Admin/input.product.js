@@ -1,13 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import categories from "../../json/categories.json";
 import { useDropzone } from "react-dropzone";
 
-export default function InputProduct() {
+export default function InputProduct({ productData }) {
   const productNameRef = useRef(null);
   const priceRef = useRef(null);
   const categoryRef = useRef(null);
+
+  // Set nilai awal input form berdasarkan data productData
+  useEffect(() => {
+    if (productData) {
+      productNameRef.current.value = productData.name || "";
+      priceRef.current.value = productData.price || "";
+      categoryRef.current.value = productData.category.id || "";
+    }
+  }, [productData]);
 
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -31,6 +40,16 @@ export default function InputProduct() {
   const removeImage = () => {
     setFile(null);
     setPreviewImage(null);
+
+    const updatedProductData = { ...productData };
+    delete updatedProductData?.image;
+
+    onUpdateProductData(updatedProductData);
+  };
+
+  const onUpdateProductData = (data) => {
+    // Lakukan sesuatu dengan data produk terbaru (misalnya, kirim ke API atau simpan dalam state induk)
+    console.log("Updated Product Data:", data);
   };
 
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
@@ -107,8 +126,12 @@ export default function InputProduct() {
         >
           <input {...getInputProps({ name: "image" })} />
 
-          {previewImage ? (
-            <img alt="" src={previewImage} className="w-64" />
+          {previewImage || productData?.image ? (
+            <img
+              alt=""
+              src={previewImage || productData?.image}
+              className="w-64"
+            />
           ) : (
             <>
               <p className="md:text-md text-center text-sm text-slate-400">
@@ -122,7 +145,7 @@ export default function InputProduct() {
           )}
         </div>
 
-        {file === null ? (
+        {file === null && !productData?.image ? (
           <>
             <p className="text-md mb-2 mt-2 text-center font-normal text-slate-400">
               Or
@@ -157,15 +180,25 @@ export default function InputProduct() {
           </div>
         )}
       </div>
-
-      <Button
-        isButton
-        isPrimary
-        title="Add Product"
-        className="mt-4"
-        type="submit"
-        // onClick={handleShowModal}
-      />
+      {productData ? (
+        <Button
+          isButton
+          isPrimary
+          title="Edit Product"
+          className="mt-4"
+          type="submit"
+          // onClick={handleShowModal}
+        />
+      ) : (
+        <Button
+          isButton
+          isPrimary
+          title="Add Product"
+          className="mt-4"
+          type="submit"
+          // onClick={handleShowModal}
+        />
+      )}
     </form>
   );
 }
