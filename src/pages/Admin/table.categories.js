@@ -44,7 +44,7 @@ export default function CategoriesTable({ categories }) {
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => window.alert(`Category id: ${item.id}`)}
+                onClick={() => window.alert(`DETAILS Category id: ${item.id}`)}
               >
                 <th
                   scope="row"
@@ -58,7 +58,7 @@ export default function CategoriesTable({ categories }) {
                     isSmall
                     isWarning
                     onClick={() => {
-                      window.alert(`Edit : ${item.id}`);
+                      window.alert(`EDIT Category id : ${item.id}`);
                     }}
                   >
                     <HiOutlinePencilSquare className="text-lg" />
@@ -67,7 +67,7 @@ export default function CategoriesTable({ categories }) {
                     <HiOutlineTrash
                       className="text-lg"
                       onClick={() => {
-                        window.alert(`Delete : ${item.id}`);
+                        window.alert(`DELETE Category id : ${item.id}`);
                       }}
                     />
                   </Button>

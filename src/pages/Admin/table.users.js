@@ -62,7 +62,7 @@ export default function UsersTable({ users }) {
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => window.alert(`User id: ${item.id}`)}
+                onClick={() => window.alert(`DETAILS User id: ${item.id}`)}
               >
                 <th
                   scope="row"
@@ -90,7 +90,7 @@ export default function UsersTable({ users }) {
                     isSmall
                     isWarning
                     onClick={() => {
-                      window.alert(`Edit : ${item.id}`);
+                      window.alert(`EDIT User id : ${item.id}`);
                     }}
                   >
                     <HiOutlinePencilSquare className="text-lg" />
@@ -99,7 +99,7 @@ export default function UsersTable({ users }) {
                     <HiOutlineTrash
                       className="text-lg"
                       onClick={() => {
-                        window.alert(`Delete : ${item.id}`);
+                        window.alert(`DELETE User id : ${item.id}`);
                       }}
                     />
                   </Button>
