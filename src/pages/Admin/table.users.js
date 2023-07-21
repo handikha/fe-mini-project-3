@@ -1,28 +1,26 @@
 import { useState } from "react";
-import formatNumber from "../../utils/formatNumber";
-import { FaPlus } from "react-icons/fa6";
 import Button from "../../components/Button";
-import Input from "../../components/Input";
+import { FaPlus } from "react-icons/fa6";
 import Modal from "../../components/Modal";
-
-import categories from "../../json/categories.json";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import InputUser from "./input.user";
 
-export default function ProductsTable({ products }) {
+export default function UsersTable({ users }) {
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
   return (
     <>
       <div className="col-span-full mb-4 flex justify-between">
-        <h3>Products</h3>
+        <h3>Users</h3>
         <Button
           isButton
           isPrimary
           className=" flex items-center gap-2"
           onClick={handleShowModal}
         >
-          <FaPlus /> Add Product
+          <FaPlus /> Add User
         </Button>
       </div>
 
@@ -34,28 +32,37 @@ export default function ProductsTable({ products }) {
                 #
               </th>
               <th scope="col" className="p-3">
-                Product Name
+                Username
               </th>
               <th scope="col" className="p-3">
-                Category
+                Email
               </th>
               <th scope="col" className="p-3">
-                Price
+                Phone
               </th>
               <th scope="col" className="p-3">
+                Status
+              </th>
+              {/* <th scope="col" className="p-3">
+                Role
+              </th> */}
+              <th scope="col" className="p-3">
+                Full Name
+              </th>
+              {/* <th scope="col" className="p-3">
                 Image
-              </th>
+              </th> */}
               <th scope="col" className="p-3">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {products.products.map((item, index) => (
+            {users.map((item, index) => (
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => window.alert(`Product id: ${item.id}`)}
+                onClick={() => window.alert(`User id: ${item.id}`)}
               >
                 <th
                   scope="row"
@@ -63,18 +70,21 @@ export default function ProductsTable({ products }) {
                 >
                   {index + 1}
                 </th>
-                <td className="p-3">{item.name}</td>
-                <td className="p-3">{item.category.name}</td>
-                <td className="p-3">IDR {formatNumber(item.price)}</td>
-                <td className="p-3">
+                <td className="p-3">{item.username}</td>
+                <td className="p-3">{item.email}</td>
+                <td className="p-3">{item.phone}</td>
+                <td className="p-3">{item.status}</td>
+                {/* <td className="p-3">{item.role}</td> */}
+                <td className="p-3">{item.fullName}</td>
+                {/* <td className="p-3">
                   <div className="aspect-[4/3] w-10">
                     <img
-                      src={item.image}
+                      src={item.profileImg}
                       alt=""
                       className="h-full w-full object-cover"
                     />
                   </div>
-                </td>
+                </td> */}
                 <td className="flex gap-2 p-3">
                   <Button
                     isSmall
@@ -99,36 +109,13 @@ export default function ProductsTable({ products }) {
           </tbody>
         </table>
       </div>
+
       <Modal
         showModal={showModal}
-        title="Add Product"
-        closeModal={() => handleCloseModal()}
+        title="Add User"
+        closeModal={handleCloseModal}
       >
-        <form className="flex flex-col gap-3">
-          <Input
-            type="text"
-            placeholder="Product Name"
-            name="productName"
-            autoFocus
-          />
-          <select className="w-full rounded-lg border border-primary/50 bg-inherit px-1 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:focus:ring-primary">
-            <option value="" className="text-light-gray">
-              Select Category
-            </option>
-            {categories.categories.map((category, index) => (
-              <option key={index} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          <Input type="text" placeholder="Price" name="price" />
-          <Button
-            isButton
-            isPrimary
-            title="Add Product"
-            // onClick={handleShowModal}
-          />
-        </form>
+        <InputUser />
       </Modal>
     </>
   );

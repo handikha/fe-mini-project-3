@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "../../components/Button";
-import Input from "../../components/Input";
 import Modal from "../../components/Modal";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import InputCategory from "./input.category";
 
 export default function CategoriesTable({ categories }) {
   const [showModal, setShowModal] = useState(false);
@@ -83,20 +83,7 @@ export default function CategoriesTable({ categories }) {
         title="Add Category"
         closeModal={handleCloseModal}
       >
-        <form className="flex flex-col gap-3">
-          <Input
-            type="text"
-            placeholder="Category Name"
-            name="category"
-            autoFocus
-          />
-          <Button
-            isButton
-            isPrimary
-            title="Add Category"
-            // onClick={handleShowModal}
-          />
-        </form>
+        <InputCategory />
       </Modal>
     </>
   );

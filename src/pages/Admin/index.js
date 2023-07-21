@@ -4,9 +4,10 @@ import categories from "../../json/categories.json";
 import { useParams } from "react-router-dom";
 
 import ProfileCard from "./profile.card";
-import ProductsTable from "./products.table";
-import UsersTable from "./users.table";
-import CategoriesTable from "./categories.table";
+import ProductsTable from "./table.products";
+import UsersTable from "./table.users";
+import CategoriesTable from "./table.categories";
+import Dashboard from "./dashboard";
 
 export default function Admin({ user }) {
   const isVerified = false;
@@ -25,8 +26,8 @@ export default function Admin({ user }) {
           />
 
           <div className="col-span-full md:col-span-3">
-            {!context && <ProductsTable products={products} />}
-
+            {!context && <Dashboard products={products} />}
+            {context === "products" && <ProductsTable products={products} />}
             {context === "users" && <UsersTable users={users} />}
             {context === "categories" && (
               <CategoriesTable categories={categories.categories} />

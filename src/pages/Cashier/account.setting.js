@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import ChangeImage from "../../components/ChangeImage";
 
 export default function CashierAccountSetting({ user }) {
   const { context } = useParams();
@@ -8,6 +9,12 @@ export default function CashierAccountSetting({ user }) {
     {
       title: "Password",
       path: "/cashier/account-setting/password",
+      context: "password",
+    },
+    {
+      title: "Change Image",
+      path: "/cashier/account-setting/change-image",
+      context: "change-image",
     },
   ];
   return (
@@ -19,9 +26,7 @@ export default function CashierAccountSetting({ user }) {
             title={setting.title}
             path={setting.path}
             className={`${
-              context === setting.title.toLocaleLowerCase()
-                ? "font-semibold text-primary"
-                : null
+              context === setting.context ? "font-semibold text-primary" : null
             } duration-300 hover:text-primary`}
             isLink
           />
@@ -32,7 +37,7 @@ export default function CashierAccountSetting({ user }) {
         <h3 className="title">Account Setting</h3>
 
         {context === "password" && (
-          <>
+          <form className="flex flex-col gap-3">
             <Input
               placeholder="Current Password"
               id="currentPassword"
@@ -55,9 +60,16 @@ export default function CashierAccountSetting({ user }) {
               title="Change Password"
               isButton
               isPrimary
-              className="mt-4"
+              isBLock
+              className="mt-1"
             />
-          </>
+          </form>
+        )}
+
+        {context === "change-image" && (
+          <form>
+            <ChangeImage />
+          </form>
         )}
       </div>
     </div>
