@@ -8,7 +8,24 @@ import InputCategory from "./input.category";
 
 export default function CategoriesTable() {
   const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const handleShowModal = (action, id) => {
+    if (action === "Add") setShowModal({ show: true, type: action });
+
+    if (action === "Edit") {
+      const categoryData = categories.categories.find((item) => item.id === id);
+      setSelectedCategory(categoryData);
+      setShowModal({ show: true, type: action, id });
+    }
+
+    if (action === "Delete") {
+      const categoryData = categories.categories.find((item) => item.id === id);
+      setSelectedCategory(categoryData);
+      setShowModal({ show: true, type: action, id });
+    }
+  };
+
   const handleCloseModal = () => setShowModal(false);
 
   return (
@@ -19,7 +36,7 @@ export default function CategoriesTable() {
           isButton
           isPrimary
           className=" flex items-center gap-2"
-          onClick={handleShowModal}
+          onClick={() => handleShowModal("Add")}
         >
           <FaPlus /> Add Category
         </Button>
@@ -44,8 +61,7 @@ export default function CategoriesTable() {
             {categories.categories.map((item, index) => (
               <tr
                 key={index}
-                className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => window.alert(`DETAILS Category id: ${item.id}`)}
+                className="duration-300 odd:bg-slate-200/70 even:bg-slate-100 dark:odd:bg-slate-700 dark:even:bg-slate-800"
               >
                 <th
                   scope="row"
@@ -58,18 +74,14 @@ export default function CategoriesTable() {
                   <Button
                     isSmall
                     isWarning
-                    onClick={() => {
-                      window.alert(`EDIT Category id : ${item.id}`);
-                    }}
+                    onClick={() => handleShowModal("Edit", item.id)}
                   >
                     <HiOutlinePencilSquare className="text-lg" />
                   </Button>
                   <Button isSmall isDanger>
                     <HiOutlineTrash
                       className="text-lg"
-                      onClick={() => {
-                        window.alert(`DELETE Category id : ${item.id}`);
-                      }}
+                      onClick={() => handleShowModal("Delete", item.id)}
                     />
                   </Button>
                 </td>
@@ -79,13 +91,33 @@ export default function CategoriesTable() {
         </table>
       </div>
 
-      <Modal
-        showModal={showModal}
-        title="Add Category"
-        closeModal={handleCloseModal}
-      >
-        <InputCategory />
-      </Modal>
+      {showModal.show && showModal.type === "Add" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Category`}
+          closeModal={() => handleCloseModal()}
+        >
+          <InputCategory />
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Edit" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Category ${showModal.id}`}
+          closeModal={() => handleCloseModal()}
+        >
+          <InputCategory categoryData={selectedCategory} />
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Delete" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Category ${showModal.id}`}
+          closeModal={() => handleCloseModal()}
+        ></Modal>
+      )}
     </>
   );
 }
