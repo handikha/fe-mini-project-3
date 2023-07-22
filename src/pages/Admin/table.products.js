@@ -10,7 +10,6 @@ import InputProduct from "./input.product";
 export default function ProductsTable() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  console.log(selectedProduct);
 
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
@@ -33,6 +32,7 @@ export default function ProductsTable() {
       setShowModal({ show: true, type: action, id });
     }
   };
+
   const handleCloseModal = () => setShowModal(false);
   return (
     <>
@@ -79,7 +79,6 @@ export default function ProductsTable() {
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
                 onClick={() => handleShowModal("Details", item.id)}
 
-                // onClick={() => window.alert(`DETAILS Product id: ${item.id}`)}
               >
                 <th
                   scope="row"

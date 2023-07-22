@@ -9,8 +9,6 @@ export default function InputProduct({ productData }) {
   const priceRef = useRef(null);
   const categoryRef = useRef(null);
 
-  const [productDataImage, setProductDataImage] = useState(null);
-
   // Set nilai awal input form berdasarkan data productData
   useEffect(() => {
     if (productData) {
@@ -18,9 +16,9 @@ export default function InputProduct({ productData }) {
       priceRef.current.value = productData.price || "";
       categoryRef.current.value = productData.category.id || "";
     }
-    setProductDataImage(productData.image);
   }, [productData]);
 
+  const [productDataImage, setProductDataImage] = useState(null);
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -43,7 +41,16 @@ export default function InputProduct({ productData }) {
   const removeImage = () => {
     setFile(null);
     setPreviewImage(null);
-    setProductDataImage(null);
+
+    const updatedProductData = { ...productData };
+    delete updatedProductData?.image;
+
+    onUpdateProductData(updatedProductData);
+  };
+
+  const onUpdateProductData = (data) => {
+    // Lakukan sesuatu dengan data produk terbaru (misalnya, kirim ke API atau simpan dalam state induk)
+    console.log("Updated Product Data:", data);
   };
 
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
@@ -120,10 +127,10 @@ export default function InputProduct({ productData }) {
         >
           <input {...getInputProps({ name: "image" })} />
 
-          {previewImage || productDataImage ? (
+          {previewImage || productData?.image ? (
             <img
               alt=""
-              src={previewImage || productDataImage}
+              src={previewImage || productData?.image}
               className="w-64"
             />
           ) : (
@@ -139,7 +146,7 @@ export default function InputProduct({ productData }) {
           )}
         </div>
 
-        {file === null && !productDataImage ? (
+        {file === null && !productData?.image ? (
           <>
             <p className="text-md mb-2 mt-2 text-center font-normal text-slate-400">
               Or
