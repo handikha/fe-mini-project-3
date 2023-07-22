@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2";
 
 const Input = React.forwardRef(
-  ({ value, type, name, id, placeholder, autoFocus }, ref) => {
+  ({ value, type, name, id, placeholder, autoFocus, onChange }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     // const handleKeyDown = (event) => {
@@ -16,7 +16,7 @@ const Input = React.forwardRef(
 
     if (type === "password") {
       return (
-        <div className="relative">
+        <div className='relative'>
           <input
             ref={ref}
             type={showPassword ? "text" : "password"}
@@ -25,15 +25,17 @@ const Input = React.forwardRef(
             id={id}
             placeholder={placeholder}
             autoFocus={autoFocus}
+            value={value}
+            onChange={onChange}
           />
           <span
-            className="absolute bottom-1/2 right-2 flex aspect-square h-1/2 translate-y-1/2 cursor-pointer select-none items-center justify-center"
+            className='absolute bottom-1/2 right-2 flex aspect-square h-1/2 translate-y-1/2 cursor-pointer select-none items-center justify-center'
             onClick={() => setShowPassword((prevState) => !prevState)}
           >
             {showPassword ? (
-              <HiOutlineEye className="text-xl" />
+              <HiOutlineEye className='text-xl' />
             ) : (
-              <HiOutlineEyeSlash className="text-xl" />
+              <HiOutlineEyeSlash className='text-xl' />
             )}
           </span>
         </div>
@@ -41,7 +43,7 @@ const Input = React.forwardRef(
     }
 
     return (
-      <div className="">
+      <div className=''>
         <input
           ref={ref}
           value={value}
@@ -51,6 +53,7 @@ const Input = React.forwardRef(
           id={id}
           placeholder={placeholder}
           autoFocus={autoFocus}
+          onChange={onChange}
         />
       </div>
     );
