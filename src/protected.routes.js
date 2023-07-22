@@ -7,5 +7,5 @@ export default function ProtectedRoute({ children }) {
       id: state.auth.id,
     };
   });
-  return id ? children : <Navigate to="/login" replace />;
+  return id ? children : <Navigate to="/" replace />;
 }
