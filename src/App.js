@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Cashier from "./pages/Cashier";
@@ -12,13 +13,20 @@ import { keepLogin } from "./store/slices/auth/slices";
 import { useSelector, useDispatch } from "react-redux";
 
 function App() {
-  const user = users.find((user) => user.id === 1);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.auth;
+  });
 
   const location = useLocation();
 
   const shouldRenderNavbar = () => {
     return location.pathname !== "/";
   };
+
+  useEffect(() => {
+    dispatch(keepLogin());
+  }, []);
 
   return (
     <>

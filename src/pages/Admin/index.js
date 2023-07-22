@@ -12,12 +12,9 @@ export default function Admin({ user }) {
   const navigate = useNavigate();
   const { context } = useParams();
 
-  const allowedContexts = ["products", "users", "categories"];
-  useEffect(() => {
-    if (!allowedContexts.includes(context)) {
-      navigate("/admin");
-    }
-  }, [context, navigate]);
+  if (!user.role) {
+    return navigate("/");
+  }
 
   return (
     <>
