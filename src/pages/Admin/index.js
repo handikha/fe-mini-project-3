@@ -12,8 +12,8 @@ export default function Admin({ user }) {
 
   return (
     <>
-      <div className="container px-10 py-24">
-        <div className="grid grid-cols-4 gap-10">
+      <div className='container px-10 py-24'>
+        <div className='grid grid-cols-4 gap-10'>
           <ProfileCard
             username={user.username}
             fullName={user.fullName}
@@ -22,7 +22,7 @@ export default function Admin({ user }) {
             context={context}
           />
 
-          <div className="col-span-full md:col-span-3">
+          <div className='col-span-full md:col-span-3'>
             {!context && <Dashboard />}
             {context === "products" && <ProductsTable />}
             {context === "users" && <UsersTable />}
