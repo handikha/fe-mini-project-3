@@ -1,13 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useDropzone } from "react-dropzone";
 
-export default function InputUser() {
+export default function InputUser({ userData }) {
   const usernameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
   const fullNameRef = useRef(null);
+
+  const [userDataImage, setUserDataImage] = useState(null);
+
+  // Set nilai awal input form berdasarkan data userData
+  useEffect(() => {
+    if (userData) {
+      usernameRef.current.value = userData.username || "";
+      emailRef.current.value = userData.email || "";
+      phoneRef.current.value = userData.phone || "";
+      fullNameRef.current.value = userData.fullName || "";
+    }
+    setUserDataImage(userData.profileImg);
+  }, [userData]);
 
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -31,6 +44,7 @@ export default function InputUser() {
   const removeImage = () => {
     setFile(null);
     setPreviewImage(null);
+    setUserDataImage(null);
   };
 
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
@@ -44,7 +58,7 @@ export default function InputUser() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Data pengguna (JSON)
+    // Data user (JSON)
     const userData = {
       username: usernameRef.current?.value,
       email: emailRef.current?.value,
@@ -101,8 +115,8 @@ export default function InputUser() {
         >
           <input {...getInputProps({ name: "image" })} />
 
-          {previewImage ? (
-            <img alt="" src={previewImage} className="w-64" />
+          {previewImage || userDataImage ? (
+            <img alt="" src={previewImage || userDataImage} className="w-64" />
           ) : (
             <>
               <p className="md:text-md text-center text-sm text-slate-400">
@@ -116,7 +130,7 @@ export default function InputUser() {
           )}
         </div>
 
-        {file === null ? (
+        {file === null && !userDataImage ? (
           <>
             <p className="text-md mb-2 mt-2 text-center font-normal text-slate-400">
               Or
@@ -140,26 +154,29 @@ export default function InputUser() {
               isSecondary
               className="mt-2"
             />
-
-            {/* <Button
-            onClick={onButtonUpload}
-            title="Upload Image"
-            isSmall
-            isPrimary
-            className="mt-2"
-          /> */}
           </div>
         )}
       </div>
 
-      <Button
-        isButton
-        isPrimary
-        title="Add User"
-        className="mt-4"
-        type="submit"
-        // onClick={handleShowModal}
-      />
+      {userData ? (
+        <Button
+          isButton
+          isPrimary
+          title="Edit User"
+          className="mt-4"
+          type="submit"
+          // onClick={handleShowModal}
+        />
+      ) : (
+        <Button
+          isButton
+          isPrimary
+          title="Add User"
+          className="mt-4"
+          type="submit"
+          // onClick={handleShowModal}
+        />
+      )}
     </form>
   );
 }

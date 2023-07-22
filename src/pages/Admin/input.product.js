@@ -163,14 +163,6 @@ export default function InputProduct({ productData }) {
               isSecondary
               className="mt-2"
             />
-
-            {/* <Button
-            onClick={onButtonUpload}
-            title="Upload Image"
-            isSmall
-            isPrimary
-            className="mt-2"
-          /> */}
           </div>
         )}
       </div>

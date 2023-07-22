@@ -22,6 +22,7 @@ function App() {
 
       <Routes>
         <Route exact path="/" element={<Login />} />
+
         {user?.role === 1 && (
           <>
             <Route path="/admin" element={<Admin user={user} />} />

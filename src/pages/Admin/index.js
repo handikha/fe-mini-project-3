@@ -1,14 +1,23 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ProfileCard from "./profile.card";
 import ProductsTable from "./table.products";
 import UsersTable from "./table.users";
 import CategoriesTable from "./table.categories";
 import Dashboard from "./dashboard";
+import { useEffect } from "react";
 
 export default function Admin({ user }) {
   const isVerified = false;
+  const navigate = useNavigate();
   const { context } = useParams();
+
+  const allowedContexts = ["products", "users", "categories"];
+  useEffect(() => {
+    if (!allowedContexts.includes(context)) {
+      navigate("/admin");
+    }
+  }, [context, navigate]);
 
   return (
     <>
