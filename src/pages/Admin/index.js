@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import ProfileCard from "./profile.card";
 import ProductsTable from "./table.products";
@@ -7,8 +8,13 @@ import CategoriesTable from "./table.categories";
 import Dashboard from "./dashboard";
 
 export default function Admin({ user }) {
+  const navigate = useNavigate();
   const isVerified = false;
   const { context } = useParams();
+
+  if (!user.role) {
+    return navigate("/");
+  }
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
@@ -11,10 +11,11 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { loading, role } = useSelector((state) => {
+  const { loading, role, username } = useSelector((state) => {
     return {
       loading: state.auth.isLoginLoading,
       role: state.auth.role,
+      username: state.auth.username,
     };
   });
 
@@ -39,7 +40,6 @@ export default function Login() {
         dispatch(login(validatedValues))
           .then(() => {
             // Handle successful login, e.g., redirect to home page
-            navigate("/admin");
           })
           .catch((error) => {
             // Handle login errors, e.g., show error message
@@ -60,6 +60,7 @@ export default function Login() {
         );
         setErrors(errorMessages);
         setIsSubmitting(false);
+        console.log(username);
       });
   };
 
@@ -67,6 +68,14 @@ export default function Login() {
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  if (role === 1) {
+    return navigate("/admin");
+  }
+
+  if (role === 2) {
+    return navigate("/cashier");
+  }
 
   return (
     <div className='flex h-screen w-full items-center justify-center bg-slate-300/60'>
