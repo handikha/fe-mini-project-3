@@ -15,13 +15,26 @@ export const getCategories = createAsyncThunk(
   }
 );
 
+export const deleteCategory = createAsyncThunk(
+  "categories/deleteCategory",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const {response} = await api.delete("/categories" + encodeURI(payload));
+      return response.message
+    } catch (error) {
+      Toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data.err);
+    }
+  }
+);
+
 export const createCategory = createAsyncThunk(
   "categories/createCategory",
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await api.post("/categories", payload);
       Toast.success("Success create category");
-      return data.message;
+      return data;
     } catch (error) {
       // console.error(error);
       Toast.error(error.response.data);

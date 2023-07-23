@@ -52,7 +52,7 @@ export default function Button(props) {
       disabled={props.isLoading}
     >
       {props.isLoading ? (
-        <div className="block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent">
+        <div className="mx-auto block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent">
           <span className="sr-only">Loading...</span>
         </div>
       ) : props.title ? (

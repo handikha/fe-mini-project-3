@@ -6,6 +6,7 @@ import Modal from "../../components/Modal";
 import InputCategory from "./input.category";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "../../store/slices/categories/slices";
+import { AnimatePresence } from "framer-motion";
 
 export default function CategoriesTable() {
   const dispatch = useDispatch();
@@ -18,17 +19,19 @@ export default function CategoriesTable() {
     };
   });
 
+  console.log(categories);
+
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
 
     if (action === "Edit") {
-      const categoryData = categories.categories.find((item) => item.id === id);
+      const categoryData = categories.find((item) => item.id === id);
       setSelectedCategory(categoryData);
       setShowModal({ show: true, type: action, id });
     }
 
     if (action === "Delete") {
-      const categoryData = categories.categories.find((item) => item.id === id);
+      const categoryData = categories.find((item) => item.id === id);
       setSelectedCategory(categoryData);
       setShowModal({ show: true, type: action, id });
     }
@@ -126,9 +129,24 @@ export default function CategoriesTable() {
       {showModal.show && showModal.type === "Delete" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Category ${showModal.id}`}
+          title={`${showModal.type} Category`}
           closeModal={() => handleCloseModal()}
-        ></Modal>
+        >
+          <p className="text-base">
+            Are you sure to delete{" "}
+            <span className="font-bold">{selectedCategory.name}</span>?
+          </p>
+
+          <div className="mt-4 flex justify-end gap-2">
+            <Button
+              title="No"
+              isButton
+              isSecondary
+              onClick={handleCloseModal}
+            />
+            <Button title="Yes" isButton isDanger />
+          </div>
+        </Modal>
       )}
     </>
   );
