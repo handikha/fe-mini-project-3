@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import Button from "../../../components/Button";
-import UsernameSetting from "./username.setting";
-import EmailSetting from "./email.setting";
+import ChangeImage from "../../../components/ChangeImage";
 import PasswordSetting from "./password.setting";
 import AdminImageSetting from "./image.setting";
 
@@ -9,16 +8,6 @@ export default function AdminAccountSetting({ user }) {
   const { context } = useParams();
 
   const settings = [
-    {
-      title: "Username",
-      path: "/admin/account-setting/username",
-      context: "username",
-    },
-    {
-      title: "Email",
-      path: "/admin/account-setting/email",
-      context: "email",
-    },
     {
       title: "Password",
       path: "/admin/account-setting/password",
@@ -32,8 +21,8 @@ export default function AdminAccountSetting({ user }) {
   ];
 
   return (
-    <div className="container flex justify-center gap-x-10 py-24">
-      <div className="mt-11 flex flex-col items-start gap-3 border-r-2  pr-10">
+    <div className='container flex justify-center gap-x-10 py-24'>
+      <div className='mt-11 flex flex-col items-start gap-3 border-r-2  pr-10'>
         {settings.map((setting, index) => (
           <Button
             key={index}
@@ -47,13 +36,8 @@ export default function AdminAccountSetting({ user }) {
         ))}
       </div>
 
-      <div className="flex w-4/5 flex-col gap-y-3 md:w-1/3">
-        <h3 className="title">Account Setting</h3>
-
-        {context === "username" && <UsernameSetting />}
-
-        {context === "email" && <EmailSetting />}
-
+      <div className='flex w-4/5 flex-col gap-y-3 md:w-1/3'>
+        <h3 className='title'>Account Setting</h3>
         {context === "password" && <PasswordSetting />}
 
         {context === "change-image" && <AdminImageSetting />}
