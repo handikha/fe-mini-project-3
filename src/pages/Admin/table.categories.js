@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
-import categories from "../../json/categories.json";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import InputCategory from "./input.category";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategories } from "../../store/slices/categories/slices";
 
 export default function CategoriesTable() {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const { categories } = useSelector((state) => {
+    return {
+      categories: state.categories.data,
+    };
+  });
 
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
@@ -27,6 +35,10 @@ export default function CategoriesTable() {
   };
 
   const handleCloseModal = () => setShowModal(false);
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
 
   return (
     <>
@@ -58,7 +70,7 @@ export default function CategoriesTable() {
             </tr>
           </thead>
           <tbody>
-            {categories.categories.map((item, index) => (
+            {categories.map((item, index) => (
               <tr
                 key={index}
                 className="duration-300 odd:bg-slate-200/70 even:bg-slate-100 dark:odd:bg-slate-700 dark:even:bg-slate-800"
