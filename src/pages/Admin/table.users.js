@@ -8,7 +8,29 @@ import InputUser from "./input.user";
 
 export default function UsersTable() {
   const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleShowModal = (action, id) => {
+    if (action === "Add") setShowModal({ show: true, type: action });
+
+    if (action === "Details") {
+      const userData = users.find((item) => item.id === id);
+      setSelectedUser(userData);
+      setShowModal({ show: true, type: action, id });
+    }
+
+    if (action === "Edit") {
+      const userData = users.find((item) => item.id === id);
+      setSelectedUser(userData);
+      setShowModal({ show: true, type: action, id });
+    }
+
+    if (action === "Delete") {
+      const userData = users.find((item) => item.id === id);
+      setSelectedUser(userData);
+      setShowModal({ show: true, type: action, id });
+    }
+  };
   const handleCloseModal = () => setShowModal(false);
 
   return (
@@ -19,7 +41,7 @@ export default function UsersTable() {
           isButton
           isPrimary
           className=" flex items-center gap-2"
-          onClick={handleShowModal}
+          onClick={() => handleShowModal("Add")}
         >
           <FaPlus /> Add User
         </Button>
@@ -63,7 +85,7 @@ export default function UsersTable() {
               <tr
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => window.alert(`DETAILS User id: ${item.id}`)}
+                onClick={() => handleShowModal("Details", item.id)}
               >
                 <th
                   scope="row"
@@ -90,18 +112,14 @@ export default function UsersTable() {
                   <Button
                     isSmall
                     isWarning
-                    onClick={() => {
-                      window.alert(`EDIT User id : ${item.id}`);
-                    }}
+                    onClick={() => handleShowModal("Edit", item.id)}
                   >
                     <HiOutlinePencilSquare className="text-lg" />
                   </Button>
                   <Button isSmall isDanger>
                     <HiOutlineTrash
                       className="text-lg"
-                      onClick={() => {
-                        window.alert(`DELETE User id : ${item.id}`);
-                      }}
+                      onClick={() => handleShowModal("Delete", item.id)}
                     />
                   </Button>
                 </td>
@@ -111,13 +129,41 @@ export default function UsersTable() {
         </table>
       </div>
 
-      <Modal
-        showModal={showModal}
-        title="Add User"
-        closeModal={handleCloseModal}
-      >
-        <InputUser />
-      </Modal>
+      {showModal.show && showModal.type === "Add" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} User`}
+          closeModal={() => handleCloseModal()}
+        >
+          <InputUser />
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Details" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} User ${showModal.id}`}
+          closeModal={() => handleCloseModal()}
+        ></Modal>
+      )}
+
+      {showModal.show && showModal.type === "Edit" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} User ${showModal.id}`}
+          closeModal={() => handleCloseModal()}
+        >
+          <InputUser userData={selectedUser} />
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Delete" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} User ${showModal.id}`}
+          closeModal={() => handleCloseModal()}
+        ></Modal>
+      )}
     </>
   );
 }

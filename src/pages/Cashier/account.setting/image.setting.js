@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import bgimage from "../../assets/image.svg";
-import Button from "../Button";
+import bgimage from "../../../assets/image.svg";
+import Button from "../../../components/Button";
 // import { updateImageProfile } from "../../store/slices/auth/slices";
 // import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 
-export default function ChangeImage() {
+export default function ImageSetting() {
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
   // const { isUploadImageLoading, imgProfile } = useSelector((state) => {

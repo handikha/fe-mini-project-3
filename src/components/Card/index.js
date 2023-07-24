@@ -20,7 +20,7 @@ function Card({ name, image, category, onClick, price }) {
       <div className="">
         <h3 className="card-title">{name}</h3>
         <p>{category}</p>
-      </div>
+      </div>  
 
       {/* TODO: ADD QUANTITY */}
       <div className="mt-auto flex flex-col items-center justify-between gap-1 text-sm text-light-gray lg:flex-row">
