@@ -8,21 +8,18 @@ import Dashboard from "./dashboard";
 import { useEffect } from "react";
 
 export default function Admin({ user }) {
-  const isVerified = false;
   const navigate = useNavigate();
+  const isVerified = false;
   const { context } = useParams();
 
-  const allowedContexts = ["products", "users", "categories"];
-  useEffect(() => {
-    if (!allowedContexts.includes(context)) {
-      navigate("/admin");
-    }
-  }, [context, navigate]);
+  if (!user.role) {
+    return navigate("/");
+  }
 
   return (
     <>
-      <div className="container px-10 py-24">
-        <div className="grid grid-cols-4 gap-10">
+      <div className='container px-10 py-24'>
+        <div className='grid grid-cols-4 gap-10'>
           <ProfileCard
             username={user.username}
             fullName={user.fullName}
@@ -31,7 +28,7 @@ export default function Admin({ user }) {
             context={context}
           />
 
-          <div className="col-span-full md:col-span-3">
+          <div className='col-span-full md:col-span-3'>
             {!context && <Dashboard />}
             {context === "products" && <ProductsTable />}
             {context === "users" && <UsersTable />}

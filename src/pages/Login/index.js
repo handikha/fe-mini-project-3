@@ -1,65 +1,139 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
+import { login } from "../../store/slices/auth/slices";
+import { loginValidationSchema } from "../../store/slices/auth/validation";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { loading, role, username } = useSelector((state) => {
+    return {
+      loading: state.auth.isLoginLoading,
+      role: state.auth.role,
+      username: state.auth.username,
+    };
+  });
+
+  const [values, setValues] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    setErrors({}); // Reset errors
+
+    // Validate the input using loginValidationSchema
+    loginValidationSchema
+      .validate(values, { abortEarly: false })
+      .then((validatedValues) => {
+        // If validation succeeds, dispatch the login action
+        dispatch(login(validatedValues))
+          .then(() => {
+            // Handle successful login, e.g., redirect to home page
+          })
+          .catch((error) => {
+            // Handle login errors, e.g., show error message
+            setErrors({ message: error.message }); // Set general error message
+          })
+          .finally(() => {
+            setIsSubmitting(false);
+          });
+      })
+      .catch((validationErrors) => {
+        // If validation fails, set the error messages in the state separately
+        const errorMessages = validationErrors.inner.reduce(
+          (acc, currentError) => {
+            acc[currentError.path] = currentError.message;
+            return acc;
+          },
+          {}
+        );
+        setErrors(errorMessages);
+        setIsSubmitting(false);
+        console.log(username);
+      });
+  };
+
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+  if (role === 1) {
+    return navigate("/admin");
+  }
+
+  if (role === 2) {
+    return navigate("/cashier");
+  }
+
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-slate-300/60">
-      <div className="flex h-2/3 w-4/5 overflow-hidden rounded-xl shadow-md sm:w-1/2 lg:w-1/2">
-        <div className="relative hidden w-full overflow-hidden bg-primary lg:block">
+    <div className='flex h-screen w-full items-center justify-center bg-slate-300/60'>
+      <div className='flex h-2/3 w-4/5 overflow-hidden rounded-xl shadow-md sm:w-1/2 lg:w-1/2'>
+        <div className='relative hidden w-full overflow-hidden bg-primary lg:block'>
           <img
-            src="https://source.unsplash.com/400x600?food"
-            className="h-full w-full object-cover"
-            alt=""
+            src='https://source.unsplash.com/400x600?food'
+            className='h-full w-full object-cover'
+            alt=''
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-6 text-white">
-            <h4 className="text-2xl font-medium">Welcome Back!</h4>
-            <p className="mt-4 text-center">
+          <div className='absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-6 text-white'>
+            <h4 className='text-2xl font-medium'>Welcome Back!</h4>
+            <p className='mt-4 text-center'>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
               laboriosam.
             </p>
           </div>
         </div>
-        <div className="flex w-full flex-col items-center justify-center bg-slate-200 px-6 py-8">
-          <h3 className="text-dark mb-4 text-center text-xl font-bold tracking-tight">
+        <div className='flex w-full flex-col items-center justify-center bg-slate-200 px-6 py-8'>
+          <h3 className='text-dark mb-4 text-center text-xl font-bold tracking-tight'>
             Login
           </h3>
 
-          <form className="flex w-full flex-col gap-2 text-sm">
+          <form className='flex w-full flex-col gap-2 text-sm'>
             <Input
               required
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              autoFocus
+              type='text'
+              id='username'
+              name='username'
+              placeholder='Username'
+              value={values.username}
+              onChange={handleChange}
             />
+            {errors.username && <span>{errors.username}</span>}
 
             <Input
               required
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
+              type='password'
+              id='password'
+              name='password'
+              placeholder='Password'
+              value={values.password}
+              onChange={handleChange}
             />
+            {errors.password && <span>{errors.password}</span>}
 
             <Button
               isButton
               isPrimary
-              title="Login"
-              className=" mt-4 w-full select-none shadow-md"
-              type="button"
+              title='Login'
+              className=' mt-4 w-full select-none shadow-md'
+              onClick={handleSubmit}
+              type='button'
             />
 
             <Button
-              title="Forgot Password"
-              className="h-4 cursor-pointer text-sm font-medium text-primary  hover:underline"
+              title='Forgot Password'
+              className='h-4 cursor-pointer text-sm font-medium text-primary  hover:underline'
               onClick={handleShowModal}
             />
           </form>
@@ -68,14 +142,14 @@ export default function Login() {
       <Modal
         showModal={showModal}
         closeModal={handleCloseModal}
-        title="Forgot Password"
+        title='Forgot Password'
       >
-        <div className="">
+        <div className=''>
           <Input
-            type="email"
-            placeholder="Insert your email"
-            id="email"
-            name="email"
+            type='email'
+            placeholder='Insert your email'
+            id='email'
+            name='email'
             autoFocus
           />
 
@@ -83,8 +157,8 @@ export default function Login() {
             isButton
             isPrimary
             isBLock
-            className="mt-4"
-            title="Reset Password"
+            className='mt-4'
+            title='Reset Password'
             onClick={handleShowModal}
           />
         </div>
