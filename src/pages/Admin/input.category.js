@@ -1,9 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import { inputCategorySchema } from "../../store/slices/categories/validation";
+import {
+  createCategory,
+  updateCategory,
+} from "../../store/slices/categories/slices";
+import { useDispatch, useSelector } from "react-redux";
+import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
 
 export default function InputCategory({ categoryData }) {
+  const dispatch = useDispatch();
+
+  const { isSubmitCategoryLoading } = useSelector((state) => {
+    return {
+      isSubmitCategoryLoading: state.categories.isSubmitCategoryLoading,
+    };
+  });
   const categoryNameRef = useRef(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (categoryData) {
@@ -11,9 +26,31 @@ export default function InputCategory({ categoryData }) {
     }
   }, [categoryData]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(categoryNameRef.current.value);
+    const inputValue = capitalizeEachWords(categoryNameRef.current.value);
+
+    try {
+      await inputCategorySchema.validate({ category: inputValue });
+      setError("");
+
+      if (!categoryData) {
+        dispatch(
+          createCategory({
+            name: inputValue,
+          })
+        );
+      } else {
+        dispatch(
+          updateCategory({
+            id: categoryData.id,
+            name: inputValue,
+          })
+        );
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -22,14 +59,19 @@ export default function InputCategory({ categoryData }) {
         ref={categoryNameRef}
         type="text"
         placeholder="Category Name"
+        id="category"
         name="category"
+        label="Category Name"
         autoFocus
       />
+      {error && <div className="text-red-500">{error}</div>}
+
       <Button
         isButton
         isPrimary
-        title="Add Category"
+        title={categoryData ? "Edit Category" : "Add Category"}
         type="submit"
+        isLoading={isSubmitCategoryLoading}
         // onClick={handleShowModal}
       />
     </form>

@@ -1,32 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
-import categories from "../../json/categories.json";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import InputCategory from "./input.category";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCategories,
+  deleteCategory,
+  resetSuccessCategory,
+} from "../../store/slices/categories/slices";
+import { Toaster } from "react-hot-toast";
+import { motion } from "framer-motion";
+import SuccessMessage from "../../components/SuccessMessage";
 
 export default function CategoriesTable() {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const {
+    categories,
+    isSubmitCategoryLoading,
+    isDeleteCategoryLoading,
+    success,
+  } = useSelector((state) => {
+    return {
+      categories: state.categories.data,
+      success: state.categories.success,
+      isDeleteCategoryLoading: state.categories.isDeleteCategoryLoading,
+      isSubmitCategoryLoading: state.categories.isSubmitCategoryLoading,
+    };
+  });
 
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
 
     if (action === "Edit") {
-      const categoryData = categories.categories.find((item) => item.id === id);
+      const categoryData = categories.find((item) => item.id === id);
       setSelectedCategory(categoryData);
       setShowModal({ show: true, type: action, id });
     }
 
     if (action === "Delete") {
-      const categoryData = categories.categories.find((item) => item.id === id);
+      const categoryData = categories.find((item) => item.id === id);
       setSelectedCategory(categoryData);
       setShowModal({ show: true, type: action, id });
     }
+
+    document.body.style.overflow = "hidden";
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    document.body.style.overflow = "auto";
+
+    dispatch(resetSuccessCategory());
+  };
+
+  const handleDeleteCategory = (id) => {
+    dispatch(deleteCategory(id));
+  };
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [isSubmitCategoryLoading, isDeleteCategoryLoading]);
 
   return (
     <>
@@ -58,8 +96,20 @@ export default function CategoriesTable() {
             </tr>
           </thead>
           <tbody>
-            {categories.categories.map((item, index) => (
-              <tr
+            {categories.length === 0 && (
+              <tr className="text-center">
+                <td colSpan={3} className="p-3">
+                  No data to display
+                </td>
+              </tr>
+            )}
+            {categories.map((item, index) => (
+              <motion.tr
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.1, delay: index * 0.05 }}
                 key={index}
                 className="duration-300 odd:bg-slate-200/70 even:bg-slate-100 dark:odd:bg-slate-700 dark:even:bg-slate-800"
               >
@@ -85,7 +135,7 @@ export default function CategoriesTable() {
                     />
                   </Button>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
@@ -97,27 +147,68 @@ export default function CategoriesTable() {
           title={`${showModal.type} Category`}
           closeModal={() => handleCloseModal()}
         >
-          <InputCategory />
+          {success ? (
+            <SuccessMessage message="Category created successfully" />
+          ) : (
+            <InputCategory />
+          )}
         </Modal>
       )}
 
       {showModal.show && showModal.type === "Edit" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Category ${showModal.id}`}
+          title={`${showModal.type} Category`}
           closeModal={() => handleCloseModal()}
         >
-          <InputCategory categoryData={selectedCategory} />
+          {success ? (
+            <SuccessMessage message="Category updated successfully" />
+          ) : (
+            <InputCategory categoryData={selectedCategory} />
+          )}
         </Modal>
       )}
 
       {showModal.show && showModal.type === "Delete" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Category ${showModal.id}`}
+          title={`${showModal.type} Category`}
           closeModal={() => handleCloseModal()}
-        ></Modal>
+        >
+          {success ? (
+            <SuccessMessage
+              message={`Category ${selectedCategory.name} deleted successfully`}
+            />
+          ) : (
+            <>
+              <p className="modal-text">
+                Are you sure to delete{" "}
+                <span className="font-bold">{selectedCategory.name}</span>?
+              </p>
+
+              <div className="mt-4 flex justify-end gap-2">
+                {!isDeleteCategoryLoading && (
+                  <Button
+                    title="No"
+                    isButton
+                    isSecondary
+                    onClick={handleCloseModal}
+                  />
+                )}
+                <Button
+                  title="Yes"
+                  isButton
+                  isDanger
+                  isLoading={isDeleteCategoryLoading}
+                  onClick={() => handleDeleteCategory(selectedCategory.id)}
+                />
+              </div>
+            </>
+          )}
+        </Modal>
       )}
+
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }

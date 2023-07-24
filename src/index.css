@@ -14,7 +14,7 @@
   }
 
   h3.title {
-    @apply text-lg font-bold text-title dark:text-title-dark  md:text-xl;
+    @apply text-lg font-bold text-title dark:text-title-dark md:text-xl;
   }
 
   h3.card-title {
@@ -23,6 +23,10 @@
 
   p {
     @apply text-sm dark:text-light-gray;
+  }
+
+  p.modal-text {
+    @apply text-base dark:text-title-dark;
   }
 
   p.cart-title {

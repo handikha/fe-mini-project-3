@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import categories from "../../json/categories.json";
 import { useDropzone } from "react-dropzone";
+import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
 
-export default function InputProduct({ productData }) {
+export default function InputProduct({ productData, categories }) {
   const productNameRef = useRef(null);
   const priceRef = useRef(null);
   const categoryRef = useRef(null);
@@ -16,9 +16,9 @@ export default function InputProduct({ productData }) {
     if (productData) {
       productNameRef.current.value = productData.name || "";
       priceRef.current.value = productData.price || "";
-      categoryRef.current.value = productData.category.id || "";
+      categoryRef.current.value = productData.categoryId || "";
+      setProductDataImage(productData.image);
     }
-    setProductDataImage(productData.image);
   }, [productData]);
 
   const [file, setFile] = useState(null);
@@ -59,7 +59,7 @@ export default function InputProduct({ productData }) {
 
     // Data product (JSON)
     const productData = {
-      productName: productNameRef.current?.value,
+      productName: capitalizeEachWords(productNameRef.current?.value),
       price: priceRef.current?.value,
       categoryId: categoryRef.current?.value,
     };
@@ -86,24 +86,35 @@ export default function InputProduct({ productData }) {
         type="text"
         placeholder="Product Name"
         name="productName"
+        label="Product Name"
+        id="productName"
         autoFocus
       />
 
+      <label htmlFor="categories">Category</label>
       <select
         ref={categoryRef}
-        className="w-full rounded-lg border border-primary/50 bg-inherit px-1 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:focus:ring-primary"
+        id="categories"
+        className="-mt-3 w-full rounded-lg border border-primary/50 bg-inherit px-1 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-slate-800 dark:focus:ring-primary"
       >
         <option value="" className="text-light-gray">
           Select Category
         </option>
-        {categories.categories.map((category, index) => (
+        {categories?.map((category, index) => (
           <option key={index} value={category.id}>
             {category.name}
           </option>
         ))}
       </select>
 
-      <Input ref={priceRef} type="text" placeholder="Price" name="price" />
+      <Input
+        ref={priceRef}
+        type="text"
+        placeholder="Price"
+        name="price"
+        label="Price"
+        id="price"
+      />
 
       {/* INPUT IMAGE */}
       <div className="flex h-fit w-full flex-col items-center justify-center px-4">
@@ -122,7 +133,7 @@ export default function InputProduct({ productData }) {
 
           {previewImage || productDataImage ? (
             <img
-              alt=""
+              alt={`${productData?.name}`}
               src={previewImage || productDataImage}
               className="w-64"
             />

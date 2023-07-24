@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 export default function Button(props) {
   const className = [props.className];
-  props.isButton && className.push("px-8 py-2 rounded-lg ");
+  props.isButton && className.push("px-8 py-2 rounded-lg select-none");
 
-  props.isSmall && className.push("px-2 py-1 rounded-md ");
+  props.isSmall && className.push("px-2 py-1 rounded-md select-none");
 
   props.isPrimary &&
     className.push("bg-primary hover:bg-green-700 text-white duration-300");
@@ -52,7 +52,7 @@ export default function Button(props) {
       disabled={props.isLoading}
     >
       {props.isLoading ? (
-        <div className="block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent">
+        <div className="mx-auto block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent">
           <span className="sr-only">Loading...</span>
         </div>
       ) : props.title ? (
