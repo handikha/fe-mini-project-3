@@ -31,11 +31,11 @@ export default function ProfileCard({
       <div className='top-24 flex flex-col pr-4 md:sticky md:border-r-2 md:border-light dark:md:border-dark-gray'>
         <div className='flex items-center gap-x-6 md:flex-col md:items-start'>
           <div className='h-16 w-16 md:mb-4 md:aspect-square md:h-fit md:w-5/6'>
-            <div className='h-full w-full overflow-hidden'>
+            <div className='overflow-hidden rounded-full'>
               <img
                 src={profileImg}
                 alt=''
-                className='h-full w-full rounded-full object-cover'
+                className='h-full w-full object-cover'
               />
             </div>
           </div>

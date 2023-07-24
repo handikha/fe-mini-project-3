@@ -194,7 +194,7 @@ export default function NavMenu({
                     isLink
                     path={
                       user?.role === 1
-                        ? "/admin/account-setting/password"
+                        ? "/admin/account-setting/username"
                         : "/cashier/account-setting/password"
                     }
                   >
