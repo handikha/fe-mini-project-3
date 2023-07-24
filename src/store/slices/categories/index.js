@@ -1,16 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createCategory, deleteCategory, getCategories } from "./slices";
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from "./slices";
 
 const INITIAL_STATE = {
   data: [],
   message: null,
+  success: false,
   isGetCategoriesLoading: false,
-  isCreateCategoryLoading: false,
+  isSubmitCategoryLoading: false,
+  isDeleteCategoryLoading: false,
 };
 
 const categoriesSlice = createSlice({
   name: "categories",
   initialState: INITIAL_STATE,
+  reducers: {
+    resetSuccessCategory: (state, action) => {
+      state.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCategories.pending, (state, action) => {
@@ -25,25 +37,40 @@ const categoriesSlice = createSlice({
       })
 
       .addCase(createCategory.pending, (state, action) => {
-        state.isCreateCategoryLoading = true;
+        state.isSubmitCategoryLoading = true;
       })
       .addCase(createCategory.fulfilled, (state, action) => {
-        state.isCreateCategoryLoading = false;
+        state.isSubmitCategoryLoading = false;
         state.message = action.payload.message;
+        state.success = true;
       })
       .addCase(createCategory.rejected, (state, action) => {
-        state.isCreateCategoryLoading = false;
+        state.isSubmitCategoryLoading = false;
+        state.message = action.payload;
+      })
+
+      .addCase(updateCategory.pending, (state, action) => {
+        state.isSubmitCategoryLoading = true;
+      })
+      .addCase(updateCategory.fulfilled, (state, action) => {
+        state.isSubmitCategoryLoading = false;
+        state.message = action.payload.message;
+        state.success = true;
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.isSubmitCategoryLoading = false;
+        state.message = action.payload;
       })
 
       .addCase(deleteCategory.pending, (state, action) => {
-        state.isCreateCategoryLoading = true;
+        state.isDeleteCategoryLoading = true;
       })
       .addCase(deleteCategory.fulfilled, (state, action) => {
-        state.isCreateCategoryLoading = false;
-        state.message = action.payload;
+        state.isDeleteCategoryLoading = false;
+        state.success = true;
       })
       .addCase(deleteCategory.rejected, (state, action) => {
-        state.isCreateCategoryLoading = false;
+        state.isDeleteCategoryLoading = false;
       });
   },
 });

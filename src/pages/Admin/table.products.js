@@ -1,39 +1,87 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
-import products from "../../json/products.json";
 import formatNumber from "../../utils/formatNumber";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import InputProduct from "./input.product";
+import {
+  deleteProduct,
+  getProducts,
+  resetSuccessProduct,
+} from "../../store/slices/products/slices";
+import { getCategories } from "../../store/slices/categories/slices";
+import { useDispatch, useSelector } from "react-redux";
+import SuccessMessage from "../../components/SuccessMessage";
+import { motion } from "framer-motion";
 
 export default function ProductsTable() {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const {
+    categories,
+    success,
+    isDeleteProductLoading,
+    isSubmitProductLoading,
+    isGetProductsLoading,
+  } = useSelector((state) => {
+    return {
+      categories: state.categories.data,
+      success: state.products.success,
+      isDeleteProductLoading: state.products.isDeleteProductLoading,
+      isSubmitProductLoading: state.products.isSubmitProductLoading,
+      isGetProductsLoading: state.products.isGetProductsLoading,
+    };
+  });
+
+  const getCategoryByName = (id) => {
+    const category = categories.find((item) => item.id === id);
+    return category?.name;
+  };
+
+  const { products } = useSelector((state) => {
+    return {
+      products: state.products.data,
+    };
+  });
 
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
 
     if (action === "Details") {
-      const productData = products.products.find((item) => item.id === id);
+      const productData = products.find((item) => item.id === id);
       setSelectedProduct(productData);
       setShowModal({ show: true, type: action, id });
     }
 
     if (action === "Edit") {
-      const productData = products.products.find((item) => item.id === id);
+      const productData = products.find((item) => item.id === id);
       setSelectedProduct(productData);
       setShowModal({ show: true, type: action, id });
     }
 
     if (action === "Delete") {
-      const productData = products.products.find((item) => item.id === id);
+      const productData = products.find((item) => item.id === id);
       setSelectedProduct(productData);
       setShowModal({ show: true, type: action, id });
     }
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleDeleteProduct = (id) => {
+    dispatch(deleteProduct(id));
+  };
+
+  useEffect(() => {
+    dispatch(getProducts({ category_id: "", page: 1, sort: "ASC", limit: 9 }));
+    dispatch(getCategories());
+  }, [isDeleteProductLoading, isSubmitProductLoading]);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    dispatch(resetSuccessProduct());
+  };
   return (
     <>
       <div className="col-span-full mb-4 flex justify-between">
@@ -68,13 +116,37 @@ export default function ProductsTable() {
                 Image
               </th>
               <th scope="col" className="p-3">
+                Satus
+              </th>
+              <th scope="col" className="p-3">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {products.products.map((item, index) => (
-              <tr
+            {isGetProductsLoading ? (
+              <tr className="text-center">
+                <td colSpan={6} className="p-3">
+                  Loading...
+                </td>
+              </tr>
+            ) : (
+              products.length === 0 && (
+                <tr className="text-center">
+                  <td colSpan={6} className="p-3">
+                    No data to display
+                  </td>
+                </tr>
+              )
+            )}
+
+            {products?.map((item, index) => (
+              <motion.tr
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.1, delay: index * 0.05 }}
                 key={index}
                 className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
                 onClick={() => handleShowModal("Details", item.id)}
@@ -86,22 +158,26 @@ export default function ProductsTable() {
                   {index + 1}
                 </th>
                 <td className="p-3">{item.name}</td>
-                <td className="p-3">{item.category.name}</td>
+                <td className="p-3">{getCategoryByName(item.categoryId)}</td>
                 <td className="p-3">IDR {formatNumber(item.price)}</td>
                 <td className="p-3">
                   <div className="aspect-[4/3] w-10">
                     <img
                       src={item.image}
-                      alt=""
+                      alt={`${item.name}`}
                       className="h-full w-full object-cover"
                     />
                   </div>
                 </td>
+                <td className="p-3">
+                  {item.status === 1 ? "Active" : "Inactive"}
+                </td>
+
                 <td className="flex gap-2 p-3">
                   <Button
                     isSmall
                     isWarning
-                    onClick={() => handleShowModal("Edit", item.id)}
+                    onClick={() => handleShowModal("Edit", item?.id)}
                   >
                     <HiOutlinePencilSquare className="text-lg" />
                   </Button>
@@ -112,7 +188,7 @@ export default function ProductsTable() {
                     />
                   </Button>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
@@ -123,16 +199,32 @@ export default function ProductsTable() {
           title={`${showModal.type} Product`}
           closeModal={() => handleCloseModal()}
         >
-          <InputProduct />
+          <InputProduct categories={categories} />
         </Modal>
       )}
 
       {showModal.show && showModal.type === "Details" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Product ${showModal.id}`}
+          title={`${showModal.type} Product`}
           closeModal={() => handleCloseModal()}
-        ></Modal>
+        >
+          <div className="flex flex-col">
+            <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
+              <img
+                src={selectedProduct.image}
+                alt={`${selectedProduct.name}`}
+                className="h-full w-full object-cover "
+              />
+            </div>
+            <h3 className="title mt-4">{selectedProduct.name}</h3>
+            <p>{getCategoryByName(selectedProduct.categoryId)}</p>
+            <p className="card-price mt-2">
+              IDR {formatNumber(selectedProduct.price)}
+            </p>
+            <p className="mt-4">{selectedProduct.description}</p>
+          </div>
+        </Modal>
       )}
 
       {showModal.show && showModal.type === "Edit" && (
@@ -141,16 +233,47 @@ export default function ProductsTable() {
           title={`${showModal.type} Product ${showModal.id}`}
           closeModal={() => handleCloseModal()}
         >
-          <InputProduct productData={selectedProduct} />
+          <InputProduct productData={selectedProduct} categories={categories} />
         </Modal>
       )}
 
       {showModal.show && showModal.type === "Delete" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Product ${showModal.id}`}
+          title={`${showModal.type} Product`}
           closeModal={() => handleCloseModal()}
-        ></Modal>
+        >
+          {success ? (
+            <SuccessMessage
+              message={`Product ${selectedProduct.name} deleted successfully`}
+            />
+          ) : (
+            <>
+              <p className="modal-text">
+                Are you sure to delete{" "}
+                <span className="font-bold">{selectedProduct.name}</span>?
+              </p>
+
+              <div className="mt-4 flex justify-end gap-2">
+                {!isDeleteProductLoading && (
+                  <Button
+                    title="No"
+                    isButton
+                    isSecondary
+                    onClick={handleCloseModal}
+                  />
+                )}
+                <Button
+                  title="Yes"
+                  isButton
+                  isDanger
+                  isLoading={isDeleteProductLoading}
+                  onClick={() => handleDeleteProduct(selectedProduct.id)}
+                />
+              </div>
+            </>
+          )}
+        </Modal>
       )}
     </>
   );

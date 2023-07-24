@@ -4,12 +4,18 @@ import { HiXMark } from "react-icons/hi2";
 
 export default function Modal({ showModal, closeModal, children, title }) {
   useEffect(() => {
-    document.addEventListener("keydown", (e) => {
+    const handleEscapeKey = (e) => {
       if (e.key === "Escape") {
         closeModal();
       }
-    });
-  }, [closeModal]);
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [closeModal, showModal]);
 
   return (
     <AnimatePresence>
@@ -33,7 +39,7 @@ export default function Modal({ showModal, closeModal, children, title }) {
             className="fixed inset-0 z-20 m-auto h-fit w-4/5 rounded-lg bg-slate-100 p-6 shadow-lg dark:bg-slate-800 md:w-1/2 lg:w-1/3"
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-xl">{title}</h3>
+              <h3 className="title">{title}</h3>
               <span className="cursor-pointer" onClick={closeModal}>
                 <HiXMark className="text-3xl" />
               </span>
