@@ -10,7 +10,7 @@ const Input = React.forwardRef(
 
     if (type === "password") {
       return (
-        <div className='relative'>
+        <div className="relative">
           <input
             ref={ref}
             type={showPassword ? "text" : "password"}
@@ -23,13 +23,13 @@ const Input = React.forwardRef(
             onChange={onChange}
           />
           <span
-            className='absolute bottom-1/2 right-2 flex aspect-square h-1/2 translate-y-1/2 cursor-pointer select-none items-center justify-center'
+            className="absolute bottom-1/2 right-2 flex aspect-square h-1/2 translate-y-1/2 cursor-pointer select-none items-center justify-center"
             onClick={() => setShowPassword((prevState) => !prevState)}
           >
             {showPassword ? (
-              <HiOutlineEye className='text-xl' />
+              <HiOutlineEye className="text-xl" />
             ) : (
-              <HiOutlineEyeSlash className='text-xl' />
+              <HiOutlineEyeSlash className="text-xl" />
             )}
           </span>
         </div>
@@ -52,7 +52,7 @@ const Input = React.forwardRef(
             onChange={onChange}
           />
         </div>
-      </di>
+      </>
     );
   }
 );
