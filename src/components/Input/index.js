@@ -36,6 +36,28 @@ const Input = React.forwardRef(
       );
     }
 
+    if (type === "textarea") {
+      return (
+        <>
+          <div className="">
+            {label && <label htmlFor={id}>{label}</label>}
+            <textarea
+              ref={ref}
+              value={value}
+              name={name}
+              className={className}
+              id={id}
+              cols="30"
+              rows="5"
+              placeholder={placeholder}
+              autoFocus={autoFocus}
+              onChange={onChange}
+            ></textarea>
+          </div>
+        </>
+      );
+    }
+
     return (
       <>
         <div className="">

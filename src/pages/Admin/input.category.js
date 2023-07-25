@@ -11,14 +11,14 @@ import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
 
 export default function InputCategory({ categoryData }) {
   const dispatch = useDispatch();
+  const categoryNameRef = useRef(null);
+  const [error, setError] = useState("");
 
   const { isSubmitCategoryLoading } = useSelector((state) => {
     return {
       isSubmitCategoryLoading: state.categories.isSubmitCategoryLoading,
     };
   });
-  const categoryNameRef = useRef(null);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     if (categoryData) {
@@ -48,8 +48,8 @@ export default function InputCategory({ categoryData }) {
           })
         );
       }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -64,7 +64,7 @@ export default function InputCategory({ categoryData }) {
         label="Category Name"
         autoFocus
       />
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
 
       <Button
         isButton

@@ -3,20 +3,36 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useDropzone } from "react-dropzone";
 import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createProduct,
+  updateProduct,
+} from "../../store/slices/products/slices";
 
 export default function InputProduct({ productData, categories }) {
-  const productNameRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const nameRef = useRef(null);
   const priceRef = useRef(null);
   const categoryRef = useRef(null);
+  const descriptionRef = useRef(null);
 
   const [productDataImage, setProductDataImage] = useState(null);
+  const [error, setError] = useState("");
+
+  const { isSubmitProductLoading } = useSelector((state) => {
+    return {
+      isSubmitProductLoading: state.products.isSubmitProductLoading,
+    };
+  });
 
   // Set nilai awal input form berdasarkan data productData
   useEffect(() => {
     if (productData) {
-      productNameRef.current.value = productData.name || "";
+      nameRef.current.value = productData.name || "";
       priceRef.current.value = productData.price || "";
       categoryRef.current.value = productData.categoryId || "";
+      descriptionRef.current.value = productData.description || "";
       setProductDataImage(productData.image);
     }
   }, [productData]);
@@ -54,42 +70,43 @@ export default function InputProduct({ productData, categories }) {
     noKeyboard: true,
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Data product (JSON)
-    const productData = {
-      productName: capitalizeEachWords(productNameRef.current?.value),
+    const inputProductData = {
+      name: capitalizeEachWords(nameRef.current?.value),
       price: priceRef.current?.value,
       categoryId: categoryRef.current?.value,
+      description: descriptionRef.current?.value,
     };
 
     const formData = new FormData();
-    formData.append("data", JSON.stringify(productData));
+    formData.append("data", JSON.stringify(inputProductData));
     formData.append("file", file);
 
-    // Tampilkan isi data pada formData
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
-    // Tampilkan informasi file dalam formData
-    console.log("file (Image):", formData.get("file"));
+    if (productData) {
+      dispatch(updateProduct({ id: productData.id, formData }));
+    } else {
+      dispatch(createProduct(formData));
+    }
   };
+
   return (
     <form
       className="flex max-h-[400px] flex-col gap-3 overflow-y-auto px-2 py-2"
       onSubmit={handleSubmit}
     >
       <Input
-        ref={productNameRef}
+        ref={nameRef}
         type="text"
         placeholder="Product Name"
-        name="productName"
+        name="name"
         label="Product Name"
-        id="productName"
+        id="name"
         autoFocus
       />
+      {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
 
       <label htmlFor="categories">Category</label>
       <select
@@ -114,6 +131,14 @@ export default function InputProduct({ productData, categories }) {
         name="price"
         label="Price"
         id="price"
+      />
+
+      <Input
+        ref={descriptionRef}
+        type="textarea"
+        name="description"
+        label="Description"
+        id="description"
       />
 
       {/* INPUT IMAGE */}
@@ -156,14 +181,7 @@ export default function InputProduct({ productData, categories }) {
               Or
             </p>
 
-            <Button
-              onClick={open}
-              title="Choose a file"
-              isSmall
-              isPrimary
-              // isLoading={isUploadImageLoading}
-              // isDisabled={isUploadImageLoading}
-            />
+            <Button onClick={open} title="Choose a file" isSmall isPrimary />
           </>
         ) : (
           <div className="flex gap-2">
@@ -193,7 +211,7 @@ export default function InputProduct({ productData, categories }) {
           title="Add Product"
           className="mt-4"
           type="submit"
-          // onClick={handleShowModal}
+          isLoading={isSubmitProductLoading}
         />
       )}
     </form>

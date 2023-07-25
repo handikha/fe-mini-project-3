@@ -54,7 +54,7 @@ export const deleteCategory = createAsyncThunk(
       // Toast.success("Category deleted successfully");
     } catch (error) {
       // Toast.error(error.response.data.message);
-      return rejectWithValue(error.response.data.err);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

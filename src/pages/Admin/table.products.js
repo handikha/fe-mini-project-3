@@ -9,6 +9,7 @@ import {
   deleteProduct,
   getProducts,
   resetSuccessProduct,
+  updateProduct,
 } from "../../store/slices/products/slices";
 import { getCategories } from "../../store/slices/categories/slices";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,11 +59,18 @@ export default function ProductsTable() {
 
     if (action === "Edit") {
       const productData = products.find((item) => item.id === id);
+
       setSelectedProduct(productData);
       setShowModal({ show: true, type: action, id });
     }
 
     if (action === "Delete") {
+      const productData = products.find((item) => item.id === id);
+      setSelectedProduct(productData);
+      setShowModal({ show: true, type: action, id });
+    }
+
+    if (action === "Change Status") {
       const productData = products.find((item) => item.id === id);
       setSelectedProduct(productData);
       setShowModal({ show: true, type: action, id });
@@ -73,8 +81,18 @@ export default function ProductsTable() {
     dispatch(deleteProduct(id));
   };
 
+  const handleUpdateStatus = (id, status) => {
+    const inputProductData = {
+      status: status(),
+    };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(inputProductData));
+    dispatch(updateProduct({ id, formData }));
+  };
+
   useEffect(() => {
-    dispatch(getProducts({ category_id: "", page: 1, sort: "ASC", limit: 9 }));
+    dispatch(getProducts({ category_id: "", page: 1, sort: "", limit: 9 }));
     dispatch(getCategories());
   }, [isDeleteProductLoading, isSubmitProductLoading]);
 
@@ -100,27 +118,13 @@ export default function ProductsTable() {
         <table className="text-gray-500 dark:text-gray-400 w-full text-left text-sm">
           <thead className="text-gray-700 dark:bg-gray-700 dark:text-gray-400 bg-slate-100 text-sm uppercase dark:bg-slate-800">
             <tr>
-              <th scope="col" className="p-3">
-                #
-              </th>
-              <th scope="col" className="p-3">
-                Product Name
-              </th>
-              <th scope="col" className="p-3">
-                Category
-              </th>
-              <th scope="col" className="p-3">
-                Price
-              </th>
-              <th scope="col" className="p-3">
-                Image
-              </th>
-              <th scope="col" className="p-3">
-                Satus
-              </th>
-              <th scope="col" className="p-3">
-                Actions
-              </th>
+              <th className="p-3">#</th>
+              <th className="p-3">Product Name</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Price</th>
+              <th className="p-3">Image</th>
+              <th className="p-3">Satus</th>
+              <th className="p-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -130,76 +134,100 @@ export default function ProductsTable() {
                   Loading...
                 </td>
               </tr>
+            ) : products.length === 0 ? (
+              <tr className="text-center">
+                <td colSpan={6} className="p-3">
+                  No data to display
+                </td>
+              </tr>
             ) : (
-              products.length === 0 && (
-                <tr className="text-center">
-                  <td colSpan={6} className="p-3">
-                    No data to display
-                  </td>
-                </tr>
-              )
-            )}
-
-            {products?.map((item, index) => (
-              <motion.tr
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.1, delay: index * 0.05 }}
-                key={index}
-                className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
-                onClick={() => handleShowModal("Details", item.id)}
-              >
-                <th
-                  scope="row"
-                  className="text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white"
+              products?.map((item, index) => (
+                <motion.tr
+                  initial={{
+                    opacity: 0,
+                  }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.1, delay: index * 0.05 }}
+                  key={index}
+                  className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/40"
+                  onClick={() => handleShowModal("Details", item.id)}
                 >
-                  {index + 1}
-                </th>
-                <td className="p-3">{item.name}</td>
-                <td className="p-3">{getCategoryByName(item.categoryId)}</td>
-                <td className="p-3">IDR {formatNumber(item.price)}</td>
-                <td className="p-3">
-                  <div className="aspect-[4/3] w-10">
-                    <img
-                      src={item.image}
-                      alt={`${item.name}`}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </td>
-                <td className="p-3">
-                  {item.status === 1 ? "Active" : "Inactive"}
-                </td>
-
-                <td className="flex gap-2 p-3">
-                  <Button
-                    isSmall
-                    isWarning
-                    onClick={() => handleShowModal("Edit", item?.id)}
+                  <th
+                    scope="row"
+                    className="text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white"
                   >
-                    <HiOutlinePencilSquare className="text-lg" />
-                  </Button>
-                  <Button isSmall isDanger>
-                    <HiOutlineTrash
-                      className="text-lg"
+                    {index + 1}
+                  </th>
+                  <td className="p-3">{item.name}</td>
+                  <td className="p-3">{getCategoryByName(item.categoryId)}</td>
+                  <td className="p-3">IDR {formatNumber(item.price)}</td>
+                  <td className="p-3">
+                    <div className="aspect-[4/3] w-10">
+                      <img
+                        src={"http://localhost:5000/" + item.image}
+                        alt={`${item.name}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </td>
+                  <td className="p-3">
+                    {item.status === 1 ? (
+                      <Button
+                        isSmall
+                        isPrimary
+                        onClick={() =>
+                          handleShowModal("Change Status", item.id)
+                        }
+                      >
+                        Active
+                      </Button>
+                    ) : (
+                      <Button
+                        isSmall
+                        isDanger
+                        onClick={() =>
+                          handleShowModal("Change Status", item.id)
+                        }
+                      >
+                        Inactive
+                      </Button>
+                    )}
+                  </td>
+
+                  <td className="flex gap-2 p-3">
+                    <Button
+                      isSmall
+                      isWarning
+                      onClick={() => handleShowModal("Edit", item?.id)}
+                    >
+                      <HiOutlinePencilSquare className="text-lg" />
+                    </Button>
+                    <Button
+                      isSmall
+                      isDanger
                       onClick={() => handleShowModal("Delete", item.id)}
-                    />
-                  </Button>
-                </td>
-              </motion.tr>
-            ))}
+                    >
+                      <HiOutlineTrash className="text-lg" />
+                    </Button>
+                  </td>
+                </motion.tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
+
       {showModal.show && showModal.type === "Add" && (
         <Modal
           showModal={showModal}
           title={`${showModal.type} Product`}
           closeModal={() => handleCloseModal()}
         >
-          <InputProduct categories={categories} />
+          {success ? (
+            <SuccessMessage message={`Product added successfully`} />
+          ) : (
+            <InputProduct categories={categories} />
+          )}
         </Modal>
       )}
 
@@ -233,7 +261,16 @@ export default function ProductsTable() {
           title={`${showModal.type} Product ${showModal.id}`}
           closeModal={() => handleCloseModal()}
         >
-          <InputProduct productData={selectedProduct} categories={categories} />
+          {success ? (
+            <SuccessMessage
+              message={`Product ${selectedProduct.name} deleted successfully`}
+            />
+          ) : (
+            <InputProduct
+              productData={selectedProduct}
+              categories={categories}
+            />
+          )}
         </Modal>
       )}
 
@@ -269,6 +306,59 @@ export default function ProductsTable() {
                   isDanger
                   isLoading={isDeleteProductLoading}
                   onClick={() => handleDeleteProduct(selectedProduct.id)}
+                />
+              </div>
+            </>
+          )}
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Change Status" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Product`}
+          closeModal={() => handleCloseModal()}
+        >
+          {success ? (
+            <SuccessMessage
+              message={`${selectedProduct.name} status changed successfully`}
+            />
+          ) : (
+            <>
+              <p className="modal-text">
+                Are you sure to
+                {selectedProduct.status === 1 ? (
+                  <span className="text-red-500"> deactive </span>
+                ) : (
+                  <span className="text-primary"> activate </span>
+                )}
+                <span className="font-bold">{selectedProduct.name}</span>?
+              </p>
+
+              <div className="mt-4 flex justify-end gap-2">
+                {!isSubmitProductLoading && (
+                  <Button
+                    title="No"
+                    isButton
+                    isSecondary
+                    onClick={handleCloseModal}
+                  />
+                )}
+                <Button
+                  title="Yes"
+                  isButton
+                  isPrimary={selectedProduct.status === 2}
+                  isDanger={selectedProduct.status === 1}
+                  isLoading={isSubmitProductLoading}
+                  onClick={() =>
+                    handleUpdateStatus(selectedProduct.id, () => {
+                      if (selectedProduct.status === 2) {
+                        return 1;
+                      }
+
+                      return 2;
+                    })
+                  }
                 />
               </div>
             </>

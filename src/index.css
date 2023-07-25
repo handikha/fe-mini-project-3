@@ -62,7 +62,8 @@
   @import url("./components/Navbar/index.css");
   @import url("./components/Card/index.css");
 
-  input {
+  input,
+  textarea {
     @apply rounded-md border border-primary/50 py-1 focus:outline-none focus:ring-2 focus:ring-primary/50;
   }
 

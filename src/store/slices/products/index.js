@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteProduct, getProducts } from "./slices";
+import {
+  createProduct,
+  deleteProduct,
+  getProducts,
+  updateProduct,
+} from "./slices";
 
 const INITIAL_STATE = {
   data: [],
@@ -29,6 +34,28 @@ const productsSlice = createSlice({
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.isGetProductsLoading = false;
+      })
+
+      .addCase(createProduct.pending, (state, action) => {
+        state.isSubmitProductLoading = true;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.isSubmitProductLoading = false;
+        state.success = true;
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.isSubmitProductLoading = false;
+      })
+
+      .addCase(updateProduct.pending, (state, action) => {
+        state.isSubmitProductLoading = true;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.isSubmitProductLoading = false;
+        state.success = true;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.isSubmitProductLoading = false;
       })
 
       .addCase(deleteProduct.pending, (state, action) => {

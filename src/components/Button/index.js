@@ -9,7 +9,12 @@ export default function Button(props) {
   props.isSmall && className.push("px-2 py-1 rounded-md select-none");
 
   props.isPrimary &&
+    !props.isDisabled &&
     className.push("bg-primary hover:bg-green-700 text-white duration-300");
+
+  props.isPrimary &&
+    props.isDisabled &&
+    className.push("bg-green-500 text-white hover:cursor-default");
 
   props.isDanger &&
     className.push("bg-red-500 hover:bg-red-600 text-white duration-300");

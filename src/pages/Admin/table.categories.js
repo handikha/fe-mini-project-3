@@ -10,7 +10,6 @@ import {
   deleteCategory,
   resetSuccessCategory,
 } from "../../store/slices/categories/slices";
-import { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 import SuccessMessage from "../../components/SuccessMessage";
 
@@ -208,7 +207,6 @@ export default function CategoriesTable() {
         </Modal>
       )}
 
-      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }
