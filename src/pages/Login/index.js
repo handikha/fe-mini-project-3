@@ -28,7 +28,8 @@ export default function Login() {
     setValues({ ...values, [name]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     setIsSubmitting(true);
     setErrors({}); // Reset errors
 
@@ -99,7 +100,10 @@ export default function Login() {
             Login
           </h3>
 
-          <form className='flex w-full flex-col gap-2 text-sm'>
+          <form
+            className='flex w-full flex-col gap-2 text-sm'
+            onSubmit={handleSubmit}
+          >
             <Input
               required
               type='text'
@@ -127,8 +131,8 @@ export default function Login() {
               isPrimary
               title='Login'
               className=' mt-4 w-full select-none shadow-md'
-              onClick={handleSubmit}
-              type='button'
+              // onClick={handleSubmit}
+              type='submit'
             />
 
             <Button
