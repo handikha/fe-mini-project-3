@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
-import { login } from "../../store/slices/auth/slices";
+import { login, forgetPassword } from "../../store/slices/auth/slices";
 import { loginValidationSchema } from "../../store/slices/auth/validation";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,13 +19,22 @@ export default function Login() {
     };
   });
 
-  const [values, setValues] = useState({ username: "", password: "" });
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+  });
+  const [email, setEmail] = useState({ email: "" });
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail({ email: e.target.value });
   };
 
   const handleSubmit = (event) => {
@@ -61,7 +70,6 @@ export default function Login() {
         );
         setErrors(errorMessages);
         setIsSubmitting(false);
-        console.log(username);
       });
   };
 
@@ -69,6 +77,11 @@ export default function Login() {
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  const handleResetPassword = () => {
+    dispatch(forgetPassword(email));
+    setShowModal(false);
+  };
 
   if (role === 1) {
     return navigate("/admin");
@@ -143,6 +156,7 @@ export default function Login() {
           </form>
         </div>
       </div>
+
       <Modal
         showModal={showModal}
         closeModal={handleCloseModal}
@@ -154,6 +168,8 @@ export default function Login() {
             placeholder='Insert your email'
             id='email'
             name='email'
+            value={email.email}
+            onChange={handleChangeEmail}
             autoFocus
           />
 
@@ -163,7 +179,7 @@ export default function Login() {
             isBLock
             className='mt-4'
             title='Reset Password'
-            onClick={handleShowModal}
+            onClick={() => handleResetPassword()}
           />
         </div>
       </Modal>

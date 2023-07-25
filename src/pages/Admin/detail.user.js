@@ -116,7 +116,7 @@ export default function DetailUser({
             isButton
             isDanger={status === 2}
             isPrimary={status === 1}
-            isDisabled={status === 0}
+            isWarning={status === 0}
             className='mt-4'
             title={statusLabels[status]}
             onClick={handleChangeStatus}

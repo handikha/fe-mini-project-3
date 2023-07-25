@@ -1,7 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // @import async thunk
-import { login, keepLogin, logout } from "./slices";
+import {
+  login,
+  keepLogin,
+  logout,
+  forgetPassword,
+  verifyAccount,
+  resetPassword,
+} from "./slices";
 
 // @initial state
 const INITIAL_STATE = {
@@ -9,6 +16,9 @@ const INITIAL_STATE = {
   isLoginLoading: false,
   isKeepLoginLoading: false,
   isLogoutLoading: false,
+  isForgetLoading: false,
+  isVerifyAccoutLoading: false,
+  isResetPasswordLoading: false,
 
   //@user state
   id: null,
@@ -81,6 +91,17 @@ const authSlice = createSlice({
       });
     },
 
+    //@Verify Account
+    [verifyAccount.pending]: (state, action) => {
+      state.isVerifyAccoutLoading = true;
+    },
+    [verifyAccount.fulfilled]: (state, action) => {
+      state.isVerifyAccoutLoading = false;
+    },
+    [verifyAccount.rejected]: (state, action) => {
+      state.isVerifyAccoutLoading = false;
+    },
+
     //@Logout
     [logout.pending]: (state, action) => {
       state.isLogoutLoading = true;
@@ -91,6 +112,28 @@ const authSlice = createSlice({
     },
     [logout.rejected]: (state, action) => {
       state.isLogoutLoading = false;
+    },
+
+    //@Forget Password
+    [forgetPassword.pending]: (state, action) => {
+      state.isForgetLoading = true;
+    },
+    [forgetPassword.fulfilled]: (state, action) => {
+      state.isForgetLoading = false;
+    },
+    [forgetPassword.rejected]: (state, action) => {
+      state.isForgetLoading = false;
+    },
+
+    //@Reset Password
+    [resetPassword.pending]: (state, action) => {
+      state.isResetPasswordLoading = true;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.isResetPasswordLoading = false;
+    },
+    [resetPassword.rejected]: (state, action) => {
+      state.isResetPasswordLoading = false;
     },
   },
 });

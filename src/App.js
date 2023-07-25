@@ -8,6 +8,7 @@ import AdminAccountSetting from "./pages/Admin/account.setting/index.js";
 import CashierAccountSetting from "./pages/Cashier/account.setting";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import { Toaster } from "react-hot-toast";
 import { keepLogin } from "./store/slices/auth/slices";
 import { useSelector, useDispatch } from "react-redux";
@@ -34,6 +35,11 @@ function App() {
 
       <Routes>
         <Route exact path='/' element={<Login />} />
+        <Route
+          exact
+          path='/auth/reset-password/:token'
+          element={<ResetPassword />}
+        />
         {user?.role == 1 && (
           <>
             <Route path='/admin' element={<Admin user={user} />} />
