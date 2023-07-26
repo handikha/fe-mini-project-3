@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Cashier from "./pages/Cashier";
 import users from "./json/user.json";
@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
-  const { user, isLogin } = useSelector((state) => {
+  const { user } = useSelector((state) => {
     return {
       user: state.auth,
     };

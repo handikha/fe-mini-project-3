@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -11,11 +11,9 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { loading, role, username } = useSelector((state) => {
+  const { role } = useSelector((state) => {
     return {
-      loading: state.auth.isLoginLoading,
       role: state.auth.role,
-      username: state.auth.username,
     };
   });
 
