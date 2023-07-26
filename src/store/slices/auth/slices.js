@@ -38,6 +38,18 @@ export const keepLogin = createAsyncThunk(
   }
 );
 
+export const verifyAccount = createAsyncThunk(
+  "auth/verifyAccount",
+  async (payload, { rejectWithValue }) => {
+    try {
+      await api.patch("/auth/verify");
+      return;
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data.err : error);
+    }
+  }
+);
+
 //@logout async thunk function
 export const logout = createAsyncThunk(
   "auth/logout",
@@ -48,6 +60,55 @@ export const logout = createAsyncThunk(
       return {};
     } catch (error) {
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//@forget Password
+export const forgetPassword = createAsyncThunk(
+  "auth/forgetPassword",
+  async (payload, { rejectWithValue }) => {
+    try {
+      // @generate parameter
+      const { data } = await api.put(`/auth/forget-password`, payload);
+      Toast.success(data.message);
+      return data.data;
+    } catch (error) {
+      Toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data.err);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await api.patch("/auth/reset-password", payload);
+      Toast.success(data.message);
+      return data;
+    } catch (error) {
+      localStorage.removeItem("token");
+      Toast.error(error.response.data.message);
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//@Change password
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await api.patch("/auth/change-password", payload);
+      Toast.success(data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      return data;
+    } catch (error) {
+      Toast.error(error.response.data.message);
+      return rejectWithValue(error?.response?.message);
     }
   }
 );
