@@ -14,6 +14,11 @@ export default function Admin({ user }) {
   const isVerified = false;
   const { context } = useParams();
 
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.log("redirect");
+    return navigate("/");
+  }
   if (!user.role) {
     return navigate("/");
   }

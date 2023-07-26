@@ -41,3 +41,19 @@ export const resetPasswordSchema = Yup.object({
     "password must match."
   ),
 });
+
+// @Change Password validation schema
+export const changePasswordSchema = Yup.object({
+  currentPassword: Yup.string()
+    .min(6, "password must be at least 6 characters.")
+    .matches(/^[a-zA-Z0-9]+$/, "password must be alphanumeric.")
+    .required("password is required."),
+  password: Yup.string()
+    .min(6, "password must be at least 6 characters.")
+    .matches(/^[a-zA-Z0-9]+$/, "password must be alphanumeric.")
+    .required("password is required."),
+  confirmPassword: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "password must match."
+  ),
+});

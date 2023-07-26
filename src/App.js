@@ -9,29 +9,34 @@ import CashierAccountSetting from "./pages/Cashier/account.setting";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
+import ChangeDefaultPassword from "./pages/ChangeDefaultPassword";
 import { Toaster } from "react-hot-toast";
 import { keepLogin } from "./store/slices/auth/slices";
 import { useSelector, useDispatch } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => {
-    return state.auth;
+  const { user, isLogin } = useSelector((state) => {
+    return {
+      user: state.auth,
+    };
   });
 
-  const location = useLocation();
+  // const location = useLocation();
 
-  const shouldRenderNavbar = () => {
-    return location.pathname !== "/";
-  };
+  // const shouldRenderNavbar = () => {
+  //   return location.pathname !== "/";
+  // };
 
   useEffect(() => {
     dispatch(keepLogin());
   }, []);
 
+  const token = localStorage.getItem("token");
+
   return (
     <>
-      {shouldRenderNavbar() && <Navbar user={user} />}
+      {token && <Navbar user={user} />}
 
       <Routes>
         <Route exact path='/' element={<Login />} />
@@ -39,6 +44,11 @@ function App() {
           exact
           path='/auth/reset-password/:token'
           element={<ResetPassword />}
+        />
+        <Route
+          exact
+          path='/auth/change-password/:token'
+          element={<ChangeDefaultPassword />}
         />
         {user?.role == 1 && (
           <>

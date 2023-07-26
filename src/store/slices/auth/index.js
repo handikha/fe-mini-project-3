@@ -8,6 +8,7 @@ import {
   forgetPassword,
   verifyAccount,
   resetPassword,
+  changePassword,
 } from "./slices";
 
 // @initial state
@@ -19,6 +20,7 @@ const INITIAL_STATE = {
   isForgetLoading: false,
   isVerifyAccoutLoading: false,
   isResetPasswordLoading: false,
+  isChangePasswordLoading: false,
 
   //@user state
   id: null,
@@ -32,6 +34,7 @@ const INITIAL_STATE = {
 
   //@keep login state
   isKeepLogin: false,
+  isLogin: false,
 
   //@logoutstate
   isLogout: true,
@@ -58,7 +61,7 @@ const authSlice = createSlice({
         role: action.payload?.role,
         status: action.payload?.status,
         profileImg: action.payload?.profileImg,
-        isKeepLogin: true,
+        isLogin: true,
       });
     },
     [login.rejected]: (state, action) => {
@@ -134,6 +137,17 @@ const authSlice = createSlice({
     },
     [resetPassword.rejected]: (state, action) => {
       state.isResetPasswordLoading = false;
+    },
+
+    //@Reset Password
+    [changePassword.pending]: (state, action) => {
+      state.isChangePasswordLoading = true;
+    },
+    [changePassword.fulfilled]: (state, action) => {
+      state.isChangePasswordLoading = false;
+    },
+    [changePassword.rejected]: (state, action) => {
+      state.isChangePasswordLoading = false;
     },
   },
 });

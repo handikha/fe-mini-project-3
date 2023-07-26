@@ -33,7 +33,7 @@ export default function ProfileCard({
           <div className='h-16 w-16 md:mb-4 md:aspect-square md:h-fit md:w-5/6'>
             <div className='overflow-hidden rounded-full'>
               <img
-                src={profileImg}
+                src={"http://localhost:5000/" + profileImg}
                 alt=''
                 className='h-full w-full object-cover'
               />

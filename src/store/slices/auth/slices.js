@@ -94,3 +94,19 @@ export const resetPassword = createAsyncThunk(
     }
   }
 );
+
+//@Change password
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await api.patch("/auth/change-password", payload);
+      Toast.success(data.message);
+      return data;
+    } catch (error) {
+      localStorage.removeItem("token");
+      Toast.error(error.response.data.message);
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);

@@ -155,7 +155,7 @@ export default function NavMenu({
             }}
           >
             <img
-              src={user?.profileImg}
+              src={"http://localhost:5000/" + user?.profileImg}
               alt=''
               className='h-full w-full object-cover'
             />
