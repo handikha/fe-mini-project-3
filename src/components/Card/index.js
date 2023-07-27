@@ -1,48 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import products from "../../json/products.json";
+import categories from "../../json/categories.json";
+import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import formatNumber from "../../utils/formatNumber";
 import { useState } from "react";
 import Modal from "../Modal";
 
-function Card({ id, name, image, category, onClick, price }) {
-  const [qty, setQty] = useState(0);
-  const [cart, setCart] = useState([]);
-
-  const handleReduceQty = () => {
-    if (qty > 1) {
-      setQty(qty - 1);
-    }
-  };
-
-  const handleAddQty = () => {
-    setQty(qty + 1);
-  };
-
-  const handleAddToCart = (id, qty) => {
-    const product = {
-      id: id,
-      name: name,
-      qty: qty,
-      price: price,
-      image: image,
-      totalPrice: qty * price,
-    };
-    setCart([...cart, product]);
-  };
-
-  const handleChangeQty = (event) => {
-    const newQty = parseInt(event.target.value);
-    if (!isNaN(newQty)) {
-      setQty(newQty >= 0 ? newQty : 0); // Set qty to 0 if newQty is negative
-    } else {
-      setQty(0); // Set qty to 0 if the input is empty or not a number
-    }
-  };
-
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
+export default function Card({ name, image, category, onClick, price }) {
+  const [count, setCount] = useState(0);
 
   return (
     // TODO: H-FIT OR H-FULL FOR ITEMS LENGTH > 1
@@ -69,22 +36,25 @@ function Card({ id, name, image, category, onClick, price }) {
           <Button
             isSecondary
             isSmall
-            className="font-bold"
-            onClick={handleReduceQty}
+            onClick={() => {
+              count > 0 && setCount(count - 1);
+            }}
           >
             <FaMinus className=" text-white" />
           </Button>
           <input
             type="text"
-            className="w-full text-center font-bold lg:w-10 "
-            value={qty}
-            onChange={handleChangeQty}
+            className="w-full text-center lg:w-10 "
+            placeholder="Qty"
+            value={count}
           />
           <Button
             isPrimary
             isSmall
             className="font-bold"
-            onClick={handleAddQty}
+            onClick={() => {
+              setCount(count + 1);
+            }}
           >
             <FaPlus className=" text-white" />
           </Button>
@@ -95,7 +65,9 @@ function Card({ id, name, image, category, onClick, price }) {
         isBLock
         isPrimary
         title="Add"
-        onClick={() => handleAddToCart(id, qty)}
+        onClick={() => {
+          onClick(count);
+        }}
       />
     </div>
   );

@@ -73,59 +73,59 @@ export default function DetailUser({
 
   return (
     <>
-      <form className='flex flex-col gap-3 overflow-y-auto px-2 py-2'>
-        <div className='flex flex-col items-center md:mb-4 md:w-auto'>
-          <div className='h-40 w-40 overflow-hidden'>
+      <form className="flex flex-col gap-3 overflow-y-auto px-2 py-2">
+        <div className="flex flex-col items-center md:mb-4 md:w-auto">
+          <div className="h-40 w-40 overflow-hidden">
             <img
-              src={"http://localhost:5000/" + profileImg}
-              alt=''
-              className='h-full w-full rounded-full object-cover md:aspect-square'
+              src={"http://127.0.0.1:5000/" + profileImg}
+              alt=""
+              className="h-full w-full rounded-full object-cover md:aspect-square"
             />
           </div>
         </div>
         <Input
-          type='text'
-          placeholder='Full Name'
-          name='fullName'
+          type="text"
+          placeholder="Full Name"
+          name="fullName"
           value={values.fullName}
           onChange={handleChange}
         />
         <Input
-          type='text'
-          placeholder='Username'
-          name='username'
+          type="text"
+          placeholder="Username"
+          name="username"
           value={values.username}
           onChange={handleChange}
         />
         <Input
-          type='email'
-          placeholder='Email'
-          name='email'
+          type="email"
+          placeholder="Email"
+          name="email"
           value={values.email}
           onChange={handleChange}
         />
         <Input
-          type='text'
-          placeholder='Phone'
-          name='phone'
+          type="text"
+          placeholder="Phone"
+          name="phone"
           value={values.phone}
           onChange={handleChange}
         />
-        <div className='flex flex-col gap-x-1'>
+        <div className="flex flex-col gap-x-1">
           <Button
             isButton
             isDanger={status === 2}
             isPrimary={status === 1}
-            isDisabled={status === 0}
-            className='mt-4'
+            isWarning={status === 0}
+            className="mt-4"
             title={statusLabels[status]}
             onClick={handleChangeStatus}
           />
           <Button
             isButton
             isPrimary
-            className='mt-4'
-            title='Update'
+            className="mt-4"
+            title="Update"
             onClick={handleUpdateStatus}
           />
         </div>
@@ -136,26 +136,26 @@ export default function DetailUser({
         title={`${status === 1 ? "Deactivate" : "Activate"} User`}
         closeModal={handleCloseChangeStatus}
       >
-        <div className='flex flex-col items-center'>
-          <h1 className='text-lg font-semibold'>
+        <div className="flex flex-col items-center">
+          <h1 className="text-lg font-semibold">
             {`Are you sure you want to ${
               status === 1 ? "deactivate" : "activate"
             } ${username} account?`}
           </h1>
 
-          <div className='flex gap-x-1'>
+          <div className="flex gap-x-1">
             <Button
               isButton
               isDanger
-              className='mt-4'
+              className="mt-4"
               title={status === 1 ? "Deactivate" : "Activate"}
               onClick={() => confirmChangeStatus(userId, status)}
             />
             <Button
               isButton
               isPrimary
-              className='mt-4'
-              title='Cancel'
+              className="mt-4"
+              title="Cancel"
               onClick={handleCloseChangeStatus}
             />
           </div>
@@ -167,24 +167,24 @@ export default function DetailUser({
         title={`Update Profile`}
         closeModal={handleCloseConfirmUpdateModal}
       >
-        <div className='flex flex-col items-center'>
-          <h1 className='text-lg font-semibold'>
+        <div className="flex flex-col items-center">
+          <h1 className="text-lg font-semibold">
             {`Are you sure you want to update ${username} profile?`}
           </h1>
 
-          <div className='flex gap-x-1'>
+          <div className="flex gap-x-1">
             <Button
               isButton
               isDanger
-              className='mt-4'
-              title='Update'
+              className="mt-4"
+              title="Update"
               onClick={() => handleConfirmUpdate(userId, values)}
             />
             <Button
               isButton
               isPrimary
-              className='mt-4'
-              title='Cancel'
+              className="mt-4"
+              title="Cancel"
               onClick={handleCloseConfirmUpdateModal}
             />
           </div>

@@ -1,7 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // @import async thunk
-import { login, keepLogin, logout } from "./slices";
+import {
+  login,
+  keepLogin,
+  logout,
+  forgetPassword,
+  verifyAccount,
+  resetPassword,
+  changePassword,
+} from "./slices";
 
 // @initial state
 const INITIAL_STATE = {
@@ -9,6 +17,10 @@ const INITIAL_STATE = {
   isLoginLoading: false,
   isKeepLoginLoading: false,
   isLogoutLoading: false,
+  isForgetLoading: false,
+  isVerifyAccoutLoading: false,
+  isResetPasswordLoading: false,
+  isChangePasswordLoading: false,
 
   //@user state
   id: null,
@@ -22,6 +34,7 @@ const INITIAL_STATE = {
 
   //@keep login state
   isKeepLogin: false,
+  isLogin: false,
 
   //@logoutstate
   isLogout: true,
@@ -48,7 +61,7 @@ const authSlice = createSlice({
         role: action.payload?.role,
         status: action.payload?.status,
         profileImg: action.payload?.profileImg,
-        isKeepLogin: true,
+        isLogin: true,
       });
     },
     [login.rejected]: (state, action) => {
@@ -81,6 +94,17 @@ const authSlice = createSlice({
       });
     },
 
+    //@Verify Account
+    [verifyAccount.pending]: (state, action) => {
+      state.isVerifyAccoutLoading = true;
+    },
+    [verifyAccount.fulfilled]: (state, action) => {
+      state.isVerifyAccoutLoading = false;
+    },
+    [verifyAccount.rejected]: (state, action) => {
+      state.isVerifyAccoutLoading = false;
+    },
+
     //@Logout
     [logout.pending]: (state, action) => {
       state.isLogoutLoading = true;
@@ -91,6 +115,39 @@ const authSlice = createSlice({
     },
     [logout.rejected]: (state, action) => {
       state.isLogoutLoading = false;
+    },
+
+    //@Forget Password
+    [forgetPassword.pending]: (state, action) => {
+      state.isForgetLoading = true;
+    },
+    [forgetPassword.fulfilled]: (state, action) => {
+      state.isForgetLoading = false;
+    },
+    [forgetPassword.rejected]: (state, action) => {
+      state.isForgetLoading = false;
+    },
+
+    //@Reset Password
+    [resetPassword.pending]: (state, action) => {
+      state.isResetPasswordLoading = true;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.isResetPasswordLoading = false;
+    },
+    [resetPassword.rejected]: (state, action) => {
+      state.isResetPasswordLoading = false;
+    },
+
+    //@Reset Password
+    [changePassword.pending]: (state, action) => {
+      state.isChangePasswordLoading = true;
+    },
+    [changePassword.fulfilled]: (state, action) => {
+      state.isChangePasswordLoading = false;
+    },
+    [changePassword.rejected]: (state, action) => {
+      state.isChangePasswordLoading = false;
     },
   },
 });

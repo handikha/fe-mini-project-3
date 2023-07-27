@@ -1,9 +1,7 @@
 import { useParams } from "react-router-dom";
 import Button from "../../../components/Button";
-import UsernameSetting from "./username.setting";
-import EmailSetting from "./email.setting";
-import PasswordSetting from "./password.setting";
-import AdminImageSetting from "./image.setting";
+import PasswordSetting from "../../../components/PasswordSetting";
+import AdminImageSetting from "../../../components/ImageSetting";
 
 export default function AdminAccountSetting({ user }) {
   const { context } = useParams();

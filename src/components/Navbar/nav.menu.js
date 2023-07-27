@@ -99,7 +99,7 @@ export default function NavMenu({
             transition={{ duration: 0.3 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='sidebar-bg'
+            className="sidebar-bg"
             onClick={closeNavMenu}
           />
         )}
@@ -122,7 +122,7 @@ export default function NavMenu({
                 translateX: 0,
               }}
               exit={{ opacity: 0, delay: 0.3 }}
-              className='mb-4 h-fit select-none tracking-tighter text-yellow-500 md:hidden'
+              className="mb-4 h-fit select-none tracking-tighter text-yellow-500 md:hidden"
             >
               <NavBrand />
             </motion.div>
@@ -135,13 +135,13 @@ export default function NavMenu({
           isLink
           onClick={closeNavMenu}
         >
-          <HiOutlineSquares2X2 className='text-xl md:hidden' />
+          <HiOutlineSquares2X2 className="text-xl md:hidden" />
           {user?.role === 1 ? "Dashboard" : "Products"}
         </Button>
       </div>
 
       <div className={`flex items-center gap-6`}>
-        <div className='profile-img-wrapper relative row-start-2 flex w-full items-center gap-4'>
+        <div className="profile-img-wrapper relative row-start-2 flex w-full items-center gap-4">
           <div
             className={`nav-profile-img aspect-square w-8 cursor-pointer self-center overflow-hidden rounded-full bg-primary md:mb-0 md:block ${
               isNavActive && "-z-10"
@@ -155,9 +155,9 @@ export default function NavMenu({
             }}
           >
             <img
-              src={user?.profileImg}
-              alt=''
-              className='h-full w-full object-cover'
+              src={"http://127.0.0.1:5000/" + user?.profileImg}
+              alt=""
+              className="h-full w-full object-cover"
             />
           </div>
 
@@ -183,11 +183,11 @@ export default function NavMenu({
                   originY: 0,
                   originX: 1,
                 }}
-                className='profile-menu'
+                className="profile-menu"
               >
-                <div className='flex select-none flex-col gap-2'>
+                <div className="flex select-none flex-col gap-2">
                   <Button
-                    className='flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2'
+                    className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
                     onClick={() => {
                       setIsProfileActive(false);
                     }}
@@ -198,21 +198,21 @@ export default function NavMenu({
                         : "/cashier/account-setting/password"
                     }
                   >
-                    <HiOutlineCog6Tooth className='text-xl' />
+                    <HiOutlineCog6Tooth className="text-xl" />
                     Account Setting
                   </Button>
 
                   <Button
-                    className='flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2'
+                    className="flex cursor-pointer items-center gap-4 py-1 duration-300 hover:pl-2"
                     onClick={() => {
                       setIsLogin(false);
                       setIsProfileActive(false);
                       handleLogout();
                     }}
                     isLink
-                    path=''
+                    path=""
                   >
-                    <HiOutlineArrowRightOnRectangle className='text-xl' />
+                    <HiOutlineArrowRightOnRectangle className="text-xl" />
                     Logout
                   </Button>
                 </div>
@@ -221,9 +221,9 @@ export default function NavMenu({
           </AnimatePresence>
         </div>
 
-        <div className='sidebar-button'>
+        <div className="sidebar-button">
           {isNavActive ? (
-            <span onClick={closeNavMenu} className='text-light'>
+            <span onClick={closeNavMenu} className="text-light">
               <HiX />
             </span>
           ) : (

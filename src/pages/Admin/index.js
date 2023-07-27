@@ -1,13 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-
 import ProfileCard from "./profile.card";
 import ProductsTable from "./table.products";
 import UsersTable from "./table.users";
 import CategoriesTable from "./table.categories";
 import Dashboard from "./dashboard";
 import { Toaster } from "react-hot-toast";
-
-import { useEffect } from "react";
 
 export default function Admin({ user }) {
   const navigate = useNavigate();
@@ -20,8 +17,8 @@ export default function Admin({ user }) {
 
   return (
     <>
-      <div className="container px-10 py-24">
-        <div className="grid grid-cols-4 gap-10">
+      <div className='container px-10 py-24'>
+        <div className='grid grid-cols-4 gap-10'>
           <ProfileCard
             username={user.username}
             fullName={user.fullName}
@@ -30,7 +27,7 @@ export default function Admin({ user }) {
             context={context}
           />
 
-          <div className="col-span-full md:col-span-3">
+          <div className='col-span-full md:col-span-3'>
             {!context && <Dashboard />}
             {context === "products" && <ProductsTable />}
             {context === "users" && <UsersTable />}
@@ -38,7 +35,7 @@ export default function Admin({ user }) {
           </div>
         </div>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position='top-center' reverseOrder={false} />
     </>
   );
 }
