@@ -63,7 +63,41 @@ export default function Cashier() {
   console.log(customerData);
 
   const handlePay = () => {
-    window.location.reload();
+    axios
+      .post(
+        "http://127.0.0.1:5000/api/v1/transaction",
+        {
+          customerName: customerData.customerName,
+          table: customerData.table,
+          orderItems: carts.map((item) => ({
+            productId: item.id,
+            quantity: item.qty,
+          })),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        axios
+          .post(
+            "http://127.0.0.1:5000/api/v1/transaction/pay",
+            {
+              orderId: res.data.data.id,
+              payAmount: customerData.payAmount,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then(() => {
+            window.location.reload();
+          });
+      });
   };
 
   return (
@@ -247,6 +281,17 @@ export default function Cashier() {
               handleCustomerData("payAmount", e.target.value);
             }}
           />
+          <Input
+            label="Table Number"
+            name={"table"}
+            type={"number"}
+            onChange={(e) => {
+              handleCustomerData("table", e.target.value);
+            }}
+          />
+          <p className="my-4 text-base font-bold text-primary">
+            Grand Total : {formatNumber(getGrandTotal())}
+          </p>
           <Button
             className={"my-4"}
             isButton
