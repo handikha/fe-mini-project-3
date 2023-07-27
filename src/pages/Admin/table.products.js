@@ -228,8 +228,10 @@ export default function ProductsTable() {
           <tbody>
             {isGetProductsLoading ? (
               <tr className="text-center">
-                <td colSpan={6} className="p-3">
-                  Loading...
+                <td colSpan={7} className="p-3">
+                  <div className="mx-auto block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </td>
               </tr>
             ) : products.length === 0 ? (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Card from "../../components/Card";
-import categories from "../../json/categories.json";
 import Button from "../../components/Button";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import formatNumber from "../../utils/formatNumber";
@@ -29,9 +28,6 @@ export default function Cashier() {
 
   const [isCartExpand, setIsCartExpand] = useState(false);
   const handleExpandCart = () => setIsCartExpand((prevState) => !prevState);
-
-  const [activeIndex, setActiveIndex] = useState(0);
-  const handleCategories = (index) => setActiveIndex(index);
 
   const removeItem = (id) => {
     const newCarts = carts.filter((item) => item.id !== id);
@@ -102,6 +98,7 @@ export default function Cashier() {
 
   const {
     isGetProductsLoading,
+    isGetCategoriesLoading,
     categories,
     current_page,
     total_pages,
@@ -110,6 +107,7 @@ export default function Cashier() {
     return {
       products: state.products.data,
       isGetProductsLoading: state.products.isGetProductsLoading,
+      isGetCategoriesLoading: state.categories.isGetCategoriesLoading,
       categories: state.categories.data,
       current_page: state.products.current_page,
       total_pages: state.products.total_pages,
@@ -170,35 +168,39 @@ export default function Cashier() {
     <div className="container pb-48 pt-20">
       <div className="grid grid-cols-2 gap-4 duration-300 md:grid-cols-2 lg:grid-cols-9">
         <div className="col-span-full flex gap-3 overflow-auto py-2">
-          <>
-            <Button
-              title="All"
-              isSmall
-              onClick={() => {
-                setSelectedCategory("");
-              }}
-              className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
-                selectedCategory === ""
-                  ? "bg-primary"
-                  : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
-              }`}
-            />
-            {categories.map((category, index) => (
+          {isGetCategoriesLoading ? (
+            <LoadingCategories />
+          ) : (
+            <>
               <Button
-                key={index}
-                title={category.name}
+                title="All"
                 isSmall
                 onClick={() => {
-                  setSelectedCategory(category.id);
+                  setSelectedCategory("");
                 }}
                 className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
-                  category.id === selectedCategory
+                  selectedCategory === ""
                     ? "bg-primary"
                     : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
                 }`}
               />
-            ))}
-          </>
+              {categories.map((category, index) => (
+                <Button
+                  key={index}
+                  title={category.name}
+                  isSmall
+                  onClick={() => {
+                    setSelectedCategory(category.id);
+                  }}
+                  className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
+                    category.id === selectedCategory
+                      ? "bg-primary"
+                      : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
+                  }`}
+                />
+              ))}
+            </>
+          )}
         </div>
 
         <div className="col-span-full grid grid-cols-2 gap-4 md:col-span-6 md:grid-cols-3">

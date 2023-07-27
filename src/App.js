@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Cashier from "./pages/Cashier";
-import users from "./json/user.json";
 import Admin from "./pages/Admin";
 import AdminAccountSetting from "./pages/Admin/account.setting/index.js";
 import CashierAccountSetting from "./pages/Cashier/account.setting";
@@ -50,6 +49,7 @@ function App() {
           path='/auth/change-password/:token'
           element={<ChangeDefaultPassword />}
         />
+
         {user?.role == 1 && (
           <>
             <Route path='/admin' element={<Admin user={user} />} />
