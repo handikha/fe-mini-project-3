@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import RenderCards from "../../components/Card";
 import cart from "../../json/cart.json";
-import categories from "../../json/categories.json";
 import Button from "../../components/Button";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import formatNumber from "../../utils/formatNumber";
 import { HiOutlineTrash } from "react-icons/hi2";
+import { getProducts } from "../../store/slices/products/slices";
+import { getCategories } from "../../store/slices/categories/slices";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import LoadingCategories from "./loading.categories";
+import LoadingCards from "./loading.cards";
 
 export default function Cashier() {
   const getTotalPrice = (qty, price) => qty * price;
@@ -18,35 +23,126 @@ export default function Cashier() {
     return grandTotal;
   };
 
-  const [isCartExpand, setIsCartExpand] = useState(true);
+  const [isCartExpand, setIsCartExpand] = useState(false);
   const handleExpandCart = () => setIsCartExpand((prevState) => !prevState);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const handleCategories = (index) => setActiveIndex(index);
+  // -----------------------------------------------------------------------------
+  const dispatch = useDispatch();
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const {
+    isGetProductsLoading,
+    products,
+    categories,
+    current_page,
+    total_pages,
+  } = useSelector((state) => {
+    return {
+      isGetProductsLoading: state.products.isGetProductsLoading,
+      products: state.products.data,
+      categories: state.categories.data,
+      current_page: state.products.current_page,
+      total_pages: state.products.total_pages,
+    };
+  });
+
+  const handlePagination = (type) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: type === "prev" ? current_page - 1 : current_page + 1,
+        sort: "",
+        limit: 9,
+      })
+    );
+    console.log(current_page);
+  };
+
+  useEffect(() => {
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort: "",
+        limit: 9,
+      })
+    );
+    dispatch(getCategories());
+  }, [selectedCategory]);
 
   return (
     <div className="container pb-48 pt-20">
       <div className="grid grid-cols-2 gap-4 duration-300 md:grid-cols-2 lg:grid-cols-9">
         <div className="col-span-full flex gap-3 overflow-auto py-2">
-          {categories.categories.map((category, index) => (
+          <>
             <Button
-              key={index}
-              title={category.name}
+              title="All"
               isSmall
-              onClick={() => handleCategories(index)}
+              onClick={() => {
+                setSelectedCategory("");
+              }}
               className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
-                activeIndex === index
+                selectedCategory === ""
                   ? "bg-primary"
                   : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
               }`}
             />
-          ))}
+            {categories.map((category, index) => (
+              <Button
+                key={index}
+                title={category.name}
+                isSmall
+                onClick={() => {
+                  setSelectedCategory(category.id);
+                }}
+                className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
+                  category.id === selectedCategory
+                    ? "bg-primary"
+                    : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
+                }`}
+              />
+            ))}
+          </>
         </div>
 
         <div className="col-span-full grid grid-cols-2 gap-4 md:col-span-6 md:grid-cols-3">
-          <RenderCards />
+          {isGetProductsLoading ? (
+            <LoadingCards />
+          ) : products.length === 0 ? (
+            <div className="col-span-full mt-4 flex justify-center gap-2">
+              <h3>No data to display</h3>
+            </div>
+          ) : (
+            <>
+              <RenderCards products={products} categories={categories} />
+              {total_pages > 1 && (
+                <div className="col-span-full mt-4 flex justify-center gap-2">
+                  <Button
+                    isPrimary
+                    isButton
+                    isDisabled={current_page === 1}
+                    title="Prev"
+                    onClick={() => handlePagination("prev")}
+                  />
+                  <Button
+                    isPrimary
+                    isButton
+                    title="Next"
+                    isDisabled={current_page === total_pages}
+                    onClick={() => handlePagination("next")}
+                  />
+                </div>
+              )}
+            </>
+          )}
         </div>
 
+        {/* CART COMPONENT */}
         <div className="relative bottom-0 left-0 w-full md:col-span-3">
           <div className="fixed bottom-0 left-0 w-full rounded-xl border-t-[1px] border-primary bg-inherit bg-slate-100 p-4 shadow-md dark:bg-slate-800 lg:sticky lg:top-24 lg:h-[calc(100vh-7.5rem)] lg:rounded-md lg:border-none">
             <h3 className="title">Cart</h3>
@@ -116,6 +212,7 @@ export default function Cashier() {
             </div>
           </div>
         </div>
+        {/* END OF CART COMPONENT */}
       </div>
     </div>
   );

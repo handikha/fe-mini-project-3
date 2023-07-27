@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import {
+  BsSortAlphaDown,
+  BsSortAlphaDownAlt,
+  BsSortAlphaUp,
+} from "react-icons/bs";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 import formatNumber from "../../utils/formatNumber";
@@ -20,17 +25,25 @@ export default function ProductsTable() {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [asc, setAsc] = useState(true);
 
   const {
+    products,
     categories,
     success,
     isDeleteProductLoading,
     isSubmitProductLoading,
     isGetProductsLoading,
+    current_page,
+    total_pages,
   } = useSelector((state) => {
     return {
+      products: state.products.data,
       categories: state.categories.data,
       success: state.products.success,
+      current_page: state.products.current_page,
+      total_pages: state.products.total_pages,
       isDeleteProductLoading: state.products.isDeleteProductLoading,
       isSubmitProductLoading: state.products.isSubmitProductLoading,
       isGetProductsLoading: state.products.isGetProductsLoading,
@@ -41,12 +54,6 @@ export default function ProductsTable() {
     const category = categories.find((item) => item.id === id);
     return category?.name;
   };
-
-  const { products } = useSelector((state) => {
-    return {
-      products: state.products.data,
-    };
-  });
 
   const handleShowModal = (action, id) => {
     if (action === "Add") setShowModal({ show: true, type: action });
@@ -91,10 +98,45 @@ export default function ProductsTable() {
     dispatch(updateProduct({ id, formData }));
   };
 
+  const handlePagination = (type) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: type === "prev" ? current_page - 1 : current_page + 1,
+        sort: asc ? "ASC" : "DESC",
+        limit: 10,
+      })
+    );
+  };
+
+  const handleSort = (type) => {
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort: type,
+        limit: 10,
+      })
+    );
+  };
+
   useEffect(() => {
-    dispatch(getProducts({ category_id: "", page: 1, sort: "", limit: 9 }));
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort: asc ? "ASC" : "DESC",
+
+        limit: 10,
+      })
+    );
     dispatch(getCategories());
-  }, [isDeleteProductLoading, isSubmitProductLoading]);
+  }, [isDeleteProductLoading, isSubmitProductLoading, selectedCategory]);
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -114,12 +156,68 @@ export default function ProductsTable() {
         </Button>
       </div>
 
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="col-span-full flex gap-3 overflow-auto py-2">
+        <Button
+          title="All"
+          isSmall
+          onClick={() => {
+            setSelectedCategory("");
+          }}
+          className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
+            selectedCategory === ""
+              ? "bg-primary"
+              : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
+          }`}
+        />
+        {categories.map((category, index) => (
+          <Button
+            key={index}
+            title={category.name}
+            isSmall
+            onClick={() => {
+              setSelectedCategory(category.id);
+            }}
+            className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
+              category.id === selectedCategory
+                ? "bg-primary"
+                : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
+            }`}
+          />
+        ))}
+      </div>
+
+      <div className="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
         <table className="text-gray-500 dark:text-gray-400 w-full text-left text-sm">
           <thead className="text-gray-700 dark:bg-gray-700 dark:text-gray-400 bg-slate-100 text-sm uppercase dark:bg-slate-800">
             <tr>
               <th className="p-3">#</th>
-              <th className="p-3">Product Name</th>
+              <th className="p-3">
+                <span className="flex items-center justify-between">
+                  Product Name{" "}
+                  <Button
+                    isSmall
+                    className="bg-primary/80 text-slate-100 dark:bg-primary/60"
+                  >
+                    {asc ? (
+                      <BsSortAlphaDown
+                        className="text-xl"
+                        onClick={() => {
+                          setAsc(false);
+                          handleSort("DESC");
+                        }}
+                      />
+                    ) : (
+                      <BsSortAlphaDownAlt
+                        className="text-xl"
+                        onClick={() => {
+                          setAsc(true);
+                          handleSort("ASC");
+                        }}
+                      />
+                    )}
+                  </Button>
+                </span>
+              </th>
               <th className="p-3">Category</th>
               <th className="p-3">Price</th>
               <th className="p-3">Image</th>
@@ -136,7 +234,7 @@ export default function ProductsTable() {
               </tr>
             ) : products.length === 0 ? (
               <tr className="text-center">
-                <td colSpan={6} className="p-3">
+                <td colSpan={7} className="p-3">
                   No data to display
                 </td>
               </tr>
@@ -156,7 +254,7 @@ export default function ProductsTable() {
                     scope="row"
                     className="text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white"
                   >
-                    {index + 1}
+                    {index + 1 + (current_page - 1) * 10}
                   </th>
                   <td className="p-3">{item.name}</td>
                   <td className="p-3">{getCategoryByName(item.categoryId)}</td>
@@ -217,6 +315,25 @@ export default function ProductsTable() {
         </table>
       </div>
 
+      {!isGetProductsLoading && total_pages > 1 && (
+        <div className="mt-4 flex justify-center gap-2">
+          <Button
+            isPrimary
+            isButton
+            isDisabled={current_page === 1}
+            title="Prev"
+            onClick={() => handlePagination("prev")}
+          />
+          <Button
+            isPrimary
+            isButton
+            title="Next"
+            isDisabled={current_page === total_pages}
+            onClick={() => handlePagination("next")}
+          />
+        </div>
+      )}
+
       {showModal.show && showModal.type === "Add" && (
         <Modal
           showModal={showModal}
@@ -258,7 +375,7 @@ export default function ProductsTable() {
       {showModal.show && showModal.type === "Edit" && (
         <Modal
           showModal={showModal}
-          title={`${showModal.type} Product ${showModal.id}`}
+          title={`${showModal.type} Product`}
           closeModal={() => handleCloseModal()}
         >
           {success ? (
@@ -347,16 +464,16 @@ export default function ProductsTable() {
                 <Button
                   title="Yes"
                   isButton
-                  isPrimary={selectedProduct.status === 2}
+                  isPrimary={selectedProduct.status === 0}
                   isDanger={selectedProduct.status === 1}
                   isLoading={isSubmitProductLoading}
                   onClick={() =>
                     handleUpdateStatus(selectedProduct.id, () => {
-                      if (selectedProduct.status === 2) {
-                        return 1;
+                      if (selectedProduct.status === 1) {
+                        return 0;
                       }
 
-                      return 2;
+                      return 1;
                     })
                   }
                 />

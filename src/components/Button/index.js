@@ -14,7 +14,9 @@ export default function Button(props) {
 
   props.isPrimary &&
     props.isDisabled &&
-    className.push("bg-green-500 text-white hover:cursor-default");
+    className.push(
+      "bg-primary/60 text-white hover:cursor-default dark:bg-primary/40"
+    );
 
   props.isDanger &&
     className.push("bg-red-500 hover:bg-red-600 text-white duration-300");
@@ -28,7 +30,7 @@ export default function Button(props) {
   props.isBLock && className.push("w-full");
 
   const onClick = () => {
-    props.onClick && props.onClick();
+    props.onClick && !props.isDisabled && props.onClick();
   };
 
   if (props.isLink) {

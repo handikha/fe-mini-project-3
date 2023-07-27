@@ -158,8 +158,8 @@ export default function InputProduct({ productData, categories }) {
 
           {previewImage || productDataImage ? (
             <img
-              alt={`${productData?.name}`}
-              src={previewImage || productDataImage}
+              alt={`http://localhost:5000/${productData?.name}`}
+              src={previewImage || "http://localhost:5000/" + productDataImage}
               className="w-64"
             />
           ) : (

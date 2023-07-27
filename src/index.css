@@ -18,7 +18,7 @@
   }
 
   h3.card-title {
-    @apply select-none text-sm font-bold text-title dark:text-title-dark md:text-base;
+    @apply select-none text-sm font-bold text-title hover:cursor-pointer hover:text-primary dark:text-title-dark dark:hover:text-primary md:text-base;
   }
 
   p {

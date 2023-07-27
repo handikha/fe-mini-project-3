@@ -9,7 +9,8 @@ export const getProducts = createAsyncThunk(
       const { category_id, page, sort, limit } = payload;
       const PARAMETER = `page=${page}&limit=${limit}&category_id=${category_id}&sort=${sort}`;
       const { data } = await api.get("/products?" + encodeURI(PARAMETER));
-      return data.data;
+
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
