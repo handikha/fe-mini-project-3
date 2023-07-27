@@ -8,20 +8,14 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import axios from "axios";
+import { getProducts } from "../../store/slices/products/slices";
+import { getCategories } from "../../store/slices/categories/slices";
+import { useDispatch, useSelector } from "react-redux";
+import LoadingCategories from "./loading.categories";
+import LoadingCards from "./loading.cards";
 
 export default function Cashier() {
-  const [products, setProducts] = useState([]);
-
   const [carts, setCarts] = useState([]);
-
-  const [isShowModal, setIsShowModal] = useState(false);
-
-  useEffect(() => {
-    axios.get("http://127.0.0.1:5000/api/v1/products").then((res) => {
-      setProducts(res.data.data);
-      console.log(res.data.data);
-    });
-  }, []);
 
   const getTotalPrice = (qty, price) => qty * price;
 
@@ -100,6 +94,78 @@ export default function Cashier() {
       });
   };
 
+  // -------------------------------------------------------------------------
+  const dispatch = useDispatch();
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const {
+    isGetProductsLoading,
+    categories,
+    current_page,
+    total_pages,
+    products,
+  } = useSelector((state) => {
+    return {
+      products: state.products.data,
+      isGetProductsLoading: state.products.isGetProductsLoading,
+      categories: state.categories.data,
+      current_page: state.products.current_page,
+      total_pages: state.products.total_pages,
+    };
+  });
+
+  const handleShowModal = (action, id) => {
+    if (action === "Details") {
+      const productData = products.find((item) => item.id === id);
+      setSelectedProduct(productData);
+      setShowModal({ show: true, type: action, id });
+    }
+
+    if (action === "Check Out") {
+      setShowModal({ show: true, type: action });
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handlePagination = (type) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: type === "prev" ? current_page - 1 : current_page + 1,
+        sort: "",
+        limit: 9,
+      })
+    );
+    console.log(current_page);
+  };
+
+  const getCategoryByName = (id) => {
+    const category = categories.find((item) => item.id === id);
+    return category?.name;
+  };
+
+  useEffect(() => {
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort: "",
+        limit: 9,
+      })
+    );
+    dispatch(getCategories());
+  }, [selectedCategory]);
+
   return (
     <div className="container pb-48 pt-20">
       <div className="grid grid-cols-2 gap-4 duration-300 md:grid-cols-2 lg:grid-cols-9">
@@ -136,19 +202,44 @@ export default function Cashier() {
         </div>
 
         <div className="col-span-full grid grid-cols-2 gap-4 md:col-span-6 md:grid-cols-3">
-          {products.length > 0 &&
-            products
-              .map((product, index) => (
-                <Card
-                  key={index}
-                  name={product.name}
-                  price={product.price}
-                  category={product.category.name}
-                  image={product.image}
-                  onClick={(qty) => addItem({ ...product, qty })}
-                />
-              ))
-              .slice(0, 9)}
+          {isGetProductsLoading ? (
+            <LoadingCards />
+          ) : products.length === 0 ? (
+            <div className="col-span-full mt-4 flex justify-center gap-2">
+              <h3>No data to display</h3>
+            </div>
+          ) : (
+            products.map((product, index) => (
+              <Card
+                key={index}
+                name={product.name}
+                price={product.price}
+                category={product.category.name}
+                image={product.image}
+                onClick={(qty) => addItem({ ...product, qty })}
+                showModal={() => handleShowModal("Details", product.id)}
+              />
+            ))
+          )}
+
+          {!isGetProductsLoading && total_pages > 1 && (
+            <div className="col-span-full mt-4 flex justify-center gap-2">
+              <Button
+                isPrimary
+                isButton
+                isDisabled={current_page === 1}
+                title="Prev"
+                onClick={() => handlePagination("prev")}
+              />
+              <Button
+                isPrimary
+                isButton
+                title="Next"
+                isDisabled={current_page === total_pages}
+                onClick={() => handlePagination("next")}
+              />
+            </div>
+          )}
         </div>
 
         {/* CART COMPONENT */}
@@ -220,7 +311,7 @@ export default function Cashier() {
                 isBLock
                 title="Check Out"
                 onClick={() => {
-                  setIsShowModal(true);
+                  handleShowModal("Check Out", null);
                 }}
               />
             </div>
@@ -240,86 +331,112 @@ export default function Cashier() {
         {/* END OF CART COMPONENT */}
       </div>
 
-      <Modal
-        showModal={isShowModal}
-        closeModal={() => {
-          setIsShowModal(false);
-        }}
-        title="Checkout"
-      >
-        <div
-          className={`flex w-full flex-col overflow-auto pr-2 duration-300 lg:h-[70%] ${
-            isCartExpand ? "h-80" : "h-0"
-          }`}
+      {showModal.show && showModal.type === "Check Out" && (
+        <Modal
+          showModal={showModal}
+          closeModal={() => {
+            handleCloseModal(false);
+          }}
+          title={`${showModal.type}`}
         >
-          {carts.map((item, index) => (
-            <div
-              key={index}
-              className={`flex w-full items-center gap-2 border-b-[1px] py-4`}
-            >
-              <div className="aspect-[5/3] h-6 overflow-hidden rounded">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-full w-full object-cover duration-300 group-hover:scale-110"
-                />
-              </div>
-              <div className="flex w-full flex-col">
-                <div className="">
-                  <p className="cart-title">{item.name}</p>
+          <div
+            className={`flex w-full flex-col overflow-auto pr-2 duration-300 lg:h-[70%] ${
+              isCartExpand ? "h-80" : "h-0"
+            }`}
+          >
+            {carts.map((item, index) => (
+              <div
+                key={index}
+                className={`flex w-full items-center gap-2 border-b-[1px] py-4`}
+              >
+                <div className="aspect-[5/3] h-6 overflow-hidden rounded">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-full w-full object-cover duration-300 group-hover:scale-110"
+                  />
                 </div>
+                <div className="flex w-full flex-col">
+                  <div className="">
+                    <p className="cart-title">{item.name}</p>
+                  </div>
 
-                <div className="flex justify-between">
-                  <p className="cart-title">
-                    {formatNumber(item.price)} x{" "}
-                    <span className="font-bold">{item.qty}</span>
-                  </p>
+                  <div className="flex justify-between">
+                    <p className="cart-title">
+                      {formatNumber(item.price)} x{" "}
+                      <span className="font-bold">{item.qty}</span>
+                    </p>
 
-                  <p className="cart-title font-bold">
-                    {formatNumber(getTotalPrice(item.qty, item.price))}
-                  </p>
+                    <p className="cart-title font-bold">
+                      {formatNumber(getTotalPrice(item.qty, item.price))}
+                    </p>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+          <div className={"py-4"}>
+            <Input
+              label="Customer Name"
+              name={"customerName"}
+              onChange={(e) => {
+                handleCustomerData("customerName", e.target.value);
+              }}
+            />
+            <Input
+              label="Pay Amount"
+              name={"payAmount"}
+              type={"number"}
+              onChange={(e) => {
+                handleCustomerData("payAmount", e.target.value);
+              }}
+            />
+            <Input
+              label="Table Number"
+              name={"table"}
+              type={"number"}
+              onChange={(e) => {
+                handleCustomerData("table", e.target.value);
+              }}
+            />
+            <p className="my-4 text-base font-bold text-primary">
+              Grand Total : {formatNumber(getGrandTotal())}
+            </p>
+            <Button
+              className={"my-4"}
+              isButton
+              isPrimary
+              isBLock
+              title="Pay"
+              onClick={handlePay}
+            />
+          </div>
+        </Modal>
+      )}
+
+      {showModal.show && showModal.type === "Details" && (
+        <Modal
+          showModal={showModal}
+          title={`${showModal.type} Product`}
+          closeModal={() => handleCloseModal()}
+        >
+          <div className="flex flex-col">
+            <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
+              <img
+                src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
+                alt={`${selectedProduct.name}`}
+                className="h-full w-full object-cover "
+              />
             </div>
-          ))}
-        </div>
-        <div className={"py-4"}>
-          <Input
-            label="Customer Name"
-            name={"customerName"}
-            onChange={(e) => {
-              handleCustomerData("customerName", e.target.value);
-            }}
-          />
-          <Input
-            label="Pay Amount"
-            name={"payAmount"}
-            type={"number"}
-            onChange={(e) => {
-              handleCustomerData("payAmount", e.target.value);
-            }}
-          />
-          <Input
-            label="Table Number"
-            name={"table"}
-            type={"number"}
-            onChange={(e) => {
-              handleCustomerData("table", e.target.value);
-            }}
-          />
-          <p className="my-4 text-base font-bold text-primary">
-            Grand Total : {formatNumber(getGrandTotal())}
-          </p>
-          <Button
-            className={"my-4"}
-            isButton
-            isPrimary
-            isBLock
-            title="Pay"
-            onClick={handlePay}
-          />
-        </div>
-      </Modal>
+            <h3 className="title mt-4">{selectedProduct.name}</h3>
+            <p>{getCategoryByName(selectedProduct.categoryId)}</p>
+            <p className="card-price mt-2">
+              IDR {formatNumber(selectedProduct.price)}
+            </p>
+            <p className="mt-4">{selectedProduct.description}</p>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

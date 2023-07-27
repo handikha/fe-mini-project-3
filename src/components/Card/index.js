@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import products from "../../json/products.json";
-import categories from "../../json/categories.json";
-import { useNavigate } from "react-router-dom";
+
 import Button from "../Button";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import formatNumber from "../../utils/formatNumber";
-import { useState } from "react";
 import Modal from "../Modal";
 
-export default function Card({ name, image, category, onClick, price }) {
+export default function Card({
+  name,
+  image,
+  category,
+  onClick,
+  showModal,
+  price,
+}) {
   const [count, setCount] = useState(0);
 
   return (
@@ -23,7 +27,7 @@ export default function Card({ name, image, category, onClick, price }) {
       </div>
 
       <div className="">
-        <h3 className="card-title" onClick={onClick}>
+        <h3 className="card-title" onClick={showModal}>
           {name}
         </h3>
         <p>{category}</p>
@@ -73,65 +77,65 @@ export default function Card({ name, image, category, onClick, price }) {
   );
 }
 
-export default function RenderCards({ products, categories }) {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+// export default function RenderCards({ products, categories }) {
+//   const [showModal, setShowModal] = useState(false);
+//   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const getCategoryByName = (id) => {
-    const category = categories.find((item) => item.id === id);
-    return category?.name;
-  };
+//   const getCategoryByName = (id) => {
+//     const category = categories.find((item) => item.id === id);
+//     return category?.name;
+//   };
 
-  const handleShowModal = (action, id) => {
-    if (action === "Details") {
-      const productData = products.find((item) => item.id === id);
-      setSelectedProduct(productData);
-      setShowModal({ show: true, type: action, id });
-      console.log(id);
-    }
-  };
+//   const handleShowModal = (action, id) => {
+//     if (action === "Details") {
+//       const productData = products.find((item) => item.id === id);
+//       setSelectedProduct(productData);
+//       setShowModal({ show: true, type: action, id });
+//       console.log(id);
+//     }
+//   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+//   const handleCloseModal = () => {
+//     setShowModal(false);
+//   };
 
-  return (
-    <>
-      {products.map((product, index) => (
-        <Card
-          key={index}
-          name={product.name}
-          price={product.price}
-          category={getCategoryByName(product.categoryId)}
-          image={product.image}
-          onClick={() => handleShowModal("Details", product.id)}
-          id={product.id}
-        />
-      ))}
+//   return (
+//     <>
+//       {products.map((product, index) => (
+//         <Card
+//           key={index}
+//           name={product.name}
+//           price={product.price}
+//           category={getCategoryByName(product.categoryId)}
+//           image={product.image}
+//           onClick={() => handleShowModal("Details", product.id)}
+//           id={product.id}
+//         />
+//       ))}
 
-      {showModal.show && showModal.type === "Details" && (
-        <Modal
-          showModal={showModal}
-          title={`${showModal.type} Product`}
-          closeModal={() => handleCloseModal()}
-        >
-          <div className="flex flex-col">
-            <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
-              <img
-                src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
-                alt={`${selectedProduct.name}`}
-                className="h-full w-full object-cover "
-              />
-            </div>
-            <h3 className="title mt-4">{selectedProduct.name}</h3>
-            <p>{getCategoryByName(selectedProduct.categoryId)}</p>
-            <p className="card-price mt-2">
-              IDR {formatNumber(selectedProduct.price)}
-            </p>
-            <p className="mt-4">{selectedProduct.description}</p>
-          </div>
-        </Modal>
-      )}
-    </>
-  );
-}
+//       {showModal.show && showModal.type === "Details" && (
+//         <Modal
+//           showModal={showModal}
+//           title={`${showModal.type} Product`}
+//           closeModal={() => handleCloseModal()}
+//         >
+//           <div className="flex flex-col">
+//             <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
+//               <img
+//                 src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
+//                 alt={`${selectedProduct.name}`}
+//                 className="h-full w-full object-cover "
+//               />
+//             </div>
+//             <h3 className="title mt-4">{selectedProduct.name}</h3>
+//             <p>{getCategoryByName(selectedProduct.categoryId)}</p>
+//             <p className="card-price mt-2">
+//               IDR {formatNumber(selectedProduct.price)}
+//             </p>
+//             <p className="mt-4">{selectedProduct.description}</p>
+//           </div>
+//         </Modal>
+//       )}
+//     </>
+//   );
+// }
