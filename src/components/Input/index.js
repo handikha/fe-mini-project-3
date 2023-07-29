@@ -10,7 +10,7 @@ const Input = React.forwardRef(
 
     if (type === "password") {
       return (
-        <div className="relative">
+        <div className='relative'>
           <input
             ref={ref}
             type={showPassword ? "text" : "password"}
@@ -23,13 +23,13 @@ const Input = React.forwardRef(
             onChange={onChange}
           />
           <span
-            className="absolute bottom-1/2 right-2 flex aspect-square h-1/2 translate-y-1/2 cursor-pointer select-none items-center justify-center"
+            className='absolute bottom-1/2 right-2 flex aspect-square h-1/2 translate-y-1/2 cursor-pointer select-none items-center justify-center'
             onClick={() => setShowPassword((prevState) => !prevState)}
           >
             {showPassword ? (
-              <HiOutlineEye className="text-xl" />
+              <HiOutlineEye className='text-xl' />
             ) : (
-              <HiOutlineEyeSlash className="text-xl" />
+              <HiOutlineEyeSlash className='text-xl' />
             )}
           </span>
         </div>
@@ -39,7 +39,7 @@ const Input = React.forwardRef(
     if (type === "textarea") {
       return (
         <>
-          <div className="">
+          <div className=''>
             {label && <label htmlFor={id}>{label}</label>}
             <textarea
               ref={ref}
@@ -47,8 +47,8 @@ const Input = React.forwardRef(
               name={name}
               className={className}
               id={id}
-              cols="30"
-              rows="5"
+              cols='30'
+              rows='5'
               placeholder={placeholder}
               autoFocus={autoFocus}
               onChange={onChange}
@@ -60,7 +60,7 @@ const Input = React.forwardRef(
 
     return (
       <>
-        <div className="">
+        <div className=''>
           {label && <label htmlFor={id}>{label}</label>}
           <input
             ref={ref}
