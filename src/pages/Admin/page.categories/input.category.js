@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import { inputCategorySchema } from "../../store/slices/categories/validation";
+import Input from "../../../components/Input";
+import Button from "../../../components/Button";
+import { inputCategorySchema } from "../../../store/slices/categories/validation";
 import {
   createCategory,
   updateCategory,
-} from "../../store/slices/categories/slices";
+} from "../../../store/slices/categories/slices";
 import { useDispatch, useSelector } from "react-redux";
-import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
+import { capitalizeEachWords } from "../../../utils/capitalizeEachWords";
 
 export default function InputCategory({ categoryData }) {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ export default function InputCategory({ categoryData }) {
       isSubmitCategoryLoading: state.categories.isSubmitCategoryLoading,
     };
   });
-
   useEffect(() => {
     if (categoryData) {
       categoryNameRef.current.value = categoryData.name || "";
@@ -29,7 +28,6 @@ export default function InputCategory({ categoryData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const inputValue = capitalizeEachWords(categoryNameRef.current.value);
-
     try {
       await inputCategorySchema.validate({ category: inputValue });
       setError("");
@@ -58,11 +56,12 @@ export default function InputCategory({ categoryData }) {
       <Input
         ref={categoryNameRef}
         type="text"
-        placeholder="Category Name"
+        placeholder="ex: Beverages"
         id="category"
         name="category"
         label="Category Name"
         autoFocus
+        errorInput={error}
       />
       {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
 
@@ -72,7 +71,6 @@ export default function InputCategory({ categoryData }) {
         title={categoryData ? "Edit Category" : "Add Category"}
         type="submit"
         isLoading={isSubmitCategoryLoading}
-        // onClick={handleShowModal}
       />
     </form>
   );

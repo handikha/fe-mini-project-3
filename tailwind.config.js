@@ -16,6 +16,7 @@ module.exports = {
       },
       colors: {
         primary: "#16a34a", //cyan-500
+        danger: "#ef4444",
         light: "#cbd5e1", //slate-300
         title: "#334155", //slate-700
         "title-dark": "#cbd5e1", //slate-300

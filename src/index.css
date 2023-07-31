@@ -14,7 +14,7 @@
   }
 
   h3.title {
-    @apply text-lg font-bold text-title dark:text-title-dark md:text-xl;
+    @apply text-xl font-bold text-title dark:text-title-dark md:text-2xl;
   }
 
   h3.card-title {
@@ -38,7 +38,7 @@
   }
 
   ::-webkit-scrollbar {
-    @apply h-2 w-2;
+    @apply h-0 w-2;
   }
 
   ::-webkit-scrollbar-track {
@@ -61,8 +61,8 @@
 @layer components {
   @import url("./components/Navbar/index.css");
   @import url("./components/Card/index.css");
+  @import url("./components/Input/index.css");
 
-  input,
   textarea {
     @apply rounded-md border border-primary/50 py-1 focus:outline-none focus:ring-2 focus:ring-primary/50;
   }

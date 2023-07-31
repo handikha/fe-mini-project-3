@@ -86,6 +86,7 @@ export default function NavMenu({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
+    localStorage.removeItem("theme")
     dispatch(logout());
     navigate("/");
   };
@@ -130,7 +131,7 @@ export default function NavMenu({
         </AnimatePresence>
 
         <Button
-          path={user?.role === 1 ? "/admin" : "/cashier"}
+          path={user?.role === 1 ? "/admin/dashboard" : "/cashier"}
           className={`nav-menu-item flex items-center gap-3`}
           isLink
           onClick={closeNavMenu}
