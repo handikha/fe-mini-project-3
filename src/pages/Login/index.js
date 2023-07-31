@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
@@ -8,7 +8,6 @@ import { loginValidationSchema } from "../../store/slices/auth/validation";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Login() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { role } = useSelector((state) => {
@@ -91,11 +90,11 @@ export default function Login() {
   }, []);
 
   if (role === 1) {
-    return navigate("/admin");
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   if (role === 2) {
-    return navigate("/cashier");
+    return <Navigate to="/cashier" replace />;
   }
 
   return (

@@ -5,11 +5,26 @@ import Dashboard from "./dashboard";
 import { Toaster } from "react-hot-toast";
 import Products from "./page.products";
 import Categories from "./page.categories";
+import { useEffect } from "react";
 
 export default function Admin({ user }) {
   const navigate = useNavigate();
   const isVerified = false;
   const { context } = useParams();
+
+  useEffect(() => {
+    const allowedContext = [
+      "dashboard",
+      "products",
+      "users",
+      "categories",
+    ].find((item) => item === context);
+    console.log(allowedContext);
+
+    if (!allowedContext) {
+      return navigate("/not-found", { replace: true });
+    }
+  }, [context]);
 
   if (!user.role) {
     return navigate("/");

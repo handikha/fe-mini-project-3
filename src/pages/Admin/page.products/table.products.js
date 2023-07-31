@@ -27,42 +27,21 @@ export default function ProductsTable({
 }) {
   const dispatch = useDispatch();
 
-  const handleSortPrice = (type) => {
-    setSortName(null);
+  const handleSort = (type, sortBy) => {
+    if (sortBy === "price") setSortName(null);
+    if (sortBy === "name") setSortPrice(null);
 
-    if (type === "ASC") {
-      setSortPrice(true);
-    } else {
-      setSortPrice(false);
-    }
-
-    dispatch(
-      getProducts({
-        category_id: selectedCategory,
-        page: 1,
-        sort_name: "",
-        sort_price: type,
-        limit: 10,
-        keywords: keywords ? keywords.current.value : "",
-      })
-    );
-  };
-
-  const handleSortName = (type) => {
-    setSortPrice(null);
-
-    if (type === "ASC") {
-      setSortName(true);
-    } else {
-      setSortName(false);
-    }
+    if (type === "ASC" && sortBy === "name") setSortName(true);
+    if (type === "DESC" && sortBy === "name") setSortName(false);
+    if (type === "ASC" && sortBy === "price") setSortPrice(true);
+    if (type === "DESC" && sortBy === "price") setSortPrice(false);
 
     dispatch(
       getProducts({
         category_id: selectedCategory,
         page: 1,
-        sort_name: type,
-        sort_price: null,
+        sort_name: sortBy === "name" ? type : "",
+        sort_price: sortBy === "price" ? type : "",
         limit: 10,
         keywords: keywords ? keywords.current.value : "",
       })
@@ -88,7 +67,7 @@ export default function ProductsTable({
                   className="bg-light duration-300 dark:bg-dark-gray"
                   title={<BsDash />}
                   onClick={() => {
-                    handleSortName("ASC");
+                    handleSort("ASC", "name");
                   }}
                 />
               ) : sortName ? (
@@ -97,7 +76,7 @@ export default function ProductsTable({
                   className="bg-light duration-300 dark:bg-dark-gray"
                   title={<BsSortAlphaDown className="text-xl" />}
                   onClick={() => {
-                    handleSortName("DESC");
+                    handleSort("DESC", "name");
                   }}
                 />
               ) : (
@@ -106,7 +85,7 @@ export default function ProductsTable({
                   className="bg-light duration-300 dark:bg-dark-gray"
                   title={<BsSortAlphaUp className="text-xl" />}
                   onClick={() => {
-                    handleSortName("ASC");
+                    handleSort("ASC", "name");
                   }}
                 />
               )}
@@ -122,7 +101,7 @@ export default function ProductsTable({
                   title={<BsDash />}
                   className="bg-light p-1 duration-300 dark:bg-dark-gray"
                   onClick={() => {
-                    handleSortPrice("ASC");
+                    handleSort("ASC", "price");
                   }}
                 />
               ) : sortPrice ? (
@@ -131,7 +110,7 @@ export default function ProductsTable({
                   title={<BsArrowUpShort className="text-xl" />}
                   className="bg-light p-1 duration-300 dark:bg-dark-gray"
                   onClick={() => {
-                    handleSortPrice("DESC");
+                    handleSort("DESC", "price");
                   }}
                 />
               ) : (
@@ -140,7 +119,7 @@ export default function ProductsTable({
                   title={<BsArrowDownShort className="text-xl" />}
                   className="bg-light p-1 duration-300 dark:bg-dark-gray"
                   onClick={() => {
-                    handleSortPrice("ASC");
+                    handleSort("ASC", "price");
                   }}
                 />
               )}
