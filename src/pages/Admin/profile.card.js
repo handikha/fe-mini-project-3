@@ -12,7 +12,7 @@ export default function ProfileCard({
   const profileMenus = [
     {
       title: "Dashboard",
-      path: "/admin",
+      path: "/admin/dashboard",
     },
     {
       title: "Products",
