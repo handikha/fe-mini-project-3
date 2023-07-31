@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import Button from "../../components/Button";
 
 export default function ProfileCard({
@@ -26,12 +27,15 @@ export default function ProfileCard({
       path: "/admin/categories",
     },
   ];
+
+  const location = useLocation();
+
   return (
     <div className="relative col-span-full md:col-span-1">
-      <div className="top-24 flex flex-col pr-4 md:sticky md:border-r-2 md:border-light dark:md:border-dark-gray">
+      <div className="top-24 flex flex-col md:sticky md:border-r-2 md:border-light md:pr-4 dark:md:border-dark-gray">
         <div className="flex items-center gap-x-6 md:flex-col md:items-start">
           <div className="h-16 w-16 md:mb-4 md:aspect-square md:h-fit md:w-5/6">
-            <div className="overflow-hidden rounded-full">
+            <div className="aspect-square overflow-hidden rounded-full">
               <img
                 src={"http://127.0.0.1:5000/" + profileImg}
                 alt=""
@@ -46,9 +50,16 @@ export default function ProfileCard({
             </p>
           </div>
         </div>
-        <div className="mt-4 flex gap-x-6 gap-y-2 md:flex-col">
+        <div className="mt-4 flex gap-x-3 gap-y-2 md:flex-col">
           {profileMenus.map((menu, index) => (
             <Button
+              className={`
+                ${
+                  location.pathname === menu.path
+                    ? "font-bold text-primary"
+                    : null
+                }
+              `}
               key={index}
               isLink
               title={menu.title}

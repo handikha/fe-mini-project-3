@@ -2,11 +2,33 @@ import React, { useState } from "react";
 import { HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2";
 
 const Input = React.forwardRef(
-  ({ value, type, name, id, placeholder, autoFocus, onChange, label }, ref) => {
+  (
+    {
+      value,
+      type,
+      name,
+      id,
+      placeholder,
+      autoFocus,
+      onChange,
+      label,
+      className,
+      errorInput,
+    },
+    ref
+  ) => {
     const [showPassword, setShowPassword] = useState(false);
 
-    const className =
-      "w-full rounded-lg border bg-inherit px-2 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:focus:ring-primary";
+    const inputClass = [className];
+
+    inputClass.push(
+      `w-full rounded-lg border bg-inherit px-2 py-2 outline-none focus:ring-2 ${
+        errorInput
+          ? "focus:ring-danger/50 dark:focus:ring-danger border-danger/50 focus:border-danger"
+          : "focus:ring-primary/50 dark:focus:ring-primary border-primary/50 focus:border-primary"
+      }`
+    );
+    // rounded-md border py-1 focus:outline-none focus:ring-2 focus:ring-primary/50
 
     if (type === "password") {
       return (
@@ -15,7 +37,7 @@ const Input = React.forwardRef(
             ref={ref}
             type={showPassword ? "text" : "password"}
             name={name}
-            className={className}
+            className={inputClass.join(" ")}
             id={id}
             placeholder={placeholder}
             autoFocus={autoFocus}
@@ -45,7 +67,7 @@ const Input = React.forwardRef(
               ref={ref}
               value={value}
               name={name}
-              className={className}
+              className={inputClass.join(" ")}
               id={id}
               cols="30"
               rows="5"
@@ -67,7 +89,7 @@ const Input = React.forwardRef(
             value={value}
             type={type}
             name={name}
-            className={className}
+            className={inputClass.join(" ")}
             id={id}
             placeholder={placeholder}
             autoFocus={autoFocus}

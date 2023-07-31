@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+import Input from "../../../components/Input";
+import Button from "../../../components/Button";
 import { useDropzone } from "react-dropzone";
-import { capitalizeEachWords } from "../../utils/capitalizeEachWords";
+import { capitalizeEachWords } from "../../../utils/capitalizeEachWords";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createProduct,
   updateProduct,
-} from "../../store/slices/products/slices";
+} from "../../../store/slices/products/slices";
+import {
+  inputProductValidationSchema,
+  updateProductValidationSchema,
+} from "../../../store/slices/products/validation";
+import Toast from "react-hot-toast";
 
 export default function InputProduct({ productData, categories }) {
   const dispatch = useDispatch();
@@ -79,16 +84,38 @@ export default function InputProduct({ productData, categories }) {
       price: priceRef.current?.value,
       categoryId: categoryRef.current?.value,
       description: descriptionRef.current?.value,
+      image: file,
     };
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(inputProductData));
-    formData.append("file", file);
+    if (file) formData.append("file", file);
 
-    if (productData) {
-      dispatch(updateProduct({ id: productData.id, formData }));
-    } else {
-      dispatch(createProduct(formData));
+    // Validasi data produk menggunakan schema
+    try {
+      if (productData) {
+        await updateProductValidationSchema.validate(inputProductData, {
+          abortEarly: false,
+        });
+
+        setError("");
+        dispatch(updateProduct({ id: productData.id, formData }));
+      } else {
+        await inputProductValidationSchema.validate(inputProductData, {
+          abortEarly: false,
+        });
+
+        setError("");
+        dispatch(createProduct(formData));
+      }
+    } catch (error) {
+      const errors = {};
+
+      Toast.error("Check your input fields");
+      error.inner.forEach((innerError) => {
+        errors[innerError.path] = innerError.message;
+      });
+      setError(errors);
     }
   };
 
@@ -97,22 +124,33 @@ export default function InputProduct({ productData, categories }) {
       className="flex max-h-[400px] flex-col gap-3 overflow-y-auto px-2 py-2"
       onSubmit={handleSubmit}
     >
-      <Input
-        ref={nameRef}
-        type="text"
-        placeholder="Product Name"
-        name="name"
-        label="Product Name"
-        id="name"
-        autoFocus
-      />
-      {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
+      <div className="">
+        <Input
+          ref={nameRef}
+          type="text"
+          placeholder="ex: Sausage Roll"
+          name="name"
+          label="Product Name"
+          id="name"
+          errorInput={error.name}
+          onChange={() => setError({ ...error, name: false })}
+          autoFocus
+        />
+        {error.name && (
+          <div className=" text-red-500 dark:text-red-400">{error.name}</div>
+        )}
+      </div>
 
       <label htmlFor="categories">Category</label>
       <select
         ref={categoryRef}
         id="categories"
-        className="-mt-3 w-full rounded-lg border border-primary/50 bg-inherit px-1 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-slate-800 dark:focus:ring-primary"
+        onChange={() => setError({ ...error, categoryId: false })}
+        className={`-mt-3 w-full rounded-lg border bg-inherit px-2 py-2 outline-none  focus:ring-2 ${
+          error.categoryId
+            ? "border-danger/50 focus:border-danger focus:ring-danger/50 dark:focus:ring-danger"
+            : "border-primary/50 focus:border-primary focus:ring-primary/50 dark:focus:ring-primary"
+        }`}
       >
         <option value="" className="text-light-gray">
           Select Category
@@ -123,23 +161,44 @@ export default function InputProduct({ productData, categories }) {
           </option>
         ))}
       </select>
+      {error.categoryId && (
+        <div className=" text-red-500 dark:text-red-400">
+          {error.categoryId}
+        </div>
+      )}
 
-      <Input
-        ref={priceRef}
-        type="text"
-        placeholder="Price"
-        name="price"
-        label="Price"
-        id="price"
-      />
+      <div className="">
+        <Input
+          ref={priceRef}
+          type="number"
+          placeholder="ex: 35000"
+          name="price"
+          label="Price"
+          id="price"
+          errorInput={error.price}
+          onChange={() => setError({ ...error, price: false })}
+        />
+        {error.price && (
+          <div className=" text-red-500 dark:text-red-400">{error.price}</div>
+        )}
+      </div>
 
-      <Input
-        ref={descriptionRef}
-        type="textarea"
-        name="description"
-        label="Description"
-        id="description"
-      />
+      <div className="">
+        <Input
+          ref={descriptionRef}
+          type="textarea"
+          name="description"
+          label="Description"
+          id="description"
+          errorInput={error.description}
+          onChange={() => setError({ ...error, description: false })}
+        />
+        {error.description && (
+          <div className=" text-red-500 dark:text-red-400">
+            {error.description}
+          </div>
+        )}
+      </div>
 
       {/* INPUT IMAGE */}
       <div className="flex h-fit w-full flex-col items-center justify-center px-4">
@@ -149,12 +208,15 @@ export default function InputProduct({ productData, categories }) {
 
         <div
           {...getRootProps({
-            className: `w-full h-fit flex items-center justify-center flex-col p-4 border-2 border-dark border-dashed rounded-md ${
-              isDragActive ? "bg-teal-200/30" : null
-            }`,
+            className: `w-full h-fit flex items-center justify-center flex-col p-4 border-2 border-dark
+            border-dashed rounded-md ${isDragActive ? "bg-teal-200/30" : null}`,
           })}
         >
-          <input {...getInputProps({ name: "image" })} />
+          <input
+            {...getInputProps({
+              name: "image",
+            })}
+          />
 
           {previewImage || productDataImage ? (
             <img
@@ -166,9 +228,16 @@ export default function InputProduct({ productData, categories }) {
             <>
               <p className="md:text-md text-center text-sm text-slate-400">
                 {file === null && (
-                  <span className="select-none">
-                    Drag & Drop your image here
-                  </span>
+                  <>
+                    <span className="select-none">
+                      Drag & Drop your image here
+                    </span>
+                    {error.image && (
+                      <div className="text-base text-red-500 dark:text-red-400">
+                        {error.image}
+                      </div>
+                    )}
+                  </>
                 )}
               </p>
             </>
@@ -195,6 +264,7 @@ export default function InputProduct({ productData, categories }) {
           </div>
         )}
       </div>
+
       {productData ? (
         <Button
           isButton
@@ -202,7 +272,7 @@ export default function InputProduct({ productData, categories }) {
           title="Edit Product"
           className="mt-4"
           type="submit"
-          // onClick={handleShowModal}
+          isLoading={isSubmitProductLoading}
         />
       ) : (
         <Button
