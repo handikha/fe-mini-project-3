@@ -86,6 +86,7 @@ export default function NavMenu({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
+    localStorage.removeItem("theme")
     dispatch(logout());
     navigate("/");
   };
