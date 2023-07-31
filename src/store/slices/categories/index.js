@@ -10,6 +10,9 @@ const INITIAL_STATE = {
   data: [],
   message: null,
   success: false,
+  total_pages: null,
+  current_page: null,
+  next_page: null,
   isGetCategoriesLoading: false,
   isSubmitCategoryLoading: false,
   isDeleteCategoryLoading: false,
@@ -30,7 +33,10 @@ const categoriesSlice = createSlice({
       })
       .addCase(getCategories.fulfilled, (state, action) => {
         state.isGetCategoriesLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.data;
+        state.total_pages = action.payload.total_pages;
+        state.current_page = action.payload.current_page;
+        state.next_page = action.payload.next_page;
       })
       .addCase(getCategories.rejected, (state, action) => {
         state.isGetCategoriesLoading = false;

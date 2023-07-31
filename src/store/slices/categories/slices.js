@@ -6,7 +6,10 @@ export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await api.get("/categories");
+      const { sort, page, limit } = payload;
+      const { data } = await api.get(
+        `/categories?page=${page}&limit=${limit}&sort=${sort}`
+      );
       return data;
     } catch (error) {
       Toast.error(error.response.data.message);
@@ -53,7 +56,7 @@ export const deleteCategory = createAsyncThunk(
       await api.delete("/categories/" + encodeURI(payload));
       // Toast.success("Category deleted successfully");
     } catch (error) {
-      // Toast.error(error.response.data.message);
+      Toast.error(error.response.data.message);
       return rejectWithValue(error.response.data.message);
     }
   }

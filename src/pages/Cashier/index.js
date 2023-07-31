@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Card from "../../components/Card";
-import Button from "../../components/Button";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import formatNumber from "../../utils/formatNumber";
-import { HiOutlineTrash } from "react-icons/hi2";
-import Modal from "../../components/Modal";
-import Input from "../../components/Input";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getProducts } from "../../store/slices/products/slices";
 import { getCategories } from "../../store/slices/categories/slices";
-import { useDispatch, useSelector } from "react-redux";
-import LoadingCategories from "./loading.categories";
-import LoadingCards from "./loading.cards";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
+import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
+import Modal from "../../components/Modal";
+import Input from "../../components/Input";
+import Card from "../../components/Card";
+import Button from "../../components/Button";
+import LoadingCategories from "./component.loading.categories";
+import LoadingCards from "./component.loading.cards";
+import RenderModals from "./modals";
+import formatNumber from "../../utils/formatNumber";
+import FilterProducts from "./component.filter.products";
 
 export default function Cashier() {
   const [carts, setCarts] = useState([]);
@@ -93,8 +95,8 @@ export default function Cashier() {
   // -------------------------------------------------------------------------
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const searchRef = useRef(null);
 
   const {
     isGetProductsLoading,
@@ -114,6 +116,7 @@ export default function Cashier() {
     };
   });
 
+  const [showModal, setShowModal] = useState(false);
   const handleShowModal = (action, id) => {
     if (action === "Details") {
       const productData = products.find((item) => item.id === id);
@@ -140,11 +143,27 @@ export default function Cashier() {
       getProducts({
         category_id: selectedCategory,
         page: type === "prev" ? current_page - 1 : current_page + 1,
-        sort: "",
-        limit: 9,
+        sort_name: "",
+        sort_price: "",
+        limit: 12,
+        keywords: "",
       })
     );
-    console.log(current_page);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort_name: "",
+        sort_price: "",
+        limit: 12,
+        keywords: searchRef.current.value,
+      })
+    );
   };
 
   const getCategoryByName = (id) => {
@@ -157,16 +176,43 @@ export default function Cashier() {
       getProducts({
         category_id: selectedCategory,
         page: 1,
-        sort: "",
-        limit: 9,
+        sort_name: "",
+        sort_price: "",
+        limit: 12,
+        keywords: "",
       })
     );
-    dispatch(getCategories());
+    dispatch(
+      getCategories({
+        page: 1,
+        sort: "",
+        limit: "",
+      })
+    );
   }, [selectedCategory]);
 
   return (
     <div className="container pb-48 pt-20">
       <div className="grid grid-cols-2 gap-4 duration-300 md:grid-cols-2 lg:grid-cols-9">
+        <div className="col-span-full flex gap-2 lg:col-span-3">
+          <form className="relative w-full " onSubmit={handleSearch}>
+            <Input
+              ref={searchRef}
+              type="text"
+              placeholder="Search product..."
+            />
+            <button
+              type="submit"
+              className="absolute right-0 top-0 cursor-pointer p-[11px] duration-300 hover:text-primary"
+            >
+              <HiMagnifyingGlass className="text-xl " />
+            </button>
+          </form>
+          <FilterProducts
+            selectedCategory={selectedCategory}
+            keywords={searchRef.current?.value}
+          />
+        </div>
         <div className="col-span-full flex gap-3 overflow-auto py-2">
           {isGetCategoriesLoading ? (
             <LoadingCategories />
@@ -225,7 +271,7 @@ export default function Cashier() {
           )}
 
           {!isGetProductsLoading && total_pages > 1 && (
-            <div className="col-span-full mt-4 flex justify-center gap-2">
+            <div className="col-span-full mt-4 flex h-fit justify-center gap-2">
               <Button
                 isPrimary
                 isButton
@@ -333,6 +379,7 @@ export default function Cashier() {
         {/* END OF CART COMPONENT */}
       </div>
 
+      {/*NEED REFACTOR */}
       {showModal.show && showModal.type === "Check Out" && (
         <Modal
           showModal={showModal}
@@ -416,29 +463,15 @@ export default function Cashier() {
         </Modal>
       )}
 
-      {showModal.show && showModal.type === "Details" && (
-        <Modal
-          showModal={showModal}
-          title={`${showModal.type} Product`}
-          closeModal={() => handleCloseModal()}
-        >
-          <div className="flex flex-col">
-            <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
-              <img
-                src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
-                alt={`${selectedProduct.name}`}
-                className="h-full w-full object-cover "
-              />
-            </div>
-            <h3 className="title mt-4">{selectedProduct.name}</h3>
-            <p>{getCategoryByName(selectedProduct.categoryId)}</p>
-            <p className="card-price mt-2">
-              IDR {formatNumber(selectedProduct.price)}
-            </p>
-            <p className="mt-4">{selectedProduct.description}</p>
-          </div>
-        </Modal>
-      )}
+      <RenderModals
+        showModal={showModal.show}
+        type={showModal.type}
+        selectedProduct={selectedProduct}
+        handleCloseModal={handleCloseModal}
+        category={getCategoryByName(selectedProduct?.categoryId)}
+        carts={carts}
+        isCartExpand={isCartExpand}
+      />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Button(props) {
   const className = [props.className];
-  props.isButton && className.push("px-8 py-2 rounded-lg select-none");
+  props.isButton && className.push("px-6 py-2 rounded-lg select-none");
 
   props.isSmall && className.push("px-2 py-1 rounded-md select-none");
 
@@ -75,7 +75,7 @@ Button.propTypes = {
   type: propTypes.oneOf(["button", "submit"]),
   onClick: propTypes.func,
   path: propTypes.string,
-  title: propTypes.string,
+  title: propTypes.oneOfType([propTypes.string, propTypes.object]),
   className: propTypes.string,
   isDisabled: propTypes.bool,
   isLoading: propTypes.bool,
