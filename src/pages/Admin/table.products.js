@@ -144,21 +144,21 @@ export default function ProductsTable() {
   };
   return (
     <>
-      <div className="col-span-full mb-4 flex justify-between">
+      <div className='col-span-full mb-4 flex justify-between'>
         <h3>Products</h3>
         <Button
           isButton
           isPrimary
-          className=" flex items-center gap-2"
+          className=' flex items-center gap-2'
           onClick={() => handleShowModal("Add")}
         >
           <FaPlus /> Add Product
         </Button>
       </div>
 
-      <div className="col-span-full flex gap-3 overflow-auto py-2">
+      <div className='col-span-full flex gap-3 overflow-auto py-2'>
         <Button
-          title="All"
+          title='All'
           isSmall
           onClick={() => {
             setSelectedCategory("");
@@ -186,21 +186,21 @@ export default function ProductsTable() {
         ))}
       </div>
 
-      <div className="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="text-gray-500 dark:text-gray-400 w-full text-left text-sm">
-          <thead className="text-gray-700 dark:bg-gray-700 dark:text-gray-400 bg-slate-100 text-sm uppercase dark:bg-slate-800">
+      <div className='relative mt-4 overflow-x-auto shadow-md sm:rounded-lg'>
+        <table className='text-gray-500 dark:text-gray-400 w-full text-left text-sm'>
+          <thead className='text-gray-700 dark:bg-gray-700 dark:text-gray-400 bg-slate-100 text-sm uppercase dark:bg-slate-800'>
             <tr>
-              <th className="p-3">#</th>
-              <th className="p-3">
-                <span className="flex items-center justify-between">
+              <th className='p-3'>#</th>
+              <th className='p-3'>
+                <span className='flex items-center justify-between'>
                   Product Name{" "}
                   <Button
                     isSmall
-                    className="bg-primary/80 text-slate-100 dark:bg-primary/60"
+                    className='bg-primary/80 text-slate-100 dark:bg-primary/60'
                   >
                     {asc ? (
                       <BsSortAlphaDown
-                        className="text-xl"
+                        className='text-xl'
                         onClick={() => {
                           setAsc(false);
                           handleSort("DESC");
@@ -208,7 +208,7 @@ export default function ProductsTable() {
                       />
                     ) : (
                       <BsSortAlphaDownAlt
-                        className="text-xl"
+                        className='text-xl'
                         onClick={() => {
                           setAsc(true);
                           handleSort("ASC");
@@ -218,25 +218,25 @@ export default function ProductsTable() {
                   </Button>
                 </span>
               </th>
-              <th className="p-3">Category</th>
-              <th className="p-3">Price</th>
-              <th className="p-3">Image</th>
-              <th className="p-3">Satus</th>
-              <th className="p-3">Actions</th>
+              <th className='p-3'>Category</th>
+              <th className='p-3'>Price</th>
+              <th className='p-3'>Image</th>
+              <th className='p-3'>Satus</th>
+              <th className='p-3'>Actions</th>
             </tr>
           </thead>
           <tbody>
             {isGetProductsLoading ? (
-              <tr className="text-center">
-                <td colSpan={7} className="p-3">
-                  <div className="mx-auto block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent">
-                    <span className="sr-only">Loading...</span>
+              <tr className='text-center'>
+                <td colSpan={7} className='p-3'>
+                  <div className='mx-auto block h-6 w-6 animate-spin rounded-full border-[3px] border-r-transparent'>
+                    <span className='sr-only'>Loading...</span>
                   </div>
                 </td>
               </tr>
             ) : products.length === 0 ? (
-              <tr className="text-center">
-                <td colSpan={7} className="p-3">
+              <tr className='text-center'>
+                <td colSpan={7} className='p-3'>
                   No data to display
                 </td>
               </tr>
@@ -249,28 +249,28 @@ export default function ProductsTable() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.1, delay: index * 0.05 }}
                   key={index}
-                  className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/40"
+                  className='cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/40'
                   onClick={() => handleShowModal("Details", item.id)}
                 >
                   <th
-                    scope="row"
-                    className="text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white"
+                    scope='row'
+                    className='text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white'
                   >
                     {index + 1 + (current_page - 1) * 10}
                   </th>
-                  <td className="p-3">{item.name}</td>
-                  <td className="p-3">{getCategoryByName(item.categoryId)}</td>
-                  <td className="p-3">IDR {formatNumber(item.price)}</td>
-                  <td className="p-3">
-                    <div className="aspect-[4/3] w-10">
+                  <td className='p-3'>{item.name}</td>
+                  <td className='p-3'>{getCategoryByName(item.categoryId)}</td>
+                  <td className='p-3'>IDR {formatNumber(item.price)}</td>
+                  <td className='p-3'>
+                    <div className='aspect-[4/3] w-10'>
                       <img
                         src={"http://127.0.0.1:5000/" + item.image}
                         alt={`${item.name}`}
-                        className="h-full w-full object-cover"
+                        className='h-full w-full object-cover'
                       />
                     </div>
                   </td>
-                  <td className="p-3">
+                  <td className='p-3'>
                     {item.status === 1 ? (
                       <Button
                         isSmall
@@ -294,20 +294,20 @@ export default function ProductsTable() {
                     )}
                   </td>
 
-                  <td className="flex gap-2 p-3">
+                  <td className='flex gap-2 p-3'>
                     <Button
                       isSmall
                       isWarning
                       onClick={() => handleShowModal("Edit", item?.id)}
                     >
-                      <HiOutlinePencilSquare className="text-lg" />
+                      <HiOutlinePencilSquare className='text-lg' />
                     </Button>
                     <Button
                       isSmall
                       isDanger
                       onClick={() => handleShowModal("Delete", item.id)}
                     >
-                      <HiOutlineTrash className="text-lg" />
+                      <HiOutlineTrash className='text-lg' />
                     </Button>
                   </td>
                 </motion.tr>
@@ -318,18 +318,18 @@ export default function ProductsTable() {
       </div>
 
       {!isGetProductsLoading && total_pages > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
+        <div className='mt-4 flex justify-center gap-2'>
           <Button
             isPrimary
             isButton
             isDisabled={current_page === 1}
-            title="Prev"
+            title='Prev'
             onClick={() => handlePagination("prev")}
           />
           <Button
             isPrimary
             isButton
-            title="Next"
+            title='Next'
             isDisabled={current_page === total_pages}
             onClick={() => handlePagination("next")}
           />
@@ -356,20 +356,20 @@ export default function ProductsTable() {
           title={`${showModal.type} Product`}
           closeModal={() => handleCloseModal()}
         >
-          <div className="flex flex-col">
-            <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
+          <div className='flex flex-col'>
+            <div className='aspect-[2/1] w-full overflow-hidden rounded-lg'>
               <img
                 src={selectedProduct.image}
                 alt={`${selectedProduct.name}`}
-                className="h-full w-full object-cover "
+                className='h-full w-full object-cover '
               />
             </div>
-            <h3 className="title mt-4">{selectedProduct.name}</h3>
+            <h3 className='title mt-4'>{selectedProduct.name}</h3>
             <p>{getCategoryByName(selectedProduct.categoryId)}</p>
-            <p className="card-price mt-2">
+            <p className='card-price mt-2'>
               IDR {formatNumber(selectedProduct.price)}
             </p>
-            <p className="mt-4">{selectedProduct.description}</p>
+            <p className='mt-4'>{selectedProduct.description}</p>
           </div>
         </Modal>
       )}
@@ -405,22 +405,22 @@ export default function ProductsTable() {
             />
           ) : (
             <>
-              <p className="modal-text">
+              <p className='modal-text'>
                 Are you sure to delete{" "}
-                <span className="font-bold">{selectedProduct.name}</span>?
+                <span className='font-bold'>{selectedProduct.name}</span>?
               </p>
 
-              <div className="mt-4 flex justify-end gap-2">
+              <div className='mt-4 flex justify-end gap-2'>
                 {!isDeleteProductLoading && (
                   <Button
-                    title="No"
+                    title='No'
                     isButton
                     isSecondary
                     onClick={handleCloseModal}
                   />
                 )}
                 <Button
-                  title="Yes"
+                  title='Yes'
                   isButton
                   isDanger
                   isLoading={isDeleteProductLoading}
@@ -444,27 +444,27 @@ export default function ProductsTable() {
             />
           ) : (
             <>
-              <p className="modal-text">
+              <p className='modal-text'>
                 Are you sure to
                 {selectedProduct.status === 1 ? (
-                  <span className="text-red-500"> deactive </span>
+                  <span className='text-red-500'> deactive </span>
                 ) : (
-                  <span className="text-primary"> activate </span>
+                  <span className='text-primary'> activate </span>
                 )}
-                <span className="font-bold">{selectedProduct.name}</span>?
+                <span className='font-bold'>{selectedProduct.name}</span>?
               </p>
 
-              <div className="mt-4 flex justify-end gap-2">
+              <div className='mt-4 flex justify-end gap-2'>
                 {!isSubmitProductLoading && (
                   <Button
-                    title="No"
+                    title='No'
                     isButton
                     isSecondary
                     onClick={handleCloseModal}
                   />
                 )}
                 <Button
-                  title="Yes"
+                  title='Yes'
                   isButton
                   isPrimary={selectedProduct.status === 0}
                   isDanger={selectedProduct.status === 1}
