@@ -9,7 +9,6 @@ import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
-import LoadingCategories from "./component.loading.categories";
 import LoadingCards from "./component.loading.cards";
 import RenderModals from "./modals";
 import formatNumber from "../../utils/formatNumber";
@@ -214,39 +213,33 @@ export default function Cashier() {
           />
         </div>
         <div className="col-span-full flex gap-3 overflow-auto py-2">
-          {isGetCategoriesLoading ? (
-            <LoadingCategories />
-          ) : (
-            <>
-              <Button
-                title="All"
-                isSmall
-                onClick={() => {
-                  setSelectedCategory("");
-                }}
-                className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
-                  selectedCategory === ""
-                    ? "bg-primary"
-                    : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
-                }`}
-              />
-              {categories.map((category, index) => (
-                <Button
-                  key={index}
-                  title={category.name}
-                  isSmall
-                  onClick={() => {
-                    setSelectedCategory(category.id);
-                  }}
-                  className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
-                    category.id === selectedCategory
-                      ? "bg-primary"
-                      : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
-                  }`}
-                />
-              ))}
-            </>
-          )}
+          <Button
+            title="All"
+            isSmall
+            onClick={() => {
+              setSelectedCategory("");
+            }}
+            className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
+              selectedCategory === ""
+                ? "bg-primary"
+                : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
+            }`}
+          />
+          {categories.map((category, index) => (
+            <Button
+              key={index}
+              title={category.name}
+              isSmall
+              onClick={() => {
+                setSelectedCategory(category.id);
+              }}
+              className={`whitespace-nowrap px-2 py-1 text-sm text-white duration-300 md:text-base  ${
+                category.id === selectedCategory
+                  ? "bg-primary"
+                  : "bg-primary/60 hover:bg-primary/80 dark:bg-primary/40 dark:hover:bg-primary/60"
+              }`}
+            />
+          ))}
         </div>
 
         <div className="col-span-full grid grid-cols-2 gap-4 md:col-span-6 md:grid-cols-3">
