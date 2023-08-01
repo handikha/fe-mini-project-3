@@ -100,7 +100,7 @@ export default function Products() {
             : sortPrice === null && "",
         limit: 10,
         keywords: searchRef ? searchRef.current.value : "",
-        status: "",
+        status: sortStatus,
       })
     );
   };
@@ -137,8 +137,6 @@ export default function Products() {
       })
     );
   };
-
-
 
   useEffect(() => {
     dispatch(
