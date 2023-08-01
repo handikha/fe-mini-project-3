@@ -169,7 +169,7 @@ export default function ProductsTable({
               <td className="p-3">
                 <div className="aspect-[4/3] w-10">
                   <img
-                    src={"http://127.0.0.1:5000/" + item.image}
+                    src={process.env.REACT_APP_IMAGE_URL + item.image}
                     alt={`${item.name}`}
                     className="h-full w-full object-cover"
                   />

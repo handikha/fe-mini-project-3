@@ -124,7 +124,7 @@ export default function Products() {
       getProducts({
         category_id: selectedCategory,
         page: 1,
-        sort_name: "",
+        sort_name: "ASC",
         sort_price: "",
         limit: 10,
         keywords: "",

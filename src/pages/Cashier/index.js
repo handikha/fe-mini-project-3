@@ -303,7 +303,7 @@ export default function Cashier() {
                   >
                     <div className="aspect-[5/3] h-6 overflow-hidden rounded">
                       <img
-                        src={item.image}
+                        src={process.env.REACT_APP_IMAGE_URL + item.image}
                         alt={item.name}
                         className="h-full w-full object-cover duration-300 group-hover:scale-110"
                       />

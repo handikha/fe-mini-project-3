@@ -158,9 +158,9 @@ export default function RenderModals({
           closeModal={() => handleCloseModal()}
         >
           <div className="flex flex-col">
-            <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
+            <div className="aspect-[5/3] w-full overflow-hidden rounded-lg">
               <img
-                src={selectedProduct.image}
+                src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
                 alt={`${selectedProduct.name}`}
                 className="h-full w-full object-cover "
               />

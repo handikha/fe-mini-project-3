@@ -146,7 +146,7 @@ export default function InputProduct({ productData, categories }) {
         ref={categoryRef}
         id="categories"
         onChange={() => setError({ ...error, categoryId: false })}
-        className={`-mt-3 w-full rounded-lg border bg-inherit px-2 py-2 outline-none  focus:ring-2 ${
+        className={`-mt-3 w-full rounded-lg border bg-slate-100 px-2 py-2 outline-none focus:ring-2  dark:bg-slate-800 ${
           error.categoryId
             ? "border-danger/50 focus:border-danger focus:ring-danger/50 dark:focus:ring-danger"
             : "border-primary/50 focus:border-primary focus:ring-primary/50 dark:focus:ring-primary"

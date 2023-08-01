@@ -20,7 +20,7 @@ export default function Card({
     <div className="group flex h-[320px] w-full flex-col gap-3 rounded-md p-4 shadow-md duration-300 hover:scale-[103%] hover:shadow-xl dark:bg-slate-800/60">
       <div className="aspect-[2/1] w-full overflow-hidden rounded-lg">
         <img
-          src={"http://localhost:5000/" + image}
+          src={process.env.REACT_APP_IMAGE_URL + image}
           alt={name}
           className="h-full w-full object-cover duration-300 group-hover:scale-110"
         />
