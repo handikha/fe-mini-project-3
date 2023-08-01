@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPlus } from "react-icons/fa6";
-import { HiMagnifyingGlass } from "react-icons/hi2";
+import { HiMagnifyingGlass, HiXMark } from "react-icons/hi2";
 import Button from "../../../components/Button";
 import {
   getProducts,
@@ -19,6 +19,8 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortName, setSortName] = useState(true);
   const [sortPrice, setSortPrice] = useState(null);
+  const [sortStatus, setSortStatus] = useState("");
+
   const searchRef = useRef(null);
 
   const {
@@ -98,6 +100,7 @@ export default function Products() {
             : sortPrice === null && "",
         limit: 10,
         keywords: searchRef ? searchRef.current.value : "",
+        status: "",
       })
     );
   };
@@ -115,9 +118,27 @@ export default function Products() {
         sort_price: "",
         limit: 10,
         keywords: searchRef.current.value,
+        status: "",
       })
     );
   };
+
+  const resetSearch = () => {
+    searchRef.current.value = "";
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort_name: "",
+        sort_price: "",
+        limit: 12,
+        keywords: "",
+        status: "",
+      })
+    );
+  };
+
+
 
   useEffect(() => {
     dispatch(
@@ -128,6 +149,7 @@ export default function Products() {
         sort_price: "",
         limit: 10,
         keywords: "",
+        status: "",
       })
     );
     dispatch(
@@ -152,7 +174,11 @@ export default function Products() {
           type="submit"
           className="absolute right-0 top-0 cursor-pointer p-[11px] duration-300 hover:text-primary"
         >
-          <HiMagnifyingGlass className="text-xl " />
+          {searchRef.current?.value ? (
+            <HiXMark className="text-xl" onClick={resetSearch} />
+          ) : (
+            <HiMagnifyingGlass className="text-xl " />
+          )}
         </button>
       </form>
 
@@ -210,6 +236,8 @@ export default function Products() {
           setSortName={setSortName}
           sortPrice={sortPrice}
           setSortPrice={setSortPrice}
+          sortStatus={sortStatus}
+          setSortStatus={setSortStatus}
           keywords={searchRef}
         />
       </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { getProducts } from "../../store/slices/products/slices";
 import { getCategories } from "../../store/slices/categories/slices";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
+import { HiMagnifyingGlass, HiOutlineTrash, HiXMark } from "react-icons/hi2";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import Card from "../../components/Card";
@@ -165,6 +165,20 @@ export default function Cashier() {
     );
   };
 
+  const resetSearch = () => {
+    searchRef.current.value = "";
+    dispatch(
+      getProducts({
+        category_id: selectedCategory,
+        page: 1,
+        sort_name: "",
+        sort_price: "",
+        limit: 12,
+        keywords: "",
+      })
+    );
+  };
+
   const getCategoryByName = (id) => {
     const category = categories.find((item) => item.id === id);
     return category?.name;
@@ -204,7 +218,11 @@ export default function Cashier() {
               type="submit"
               className="absolute right-0 top-0 cursor-pointer p-[11px] duration-300 hover:text-primary"
             >
-              <HiMagnifyingGlass className="text-xl " />
+              {searchRef.current?.value ? (
+                <HiXMark className="text-xl" onClick={resetSearch} />
+              ) : (
+                <HiMagnifyingGlass className="text-xl " />
+              )}
             </button>
           </form>
           <FilterProducts

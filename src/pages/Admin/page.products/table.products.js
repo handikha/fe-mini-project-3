@@ -1,9 +1,11 @@
 import {
   BsArrowDownShort,
   BsArrowUpShort,
+  BsCheckLg,
   BsDash,
   BsSortAlphaDown,
   BsSortAlphaUp,
+  BsXLg,
 } from "react-icons/bs";
 import Button from "../../../components/Button";
 import { motion } from "framer-motion";
@@ -23,13 +25,25 @@ export default function ProductsTable({
   setSortName,
   sortPrice,
   setSortPrice,
+  sortStatus,
+  setSortStatus,
   keywords,
 }) {
   const dispatch = useDispatch();
 
   const handleSort = (type, sortBy) => {
-    if (sortBy === "price") setSortName(null);
-    if (sortBy === "name") setSortPrice(null);
+    if (sortBy === "price") {
+      setSortStatus("");
+      setSortName(null);
+    }
+    if (sortBy === "name") {
+      setSortStatus("");
+      setSortPrice(null);
+    }
+    if (sortBy === "status") {
+      setSortPrice(null);
+      setSortName(null);
+    }
 
     if (type === "ASC" && sortBy === "name") setSortName(true);
     if (type === "DESC" && sortBy === "name") setSortName(false);
@@ -44,6 +58,7 @@ export default function ProductsTable({
         sort_price: sortBy === "price" ? type : "",
         limit: 10,
         keywords: keywords ? keywords.current.value : "",
+        status: sortBy === "status" ? type : "",
       })
     );
   };
@@ -126,7 +141,46 @@ export default function ProductsTable({
             </span>
           </th>
           <th className="p-3">Image</th>
-          <th className="p-3">Satus</th>
+          <th className="p-3">
+            <span className="flex items-center gap-1">
+              Status{" "}
+              {sortStatus === "" ? (
+                <Button
+                  isSmall
+                  title={<BsDash />}
+                  className="bg-light p-1 duration-300 dark:bg-dark-gray"
+                  onClick={() => {
+                    handleSort(1, "status");
+                    setSortStatus(1);
+                  }}
+                />
+              ) : sortStatus === 1 ? (
+                <Button
+                  isSmall
+                  isPrimary
+                  title={<BsCheckLg />}
+                  className="bg-light p-1 duration-300 dark:bg-dark-gray"
+                  onClick={() => {
+                    handleSort(0, "status");
+                    setSortStatus(0);
+                  }}
+                />
+              ) : (
+                sortStatus === 0 && (
+                  <Button
+                    isSmall
+                    isDanger
+                    title={<BsXLg />}
+                    className="bg-light p-1 duration-300 dark:bg-dark-gray"
+                    onClick={() => {
+                      handleSort("", "status");
+                      setSortStatus("");
+                    }}
+                  />
+                )
+              )}
+            </span>
+          </th>
           <th className="p-3">Actions</th>
         </tr>
       </thead>
