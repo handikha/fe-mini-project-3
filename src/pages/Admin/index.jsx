@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import ProfileCard from "./profile.card";
 import UsersTable from "./page.users/table.users";
-import Dashboard from "./dashboard";
+import Dashboard from "./page.dashboard/dashboard";
 import { Toaster } from "react-hot-toast";
 import Products from "./page.products";
 import Categories from "./page.categories";

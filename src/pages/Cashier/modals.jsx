@@ -12,7 +12,6 @@ export default function RenderModals({
   handleCloseModal,
   category,
   carts,
-  isCartExpand,
 }) {
   const getTotalPrice = (qty, price) => qty * price;
   const getGrandTotal = () => {
@@ -68,18 +67,16 @@ export default function RenderModals({
 
   return (
     <>
-      {/* {showModal && type === "Check Out" && (
+      {showModal && type === "Check Out" && (
         <Modal
           showModal={showModal}
           closeModal={() => {
             handleCloseModal(false);
           }}
-          title={`${showModal.type}`}
+          title={`${type}`}
         >
           <div
-            className={`flex w-full flex-col overflow-auto pr-2 duration-300 lg:h-[70%] ${
-              isCartExpand ? "h-80" : "h-0"
-            }`}
+            className={`flex h-52 w-full flex-col overflow-auto pr-2 duration-300`}
           >
             {carts.map((item, index) => (
               <div
@@ -88,7 +85,7 @@ export default function RenderModals({
               >
                 <div className="aspect-[5/3] h-6 overflow-hidden rounded">
                   <img
-                    src={item.image}
+                    src={process.env.REACT_APP_PRODUCT_IMAGE_URL + item.image}
                     alt={item.name}
                     className="h-full w-full object-cover duration-300 group-hover:scale-110"
                   />
@@ -112,7 +109,8 @@ export default function RenderModals({
               </div>
             ))}
           </div>
-          <div className={"py-4"}>
+
+          <div className="py-4">
             <Input
               label="Customer Name"
               name={"customerName"}
@@ -120,22 +118,24 @@ export default function RenderModals({
                 handleCustomerData("customerName", e.target.value);
               }}
             />
-            <Input
-              label="Pay Amount"
-              name={"payAmount"}
-              type={"number"}
-              onChange={(e) => {
-                handleCustomerData("payAmount", e.target.value);
-              }}
-            />
-            <Input
-              label="Table Number"
-              name={"table"}
-              type={"number"}
-              onChange={(e) => {
-                handleCustomerData("table", e.target.value);
-              }}
-            />
+            <div className="mt-2 flex gap-2">
+              <Input
+                label="Pay Amount"
+                name={"payAmount"}
+                type={"number"}
+                onChange={(e) => {
+                  handleCustomerData("payAmount", e.target.value);
+                }}
+              />
+              <Input
+                label="Table Number"
+                name={"table"}
+                type={"number"}
+                onChange={(e) => {
+                  handleCustomerData("table", e.target.value);
+                }}
+              />
+            </div>
             <p className="my-4 text-base font-bold text-primary">
               Grand Total : {formatNumber(getGrandTotal())}
             </p>
@@ -149,7 +149,7 @@ export default function RenderModals({
             />
           </div>
         </Modal>
-      )} */}
+      )}
 
       {showModal && type === "Details" && (
         <Modal
@@ -160,7 +160,10 @@ export default function RenderModals({
           <div className="flex flex-col">
             <div className="aspect-[5/3] w-full overflow-hidden rounded-lg">
               <img
-                src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
+                src={
+                  process.env.REACT_APP_PRODUCT_IMAGE_URL +
+                  selectedProduct.image
+                }
                 alt={`${selectedProduct.name}`}
                 className="h-full w-full object-cover "
               />

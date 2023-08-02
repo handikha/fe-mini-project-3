@@ -15,7 +15,7 @@ export default function Button(props) {
   props.isPrimary &&
     props.isDisabled &&
     className.push(
-      "bg-primary/60 text-white hover:cursor-default dark:bg-primary/40"
+      "bg-primary/80 text-white hover:cursor-default dark:bg-primary/40"
     );
 
   props.isDanger &&

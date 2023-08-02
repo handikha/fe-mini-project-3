@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../Input";
 import Button from "../Button";
 import { changePassword } from "../../store/slices/auth/slices";

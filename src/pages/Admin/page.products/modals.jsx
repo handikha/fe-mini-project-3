@@ -73,7 +73,7 @@ export default function RenderProductModals({
           <div className="flex flex-col">
             <div className="aspect-[5/3] w-full overflow-hidden rounded-lg">
               <img
-                src={process.env.REACT_APP_IMAGE_URL + selectedProduct.image}
+                src={process.env.REACT_APP_PRODUCT_IMAGE_URL + selectedProduct.image}
                 alt={`${selectedProduct.name}`}
                 className="h-full w-full object-cover "
               />

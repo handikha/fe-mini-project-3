@@ -1,9 +1,8 @@
 import React from "react";
 import Button from "../../components/Button";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
-  const navigate = useNavigate();
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
       <h3>Oops! Looks like you got lost.</h3>

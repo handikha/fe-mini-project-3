@@ -2,8 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/Button";
 
 import PasswordSetting from "../../../components/PasswordSetting";
-import ImageSetting from "../../../components/ImageSetting";
 import { useEffect } from "react";
+import ImageSetting from "./image.setting";
 
 export default function CashierAccountSetting({ user }) {
   const navigate = useNavigate();

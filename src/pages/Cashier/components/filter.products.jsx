@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Button from "../../components/Button";
 import { HiOutlineFunnel } from "react-icons/hi2";
-import { getProducts } from "../../store/slices/products/slices";
+import { getProducts } from "../../../store/slices/products/slices";
 import { useDispatch } from "react-redux";
+import Button from "../../../components/Button";
 
 export default function FilterProducts({ selectedCategory, keywords }) {
   const dispatch = useDispatch();
