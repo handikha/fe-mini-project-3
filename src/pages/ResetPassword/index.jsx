@@ -50,9 +50,7 @@ export default function ResetPassword() {
           .catch((error) => {
             setErrors({ message: error.message });
           })
-          .finally(() => {
-            setIsSubmitting(false);
-          });
+          .finally(() => {});
       })
       .catch((validationErrors) => {
         // If validation fails, set the error messages in the state separately
@@ -64,7 +62,6 @@ export default function ResetPassword() {
           {}
         );
         setErrors(errorMessages);
-        setIsSubmitting(false);
       });
   };
 

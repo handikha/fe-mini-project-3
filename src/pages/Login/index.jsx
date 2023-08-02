@@ -50,9 +50,7 @@ export default function Login() {
             // Handle login errors, e.g., show error message
             setErrors({ message: error.message }); // Set general error message
           })
-          .finally(() => {
-            setIsSubmitting(false);
-          });
+          .finally(() => {});
       })
       .catch((validationErrors) => {
         // If validation fails, set the error messages in the state separately
@@ -64,7 +62,6 @@ export default function Login() {
           {}
         );
         setErrors(errorMessages);
-        setIsSubmitting(false);
       });
   };
 

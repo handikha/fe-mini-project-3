@@ -52,9 +52,7 @@ export default function Login() {
           .catch((error) => {
             setErrors({ message: error.message });
           })
-          .finally(() => {
-            setIsSubmitting(false);
-          });
+          .finally(() => {});
       })
       .catch((validationErrors) => {
         // If validation fails, set the error messages in the state separately
@@ -66,7 +64,6 @@ export default function Login() {
           {}
         );
         setErrors(errorMessages);
-        setIsSubmitting(false);
       });
   };
 
