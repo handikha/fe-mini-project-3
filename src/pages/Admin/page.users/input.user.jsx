@@ -1,17 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { useDropzone } from "react-dropzone";
 import Modal from "../../../components/Modal";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { registerCashier } from "../../../store/slices/cashierManagement/slices";
 
 export default function InputUser({ onCloseInputModal }) {
-  // const usernameRef = useRef(null);
-  // const emailRef = useRef(null);
-  // const phoneRef = useRef(null);
-  // const fullNameRef = useRef(null);
-
   const dispatch = useDispatch();
 
   const [values, setValues] = useState({
@@ -27,17 +22,6 @@ export default function InputUser({ onCloseInputModal }) {
   };
 
   const [userDataImage, setUserDataImage] = useState(null);
-
-  // // Set nilai awal input form berdasarkan data userData
-  // useEffect(() => {
-  //   if (userData) {
-  //     usernameRef.current.value = userData.username || "";
-  //     emailRef.current.value = userData.email || "";
-  //     phoneRef.current.value = userData.phone || "";
-  //     fullNameRef.current.value = userData.fullName || "";
-  //   }
-  //   setUserDataImage(userData.profileImg);
-  // }, [userData]);
 
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -72,30 +56,6 @@ export default function InputUser({ onCloseInputModal }) {
     noKeyboard: true,
   });
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   // Data user (JSON)
-  //   const userData = {
-  //     username: usernameRef.current?.value,
-  //     email: emailRef.current?.value,
-  //     phone: phoneRef.current?.value,
-  //     fullName: fullNameRef.current?.value,
-  //   };
-
-  //   const formData = new FormData();
-  //   formData.append("data", JSON.stringify(userData));
-  //   formData.append("file", file);
-
-  //   // Tampilkan isi data pada formData
-  //   formData.forEach((value, key) => {
-  //     console.log(`${key}: ${value}`);
-  //   });
-
-  //   // Tampilkan informasi file dalam formData
-  //   console.log("file (Image):", formData.get("file"));
-  // };
-
   const [showConfirmRegister, setShowConfirmRegister] = useState(false);
   const handleCloseComfirmRegister = () => setShowConfirmRegister(false);
   const handleConfirmRegister = () => {
@@ -121,46 +81,41 @@ export default function InputUser({ onCloseInputModal }) {
   return (
     <>
       <form
-        className="flex max-h-[400px] flex-col gap-3 overflow-y-auto px-2 py-2"
+        className='flex max-h-[400px] flex-col gap-3 overflow-y-auto px-2 py-2'
         onSubmit={handleSubmit}
       >
         <Input
-          type="text"
-          placeholder="Full Name"
-          name="fullName"
+          type='text'
+          placeholder='Full Name'
+          name='fullName'
           value={values.fullName}
           onChange={handleChange}
-          // ref={fullNameRef}
         />
         <Input
-          type="text"
-          placeholder="Username"
-          name="username"
+          type='text'
+          placeholder='Username'
+          name='username'
           value={values.username}
           onChange={handleChange}
-          // autoFocus
-          // ref={usernameRef}
         />
         <Input
-          type="email"
-          placeholder="Email"
-          name="email"
+          type='email'
+          placeholder='Email'
+          name='email'
           value={values.email}
           onChange={handleChange}
-          // ref={emailRef}
         />
         <Input
-          type="text"
-          placeholder="Phone"
-          name="phone"
+          type='text'
+          placeholder='Phone'
+          name='phone'
           value={values.phone}
           onChange={handleChange}
-          // ref={phoneRef}
         />
 
         {/* INPUT IMAGE */}
-        <div className="flex h-fit w-full flex-col items-center justify-center px-4">
-          <p className="text-dark mb-2 text-center text-lg font-semibold md:text-lg">
+        <div className='flex h-fit w-full flex-col items-center justify-center px-4'>
+          <p className='text-dark mb-2 text-center text-lg font-semibold md:text-lg'>
             Upload your image
           </p>
 
@@ -175,15 +130,15 @@ export default function InputUser({ onCloseInputModal }) {
 
             {previewImage || userDataImage ? (
               <img
-                alt=""
+                alt=''
                 src={previewImage || userDataImage}
-                className="w-64"
+                className='w-64'
               />
             ) : (
               <>
-                <p className="md:text-md text-center text-sm text-slate-400">
+                <p className='md:text-md text-center text-sm text-slate-400'>
                   {file === null && (
-                    <span className="select-none">
+                    <span className='select-none'>
                       Drag & Drop your image here
                     </span>
                   )}
@@ -194,27 +149,20 @@ export default function InputUser({ onCloseInputModal }) {
 
           {file === null && !userDataImage ? (
             <>
-              <p className="text-md mb-2 mt-2 text-center font-normal text-slate-400">
+              <p className='text-md mb-2 mt-2 text-center font-normal text-slate-400'>
                 Or
               </p>
 
-              <Button
-                onClick={open}
-                title="Choose a file"
-                isSmall
-                isPrimary
-                // isLoading={isUploadImageLoading}
-                // isDisabled={isUploadImageLoading}
-              />
+              <Button onClick={open} title='Choose a file' isSmall isPrimary />
             </>
           ) : (
-            <div className="flex gap-2">
+            <div className='flex gap-2'>
               <Button
                 onClick={removeImage}
-                title="Remove"
+                title='Remove'
                 isSmall
                 isSecondary
-                className="mt-2"
+                className='mt-2'
               />
             </div>
           )}
@@ -223,53 +171,34 @@ export default function InputUser({ onCloseInputModal }) {
         <Button
           isButton
           isPrimary
-          title="Add User"
-          className="mt-4"
-          type="submit"
-        />
-        {/* {userData ? (
-        <Button
-          isButton
-          isPrimary
-          title='Edit User'
-          className='mt-4'
-          type='submit'
-          // onClick={handleShowModal}
-        />
-      ) : (
-        <Button
-          isButton
-          isPrimary
           title='Add User'
           className='mt-4'
           type='submit'
-          // onClick={handleShowModal}
         />
-      )} */}
       </form>
       <Modal
         showModal={showConfirmRegister}
-        title="Register Cashier"
+        title='Register Cashier'
         closeModal={handleCloseComfirmRegister}
       >
-        <div className="flex flex-col items-center">
-          <h1 className="text-lg font-semibold">
+        <div className='flex flex-col items-center'>
+          <h1 className='text-lg font-semibold'>
             {`Are you sure you want to register ${values.username} account?`}
           </h1>
 
-          <div className="flex gap-x-1">
+          <div className='flex gap-x-1'>
             <Button
               isButton
               isPrimary
-              className="mt-4"
-              title="Register"
+              className='mt-4'
+              title='Register'
               onClick={() => handleConfirmRegister()}
             />
             <Button
               isButton
               isDanger
-              className="mt-4"
-              title="Cancel"
+              className='mt-4'
+              title='Cancel'
               onClick={handleCloseComfirmRegister}
             />
           </div>

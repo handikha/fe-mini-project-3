@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   BsSortAlphaDown,
   BsSortAlphaDownAlt,
-  BsSortAlphaUp,
 } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
@@ -21,13 +20,11 @@ export default function UsersTable() {
   const dispatch = useDispatch();
 
   const {
-    isGetCashierLoading,
     curentCashierPage,
     totalCashierPage,
     allCashier,
   } = useSelector((state) => {
     return {
-      isGetCashierLoading: state.cashierManagement.isGetCashierLoading,
       curentCashierPage: state.cashierManagement.curentCashierPage,
       totalCashierPage: state.cashierManagement.totalCashierPage,
       allCashier: state.cashierManagement.allCashier,

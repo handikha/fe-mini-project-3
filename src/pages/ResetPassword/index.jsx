@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { verifyAccount, resetPassword } from "../../store/slices/auth/slices";
 import { resetPasswordSchema } from "../../store/slices/auth/validation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -22,7 +22,6 @@ export default function ResetPassword() {
   }, [location.pathname]);
 
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,8 +30,7 @@ export default function ResetPassword() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
-    setErrors({}); // Reset errors
+    setErrors({});
 
     // Validate the input using resetPasswordSchema
     resetPasswordSchema
