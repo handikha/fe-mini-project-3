@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import ProfileCard from "./profile.card";
-import UsersTable from "./table.users";
+import UsersTable from "./page.users/table.users";
 import Dashboard from "./dashboard";
 import { Toaster } from "react-hot-toast";
 import Products from "./page.products";
@@ -19,7 +19,6 @@ export default function Admin({ user }) {
       "users",
       "categories",
     ].find((item) => item === context);
-    console.log(allowedContext);
 
     if (!allowedContext) {
       return navigate("/not-found", { replace: true });
@@ -43,7 +42,7 @@ export default function Admin({ user }) {
           />
 
           <div className="col-span-full md:col-span-3">
-            {!context && <Dashboard />}
+            {context === "dashboard" && <Dashboard />}
             {context === "products" && <Products />}
             {context === "users" && <UsersTable />}
             {context === "categories" && <Categories />}

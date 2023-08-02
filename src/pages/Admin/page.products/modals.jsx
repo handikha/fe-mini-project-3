@@ -121,7 +121,10 @@ export default function RenderProductModals({
             <>
               <p className="modal-text">
                 Are you sure to delete{" "}
-                <span className="font-bold">{selectedProduct.name}</span>?
+                <span className="font-bold">{selectedProduct.name}</span>?{" "}
+                <p className="modal-text">
+                  You won't be able to undo the changes after deleting.
+                </p>
               </p>
 
               <div className="mt-4 flex justify-end gap-2">

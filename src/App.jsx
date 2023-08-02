@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Cashier from "./pages/Cashier";
 import Admin from "./pages/Admin";
-import AdminAccountSetting from "./pages/Admin/account.setting/index.js";
+import AdminAccountSetting from "./pages/Admin/account.setting";
 import CashierAccountSetting from "./pages/Cashier/account.setting";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";

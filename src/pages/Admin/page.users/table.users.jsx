@@ -7,15 +7,15 @@ import {
 } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
-import Modal from "../../components/Modal";
-import Button from "../../components/Button";
+import Modal from "../../../components/Modal";
+import Button from "../../../components/Button";
 import InputUser from "./input.user";
 import DetailUser from "./detail.user";
 
 import {
   getCashierInfo,
   changeCashierStatus,
-} from "../../store/slices/cashierManagement/slices";
+} from "../../../store/slices/cashierManagement/slices";
 
 export default function UsersTable() {
   const dispatch = useDispatch();
@@ -141,22 +141,22 @@ export default function UsersTable() {
 
   return (
     <>
-      <div className='col-span-full mb-4 flex justify-between'>
+      <div className="col-span-full mb-4 flex justify-between">
         <h3>Cashier</h3>
         <Button
           isButton
           isPrimary
-          className=' flex items-center gap-2'
+          className=" flex items-center gap-2"
           onClick={() => handleShowAddModal("Add")}
         >
           <FaPlus /> Add Cashier
         </Button>
       </div>
-      <div className='my-2 flex gap-2'>
+      <div className="my-2 flex gap-2">
         <Button
           isButton
           isPrimary
-          title='All'
+          title="All"
           onClick={() => {
             handleFilter("");
           }}
@@ -169,7 +169,7 @@ export default function UsersTable() {
         <Button
           isButton
           isPrimary
-          title='Unverified'
+          title="Unverified"
           onClick={() => {
             handleFilter(0);
           }}
@@ -182,7 +182,7 @@ export default function UsersTable() {
         <Button
           isButton
           isPrimary
-          title='Active'
+          title="Active"
           onClick={() => {
             handleFilter(1);
           }}
@@ -195,7 +195,7 @@ export default function UsersTable() {
         <Button
           isButton
           isPrimary
-          title='Inactive'
+          title="Inactive"
           onClick={() => {
             handleFilter(2);
           }}
@@ -207,23 +207,23 @@ export default function UsersTable() {
         />
       </div>
 
-      <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-        <table className='text-gray-500 dark:text-gray-400 w-full text-left text-sm'>
-          <thead className='text-gray-700 dark:bg-gray-700 dark:text-gray-400 bg-slate-100 text-sm uppercase dark:bg-slate-800'>
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="text-gray-500 dark:text-gray-400 w-full text-left text-sm">
+          <thead className="text-gray-700 dark:bg-gray-700 dark:text-gray-400 bg-slate-100 text-sm uppercase dark:bg-slate-800">
             <tr>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 #
               </th>
-              <th scope='col' className='p-3'>
-                <span className='flex items-center justify-between'>
+              <th scope="col" className="p-3">
+                <span className="flex items-center justify-between">
                   Full Name{" "}
                   <Button
                     isSmall
-                    className='bg-primary/80 text-slate-100 dark:bg-primary/60'
+                    className="bg-primary/80 text-slate-100 dark:bg-primary/60"
                   >
                     {asc ? (
                       <BsSortAlphaDown
-                        className='text-xl'
+                        className="text-xl"
                         onClick={() => {
                           setAsc(false);
                           handleSorting("DESC");
@@ -231,7 +231,7 @@ export default function UsersTable() {
                       />
                     ) : (
                       <BsSortAlphaDownAlt
-                        className='text-xl'
+                        className="text-xl"
                         onClick={() => {
                           setAsc(true);
                           handleSorting("ASC");
@@ -241,30 +241,30 @@ export default function UsersTable() {
                   </Button>
                 </span>
               </th>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 Username
               </th>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 Email
               </th>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 Phone
               </th>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 Status
               </th>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 Image
               </th>
-              <th scope='col' className='p-3'>
+              <th scope="col" className="p-3">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
             {allCashier.length == 0 ? (
-              <tr className='text-center'>
-                <td colSpan={7} className='p-3'>
+              <tr className="text-center">
+                <td colSpan={7} className="p-3">
                   No data to display
                 </td>
               </tr>
@@ -272,7 +272,7 @@ export default function UsersTable() {
               allCashier.map((item, index) => (
                 <tr
                   key={index}
-                  className='cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70'
+                  className="cursor-pointer duration-300 odd:bg-slate-200/70 even:bg-slate-100 hover:bg-primary/30 dark:odd:bg-slate-700 dark:even:bg-slate-800 dark:hover:bg-primary/70"
                   onClick={() =>
                     handleShowUpdateModal(
                       item.id,
@@ -286,26 +286,26 @@ export default function UsersTable() {
                   }
                 >
                   <th
-                    scope='row'
-                    className='text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white'
+                    scope="row"
+                    className="text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white"
                   >
                     {index + 1 + (curentCashierPage - 1) * 5}
                   </th>
-                  <td className='p-3'>{item.fullName}</td>
-                  <td className='p-3'>{item.username}</td>
-                  <td className='p-3'>{item.email}</td>
-                  <td className='p-3'>{item.phone}</td>
-                  <td className='p-3'>{statusLabels[item.status]}</td>
-                  <td className='p-3'>
-                    <div className='aspect-[4/3] w-10'>
+                  <td className="p-3">{item.fullName}</td>
+                  <td className="p-3">{item.username}</td>
+                  <td className="p-3">{item.email}</td>
+                  <td className="p-3">{item.phone}</td>
+                  <td className="p-3">{statusLabels[item.status]}</td>
+                  <td className="p-3">
+                    <div className="aspect-[4/3] w-10">
                       <img
                         src={"http://127.0.0.1:5000/" + item.profileImg}
-                        alt=''
-                        className='h-full w-full object-cover'
+                        alt=""
+                        className="h-full w-full object-cover"
                       />
                     </div>
                   </td>
-                  <td className='flex gap-2 p-3'>
+                  <td className="flex gap-2 p-3">
                     <Button
                       isSmall
                       isWarning
@@ -321,11 +321,11 @@ export default function UsersTable() {
                         )
                       }
                     >
-                      <HiOutlinePencilSquare className='text-lg' />
+                      <HiOutlinePencilSquare className="text-lg" />
                     </Button>
                     <Button isSmall isDanger>
                       <HiOutlineTrash
-                        className='text-lg'
+                        className="text-lg"
                         onClick={() =>
                           handleShowDeleteModal(item.id, item.username)
                         }
@@ -340,18 +340,18 @@ export default function UsersTable() {
       </div>
 
       {totalCashierPage > 1 && (
-        <div className='mt-4 flex justify-center gap-2'>
+        <div className="mt-4 flex justify-center gap-2">
           <Button
             isPrimary
             isButton
             isDisabled={curentCashierPage === 1}
-            title='Prev'
+            title="Prev"
             onClick={() => handlePagination("prev")}
           />
           <Button
             isPrimary
             isButton
-            title='Next'
+            title="Next"
             isDisabled={curentCashierPage === totalCashierPage}
             onClick={() => handlePagination("next")}
           />
@@ -359,7 +359,7 @@ export default function UsersTable() {
       )}
       <Modal
         showModal={showAddModal}
-        title='Add Cashier'
+        title="Add Cashier"
         closeModal={handleCloseAddModal}
       >
         <InputUser onCloseInputModal={handleCloseAddModal} />
@@ -367,27 +367,27 @@ export default function UsersTable() {
 
       <Modal
         showModal={showDeleteModal}
-        title='Delete Cashier'
+        title="Delete Cashier"
         closeModal={handleCloseDeleteModal}
       >
-        <div className='flex flex-col items-center'>
-          <h1 className='text-lg font-semibold'>
+        <div className="flex flex-col items-center">
+          <h1 className="text-lg font-semibold">
             {`Are you sure you want to delete ${username} account?`}
           </h1>
 
-          <div className='flex gap-x-1'>
+          <div className="flex gap-x-1">
             <Button
               isButton
               isDanger
-              className='mt-4'
-              title='Delete'
+              className="mt-4"
+              title="Delete"
               onClick={() => confirmDeleteCashier(userId)}
             />
             <Button
               isButton
               isPrimary
-              className='mt-4'
-              title='Cancel'
+              className="mt-4"
+              title="Cancel"
               onClick={handleCloseDeleteModal}
             />
           </div>
@@ -396,7 +396,7 @@ export default function UsersTable() {
 
       <Modal
         showModal={showUpdateModal}
-        title='Update Cashier'
+        title="Update Cashier"
         closeModal={handleCloseUpdateModal}
       >
         <DetailUser

@@ -109,6 +109,7 @@ export default function Products() {
     event.preventDefault();
     setSortName(true);
     setSortPrice(null);
+    setSortStatus("");
 
     dispatch(
       getProducts({
@@ -147,7 +148,7 @@ export default function Products() {
         sort_price: "",
         limit: 10,
         keywords: "",
-        status: "",
+        status: sortStatus,
       })
     );
     dispatch(

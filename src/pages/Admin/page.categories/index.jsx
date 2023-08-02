@@ -110,6 +110,7 @@ export default function Categories() {
           categories={categories}
           handleShowModal={handleShowModal}
           limit={limit}
+          current_page={current_page}
         />
       </div>
 

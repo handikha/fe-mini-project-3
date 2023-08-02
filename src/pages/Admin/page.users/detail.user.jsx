@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import Modal from "../../components/Modal";
+import Input from "../../../components/Input";
+import Button from "../../../components/Button";
+import Modal from "../../../components/Modal";
 import { useDispatch } from "react-redux";
 import {
   changeCashierStatus,
   updateProfile,
-} from "../../store/slices/cashierManagement/slices";
+} from "../../../store/slices/cashierManagement/slices";
 
 export default function DetailUser({
   userId = "",

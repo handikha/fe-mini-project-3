@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import bgimage from "../../assets/image.svg";
-import Button from "../../components/Button";
+import Button from "../Button";
 // import { updateImageProfile } from "../../store/slices/auth/slices";
 // import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";

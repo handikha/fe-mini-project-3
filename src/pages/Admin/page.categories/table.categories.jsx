@@ -10,6 +10,7 @@ export default function CategoriesTable({
   categories,
   limit,
   handleShowModal,
+  current_page,
 }) {
   const dispatch = useDispatch();
   const [sortName, setSortName] = useState(null);
@@ -102,7 +103,7 @@ export default function CategoriesTable({
               scope="row"
               className="text-gray-900 whitespace-nowrap p-3 font-medium dark:text-white"
             >
-              {index + 1}
+              {index + 1 + (current_page - 1) * 10}
             </th>
             <td className="p-3">{item.name}</td>
             <td className="flex gap-2 p-3">
