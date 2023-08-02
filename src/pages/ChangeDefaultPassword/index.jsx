@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { changePassword, verifyAccount } from "../../store/slices/auth/slices";
 import { changePasswordSchema } from "../../store/slices/auth/validation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ export default function Login() {
   });
 
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,8 +32,7 @@ export default function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
-    setErrors({}); // Reset errors
+    setErrors({});
 
     // Validate the input using changePasswordSchema
     changePasswordSchema

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Input from "../Input";
 import Button from "../Button";
 import { changePassword } from "../../store/slices/auth/slices";
@@ -7,7 +6,6 @@ import { changePasswordSchema } from "../../store/slices/auth/validation";
 import { useDispatch } from "react-redux";
 
 export default function PasswordSetting() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [values, setValues] = useState({
@@ -17,7 +15,6 @@ export default function PasswordSetting() {
   });
 
   const [errors, setErrors] = useState();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +23,6 @@ export default function PasswordSetting() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
     try {
       changePasswordSchema.validateSync(values);
       dispatch(changePassword(values));
@@ -45,7 +41,7 @@ export default function PasswordSetting() {
         value={values.currentPassword}
         onChange={handleChange}
       />
-      {/* {errors.currentPassword && <span>{errors.currentPassword}</span>} */}
+
       <Input
         placeholder='New Password'
         id='password'
@@ -54,7 +50,7 @@ export default function PasswordSetting() {
         value={values.password}
         onChange={handleChange}
       />
-      {/* {errors.password && <span>{errors.password}</span>} */}
+
       <Input
         placeholder='Confirm Password'
         id='confirmPassword'
