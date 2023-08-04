@@ -5,6 +5,7 @@ import Dashboard from "./page.dashboard/dashboard";
 import { Toaster } from "react-hot-toast";
 import Products from "./page.products";
 import Categories from "./page.categories";
+import Transactions from "./page.transactions";
 import { useEffect } from "react";
 
 export default function Admin({ user }) {
@@ -18,6 +19,7 @@ export default function Admin({ user }) {
       "products",
       "users",
       "categories",
+      "transactions"
     ].find((item) => item === context);
 
     if (!allowedContext) {
@@ -46,6 +48,7 @@ export default function Admin({ user }) {
             {context === "products" && <Products />}
             {context === "users" && <UsersTable />}
             {context === "categories" && <Categories />}
+            {context === "transactions" && <Transactions />}
           </div>
         </div>
       </div>

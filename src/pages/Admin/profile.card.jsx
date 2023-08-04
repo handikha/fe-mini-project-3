@@ -26,6 +26,10 @@ export default function ProfileCard({
       title: "Categories",
       path: "/admin/categories",
     },
+    {
+      title: "Transactions",
+      path: "/admin/transactions",
+    }
   ];
 
   const location = useLocation();
