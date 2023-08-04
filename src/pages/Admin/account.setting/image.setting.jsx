@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import bgimage from "../../../assets/image.svg";
 import Button from "../../../components/Button";
-// import { updateImageProfile } from "../../store/slices/auth/slices";
-// import { useDispatch, useSelector } from "react-redux";
+import {changeProfileImage} from "../../../store/slices/auth/slices";
+import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 
 export default function ImageSetting() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const navigate = useNavigate();
   // const { isUploadImageLoading, imgProfile } = useSelector((state) => {
   //   return { isUploadImageLoading: state.auth.isUploadImageLoading };
@@ -44,13 +44,13 @@ export default function ImageSetting() {
     noKeyboard: true,
   });
 
-  const onButtonUpload = () => {
+  const onButtonUpload = async () => {
     const formData = new FormData();
     formData.append("file", file);
-    // dispatch(updateImageProfile(formData));
+    await dispatch(changeProfileImage(formData));
     setFile(null);
     setPreviewImage(null);
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (

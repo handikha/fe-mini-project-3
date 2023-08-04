@@ -8,7 +8,7 @@ import {
   forgetPassword,
   verifyAccount,
   resetPassword,
-  changePassword,
+  changePassword, changeProfileImage,
 } from "./slices";
 
 // @initial state
@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   isVerifyAccoutLoading: false,
   isResetPasswordLoading: false,
   isChangePasswordLoading: false,
+  isChangeProfileImageLoading: false,
 
   //@user state
   id: null,
@@ -149,6 +150,18 @@ const authSlice = createSlice({
     [changePassword.rejected]: (state, action) => {
       state.isChangePasswordLoading = false;
     },
+
+    //@Change profile image
+    [changeProfileImage.pending]: (state, action) => {
+      state.isChangeProfileImageLoading = true;
+    },
+    [changeProfileImage.fulfilled]: (state, action) => {
+      state.isChangeProfileImageLoading = false;
+      state.profileImg = action.payload?.imageUrl;
+    },
+    [changeProfileImage.rejected]: (state, action) => {
+      state.isChangeProfileImageLoading = false;
+    }
   },
 });
 
