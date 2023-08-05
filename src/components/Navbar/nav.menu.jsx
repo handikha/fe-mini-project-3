@@ -21,8 +21,6 @@ export default function NavMenu({
   user,
 }) {
 
-  console.log(user);
-
   // SCROLL AND RESIZE HANDLER
   useEffect(() => {
     const handleScroll = () => {
